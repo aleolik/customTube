@@ -13,6 +13,7 @@ const Header = () => {
   const [showModal,setShowModal] = useState(false)
   const [avatarOnFocus,setAvatarOnFocus] = useState(false)
   const [avatarOnHover,setAvatarOnHover] = useState(false)
+  const [showSideBar,setShowSideBar] = useState(false)
   const onMouseLeave = () => {
     setAvatarOnFocus(false)
     setAvatarOnHover(false)
