@@ -1,4 +1,5 @@
 import { ActionCreator, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { CgLogOut } from "react-icons/cg";
 import {IUser} from '../types/userTypes'
 import { userState } from "../types/userTypes";
 
@@ -12,6 +13,9 @@ export const UserReducer = createSlice({
     reducers : {
         login(state : userState,action : PayloadAction<IUser>){
             state.user = action.payload
+        },
+        logout(state:userState){
+            state.user = null
         }
     }
 })

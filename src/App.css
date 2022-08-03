@@ -13,22 +13,26 @@
 .__avatar{
   width: 75px;
   height: 50px;
-  margin: 0;
-  padding: auto;
   border-radius: 40px;
+  display: flex;
 }
 
 .options{
-  z-index: 1;
+  z-index: 100;
+  position: absolute;
+  width: 100px;
+  background-color: white;
   justify-content: center;
+  text-align: center;
   align-items: center;
+  border: darkred 3px solid;
 }
 
 .option_links{
-  color: black;
+  color: white;
   text-decoration: none;
-  border: 2px solid darkgray;
-  padding: 5px;
-  width: 100px;
   text-align: center;
+  background-color: black;
+  font-size: 15px;
+  width: 100%;
 }

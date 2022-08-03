@@ -8,7 +8,7 @@ const FormButtons = () => {
   return (
     <div style={{'display':'flex','justifyContent':'center','alignItems':'center'}}>
           <button onClick={() => dispatch(changeState())} className={login_or_register === 'login' ? 'btn btn-danger' : 'btn'} style={{'width':50+'%'}}>Login</button>
-          <button onClick={() => dispatch(changeState())} className={login_or_register === 'register' ? 'btn btn-danger' : 'btn'} style={{'width':50+'%'}}>Register</button>
+          <button onClick={() => dispatch(changeState())} className={login_or_register === 'register' ? 'btn btn-danger' : 'btn'} style={{'width':50+'%'}}>FAQ</button>
     </div>
   )
 }
