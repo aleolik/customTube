@@ -6,16 +6,20 @@ import ModalWindow from './MyModal/ModalWindow'
 import FAQ from './FAQ'
 import { LogoHeader } from '../helpers/HeaderElements/LogoHeader'
 import { UserAvatar } from '../helpers/HeaderElements/UserAvatar'
+import BurgerMenu from './BurgerMenu/BurgerMenu'
 const Header = () => {
   const user = useAppSelector(state => state.user.user)
   const [showModal,setShowModal] = useState(false)
   const [avatarOnFocus,setAvatarOnFocus] = useState(false)
   const [avatarOnHover,setAvatarOnHover] = useState(false)
-  const [showSideBar,setShowSideBar] = useState(false)
+  const showSideBar = useAppSelector(state => state.modal.show_side_bar)
   const show_login_or_faq = useAppSelector(state =>  state.modal.show_login_or_faq)
   return (
       <nav className="navbar navbar-light bg-dark">
-        <LogoHeader/>
+        {showSideBar && (
+          <BurgerMenu/>
+        )}
+        <LogoHeader />
         {showModal && (
           <ModalWindow showModal={showModal} setShowModal={setShowModal}>
             {show_login_or_faq === 'login'

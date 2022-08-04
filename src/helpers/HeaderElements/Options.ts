@@ -11,13 +11,11 @@ export const useOptions = () => {
         id : 13200.500120,
         title : 'Logout',
         onClick : logout,
-        type : 'button'
     }
     const MyProfileOption : ILink = {
         id : 1320012.50420,
         title : 'Profile',
         to : '/My_channel',
-        type : 'link'
     }
 
     const buttonOptions :IButton[] = [
