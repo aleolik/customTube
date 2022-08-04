@@ -1,0 +1,11 @@
+.main_page{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.border_menu{
+    height: 100%;
+    width: 20%;
+    background-color: black;
+}

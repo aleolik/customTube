@@ -1,5 +1,4 @@
 import { ActionCreator, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { CgLogOut } from "react-icons/cg";
 import {IUser} from '../types/userTypes'
 import { userState } from "../types/userTypes";
 

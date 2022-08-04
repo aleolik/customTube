@@ -1,13 +1,11 @@
 .center{
     justify-content: center;
-    width: 100vw;
-    height: 40vh;
     display: flex;
     align-items: center;
     flex-direction: column  ;
-    flex-wrap: wrap;
-    margin: 0;
-    flex-basis: 100%;
+    top : 8%;
+    left : 0;
+    position: absolute;
 }
 .input{
     width: 400px;

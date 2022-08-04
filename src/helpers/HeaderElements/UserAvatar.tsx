@@ -1,6 +1,7 @@
 import {FC} from 'react'
 import { useAppSelector } from '../../hooks/TypedHooks'
 import defaultUserAvatar from '../../media/defaultUserAvatar.png'
+import { RenderOptions } from './RenderOptions'
 interface UserAvatarProps{
     avatarOnFocus : boolean,
     avatarOnHover : boolean,
@@ -19,12 +20,16 @@ export const UserAvatar : FC<UserAvatarProps> = ({avatarOnFocus,avatarOnHover,se
         <div
         tabIndex={0}
         onClick={() =>setAvatarOnFocus(true)}
-        onMouseEnter={() => setAvatarOnHover(true)}
-        onMouseLeave={() => onMouseLeave()}
-        style={{'paddingLeft':10+'px','width':150+'px'}}>
+        onMouseLeave={onMouseLeave}
+        style={{'width':200+'px'}}>
             <img
+                 onMouseEnter={() => setAvatarOnHover(true)}
                  style={{'border':avatarOnFocus && avatarOnHover ? 'aqua 2px solid' : 'white 2px solid'}}  className='__avatar'src={user?.photoUrl === null ? defaultUserAvatar : user?.photoUrl}>
              </img>
+             {avatarOnFocus && avatarOnHover &&
+              (
+                <RenderOptions/>
+              )}
         </div>
     )   
 }

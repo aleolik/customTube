@@ -1,15 +1,24 @@
-import {combineReducers, configureStore} from '@reduxjs/toolkit'
+import {combineReducers, configureStore, getDefaultMiddleware} from '@reduxjs/toolkit'
 import { modalReducer } from '../reducers/ModalReducer'
 import { UserReducer } from '../reducers/User'
+import { videoReducer } from '../reducers/VideoReducer'
+
+const customizedMiddleware = getDefaultMiddleware({
+    serializableCheck: false
+  })
 
 const RootReducer = combineReducers({
     user : UserReducer.reducer,
-    modal : modalReducer.reducer
+    modal : modalReducer.reducer,
+    video : videoReducer.reducer
 })
 
 export const SetupStore = () => {
     return configureStore({
         reducer : RootReducer,
+        middleware: getDefaultMiddleware => getDefaultMiddleware({
+            serializableCheck: false
+        })
     })
 }
 

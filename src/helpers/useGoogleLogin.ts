@@ -17,7 +17,6 @@ export const useGoogle = () => {
             const email = result.user?.email
             const username = result.user?.displayName
             const photoUrl = result.user.photoURL     
-            console.log(result)
             if (email && username && access_token && photoUrl){
                 const user : IUser = {
                     username : username,

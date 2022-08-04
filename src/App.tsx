@@ -2,7 +2,7 @@
 import './App.css';
 import {Routes,Route} from 'react-router-dom'
 import Layout from './components/Layout';
-import Main from './pages/Main';
+import Main from './pages/MainPage/Main';
 import ProfilePage from './pages/ProfilePage/ProfilePage';
 import ProtectedRoute from './components/ProtectedRoute';
 function App() {

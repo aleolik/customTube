@@ -1,13 +1,14 @@
-import React, { useEffect, useId, useState } from 'react'
+import React, { useEffect, useId, useState, } from 'react'
 import {collection,addDoc} from 'firebase/firestore'
-import {database} from '../config'
-import {app} from '../config'
-import {IVideo} from '../types/VideoTypes'
-import { useAppSelector } from '../hooks/TypedHooks'
+import {database} from '../../config'
+import css from './Main.module.css'
+import {IVideo} from '../../types/VideoTypes'
+import { useAppSelector } from '../../hooks/TypedHooks'
 const Main = () => {
   const collectionRef = collection(database,'videos')
   const [video,setVideo] = useState<IVideo>()
   const user = useAppSelector(state => state.user.user)
+
   useEffect(() => {
     if (user !== null){
       const today = new Date();
@@ -29,10 +30,16 @@ const Main = () => {
     addDoc(collectionRef,{
         video : video
     })
+
   }
   return (
-    <div >
-        <button onClick={() => addVideo()}>Add video</button>
+    <div className={css.main_page}>
+       <div className='border_menu'>
+          first
+       </div>
+       <div>
+            second
+       </div>
     </div>
   )
 }

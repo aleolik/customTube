@@ -14,7 +14,6 @@
   width: 75px;
   height: 50px;
   border-radius: 40px;
-  display: flex;
 }
 
 .options{
@@ -35,4 +34,100 @@
   background-color: black;
   font-size: 15px;
   width: 100%;
+  font-family: 'Times New Roman', Times, serif;
+}
+.faq_container{
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Times New Roman', Times, serif;
+  border: 2px solid black;
+}
+.faq_text{
+  font-family: 'Times New Roman', Times, serif;
+}
+.on_main{
+  text-align: center;
+  background-color: greenyellow;
+  color: black;
+  width : 100%;
+}
+.log_google{
+  text-align: center;
+  background-color: yellow;
+  color: black;
+  width : 100%;
+}
+.videos{
+  display: flex;
+  flex-direction: row;
+  flex-basis: 20%;
+  flex-wrap: wrap;
+}
+.video{
+  border:  5px solid black;
+  background-color: aqua;
+  width: 20%;
+}
+
+/* custom btn*/
+.btn-selfmade-blue{
+  position: relative;
+  background: #444;
+  color: #fff;
+  text-decoration: none;
+  font-size: 1.5em;
+  letter-spacing: 0.1em;
+  padding: 10px 30px;
+  transition: 0.5s;
+}
+.btn-selfmade-blue:hover{
+  letter-spacing: 0.25em;
+  background: aqua;
+  color: aqua;
+  box-shadow: 0 0 35px aqua;
+}
+.btn-selfmade-blue::before{
+  content: '';
+  position: absolute;
+  inset: 2px;
+  background-color: #272727;
+}
+.btn-selfmade-blue span{
+  position: relative;
+  z-index: 1;
+}
+.btn-selfmade-blue > i::before{
+  content: '';
+  position: absolute;
+  top: -3.5px;
+  left: 80%;
+  width: 10px;
+  height: 5px;
+  border: 2px solid aqua;
+  background-color: aqua;
+  transition: 0.5s;
+  transform: translateX(-50%);
+}
+.btn-selfmade-blue:hover i::before{
+ width: 20px;
+ left: 20%;
+}
+
+i::after{
+  content: '';
+  position: absolute;
+  top: -3.5px;
+  left: 20%;
+  width: 10px;
+  height: 5px;
+  border: 2px solid aqua;
+  background-color: aqua;
+  transition: 0.5s;
+  transform: translateX(-50%);
+}
+.btn-selfmade-blue:hover i::after {
+ width: 20px;
+ left: 80%;
 }

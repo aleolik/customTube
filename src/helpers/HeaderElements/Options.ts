@@ -2,8 +2,8 @@
 
 
 import { useState } from "react"
-import { IButton,ILink,IOption } from "../types/optionTypes"
-import { useLogout } from "./useGoogleLogout"
+import { IButton,ILink,IOption } from "../../types/optionTypes"
+import { useLogout } from "../useGoogleLogout"
 
 export const useOptions = () => {
     const logout = useLogout()

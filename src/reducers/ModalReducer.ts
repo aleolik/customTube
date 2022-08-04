@@ -2,21 +2,21 @@ import { createSlice } from "@reduxjs/toolkit";
 
 // when modal open shows register or login component,depends on state
 interface IModal{
-    login_or_register : string,
+    show_login_or_faq : string,
 }
 const initialState : IModal = {
-    login_or_register : 'login'
+    show_login_or_faq : 'login'
 }
 export const modalReducer = createSlice({
     name : 'modal-reducer',
     initialState : initialState,
     reducers : {
         changeState(state:IModal){
-            if (state.login_or_register === 'login'){
-                state.login_or_register = 'register'
+            if (state.show_login_or_faq === 'login'){
+                state.show_login_or_faq = 'faq'
             }
             else{
-                state.login_or_register = 'login'
+                state.show_login_or_faq = 'login'
             }
         }
     }

@@ -7,7 +7,7 @@ export const LogoHeader = () => {
     <div>
         <CgMenuGridO color='white' size={30}/>
         <Link className="navbar-brand" to="/" style={{'color':'white','paddingLeft':10+'px'}}>
-        <img  src={logo}  width="30" height="30" className="d-inline-block align-top" alt="brand"/>
+        <img  src={logo} style={{'paddingTop':3+'px'}}  width="30" height="30" className="d-inline-block align-top" alt="brand"/>
         Tube
         </Link>
     </div>
