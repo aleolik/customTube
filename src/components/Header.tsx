@@ -29,7 +29,7 @@ const Header = () => {
             )
           :(
             <div>
-                <button  className='btn btn-dark' onClick={() => setShowModal(true)}>Sign In</button>
+                <button style={{'right':20+'px','position':'absolute','bottom':5+'px'}}  className='btn btn-light' onClick={() => setShowModal(true)}>Sign In</button>
             </div>
           )
           }
