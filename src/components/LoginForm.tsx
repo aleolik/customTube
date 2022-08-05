@@ -3,7 +3,7 @@ import { getAuth} from 'firebase/auth'
 import { useAppDispatch, useAppSelector } from '../hooks/TypedHooks'
 import { UserReducer } from '../reducers/User'
 import FormButtons from './FormButtons'
-import {useGoogle} from '../helpers/useGoogleLogin'
+import {useGoogle} from '../hooks/GoogleHooks/useGoogleLogin'
 import { useNavigate } from 'react-router-dom'
 interface LoginFormProps{
   setShowModal : (state:boolean) => void // закрывать модальное окно после входа

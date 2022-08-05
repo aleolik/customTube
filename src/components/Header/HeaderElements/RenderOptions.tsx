@@ -1,7 +1,7 @@
-import { ILink,IButton } from "../../types/optionTypes"
+import { ILink,IButton } from "../../../types/optionTypes"
 import { useOptions } from "./Options"
 import { Link } from "react-router-dom"
-import { useLogout } from "../useGoogleLogout"
+import { useLogout } from "../../../hooks/GoogleHooks/useGoogleLogout"
 
 export const RenderOptions  = () => {
     const {LinkOptions,buttonOptions} = useOptions()

@@ -1,6 +1,6 @@
 import {FC} from 'react'
-import { useAppSelector } from '../../hooks/TypedHooks'
-import defaultUserAvatar from '../../media/defaultUserAvatar.png'
+import { useAppSelector } from '../../../hooks/TypedHooks'
+import defaultUserAvatar from '../../../media/defaultUserAvatar.png'
 import { RenderOptions } from './RenderOptions'
 interface UserAvatarProps{
     avatarOnFocus : boolean,

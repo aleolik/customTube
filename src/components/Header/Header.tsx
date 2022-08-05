@@ -1,12 +1,12 @@
 
 import  {useEffect, useState } from 'react'
-import { useAppSelector } from '../hooks/TypedHooks'
-import LoginForm from './LoginForm'
-import ModalWindow from './MyModal/ModalWindow'
-import FAQ from './FAQ'
-import { LogoHeader } from '../helpers/HeaderElements/LogoHeader'
-import { UserAvatar } from '../helpers/HeaderElements/UserAvatar'
-import BurgerMenu from './BurgerMenu/BurgerMenu'
+import { useAppSelector } from '../../hooks/TypedHooks'
+import LoginForm from '../LoginForm'
+import ModalWindow from '../MyModal/ModalWindow'
+import FAQ from '../FAQ'
+import { LogoHeader } from './HeaderElements/LogoHeader'
+import { UserAvatar } from './HeaderElements/UserAvatar'
+import BurgerMenu from '../BurgerMenu/BurgerMenu'
 const Header = () => {
   const user = useAppSelector(state => state.user.user)
   const [showModal,setShowModal] = useState(false)

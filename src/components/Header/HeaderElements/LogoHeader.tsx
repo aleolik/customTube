@@ -2,9 +2,9 @@
 import {CgMenuGridO} from 'react-icons/cg'
 import {CgClose} from 'react-icons/cg'
 import { Link } from 'react-router-dom'
-import { useAppDispatch, useAppSelector } from '../../hooks/TypedHooks'
-import logo from '../../media/logo.png'
-import { modalReducer } from '../../reducers/ModalReducer'
+import { useAppDispatch, useAppSelector } from '../../../hooks/TypedHooks'
+import logo from '../../../media/logo.png'
+import { modalReducer } from '../../../reducers/ModalReducer'
 
 export const LogoHeader = () => {
   const {CloseSideBar,OpenSideBar} = modalReducer.actions

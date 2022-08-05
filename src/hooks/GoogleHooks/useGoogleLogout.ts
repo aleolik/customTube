@@ -1,7 +1,7 @@
 
 import {} from 'firebase/auth'
-import { useAppDispatch } from '../hooks/TypedHooks'
-import { UserReducer } from '../reducers/User'
+import { UserReducer } from '../../reducers/User'
+import { useAppDispatch } from '../TypedHooks'
 export const useLogout = () => {
     const dispatch = useAppDispatch()
     const {logout} = UserReducer.actions

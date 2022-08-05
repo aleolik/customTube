@@ -1,9 +1,9 @@
 
-import {provider} from '../index'
+import {provider} from '../../index'
 import { signInWithPopup,GoogleAuthProvider, getAuth} from 'firebase/auth'
-import { IUser } from '../types/userTypes'
-import { useAppDispatch, useAppSelector } from "../hooks/TypedHooks"
-import { UserReducer } from "../reducers/User"
+import { IUser } from '../../types/userTypes'
+import { useAppDispatch, useAppSelector } from "../TypedHooks"
+import { UserReducer } from "../../reducers/User"
 export const useGoogle = () => {
     const user = useAppSelector(state => state.user.user)
     const dispatch = useAppDispatch()
