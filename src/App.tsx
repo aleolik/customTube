@@ -14,7 +14,7 @@ function App() {
           <Route index element={<Main/>}></Route>
           <Route element={<NotFoundPage/>} path='*'></Route>
           <Route element={<ProtectedRoute/>}>
-            <Route path='/My_channel' element={<ProfilePage/>}></Route>
+            <Route path='user/:username' element={<ProfilePage/>}></Route>
           </Route>
         </Route>
       </Routes>

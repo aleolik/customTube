@@ -2,6 +2,7 @@
 import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useBurgerMenuOptions } from '../../helpers/useBurgerMenuOptions'
+import { RenderNavigationOptions } from '../../helpers/VideoHelpers/RenderNavigationOptions'
 import { useAppDispatch, useAppSelector } from '../../hooks/TypedHooks'
 import { modalReducer } from '../../reducers/ModalReducer'
 import css from './BurgerMenu.module.css'
@@ -22,13 +23,7 @@ const BurgerMenu = () => {
         <div onClick={handleClose} className={css.blur}>
             <div onClick={(e : React.MouseEvent<HTMLDivElement>) => e.stopPropagation()} className={css.menu__content}>
                 <ul>
-                    {items.map((item) => {
-                        return(
-                            <div key={item.id}>
-                                <Link onClick={handleClose} className={css.link} to={item.to}>{item.title}</Link>
-                            </div>
-                        )
-                    })}
+                    <RenderNavigationOptions/>
                 </ul>
             </div>
         </div>

@@ -4,12 +4,15 @@ import {database} from '../../config'
 import css from './Main.module.css'
 import {IVideo} from '../../types/VideoTypes'
 import { useAppSelector } from '../../hooks/TypedHooks'
+import { useBurgerMenuOptions } from '../../helpers/useBurgerMenuOptions'
+import { RenderNavigationOptions } from '../../helpers/VideoHelpers/RenderNavigationOptions'
+import { Link } from 'react-router-dom'
 const Main = () => {
   const collectionRef = collection(database,'videos')
   const [video,setVideo] = useState<IVideo>()
-  const user = useAppSelector(state => state.user.user)
-
-  useEffect(() => {
+  const items = useBurgerMenuOptions()
+  const user = useAppSelector(state => state.user.user?.photoUrl)
+  /* useEffect(() => {
     if (user !== null){
       const today = new Date();
       const dd = String(today.getDate()).padStart(2, '0');
@@ -31,17 +34,30 @@ const Main = () => {
         video : video
     })
 
-  }
+  } */
   return (
-    <div className={css.main_page}>
-       <div className='border_menu'>
-          first
-       </div>
-       <div>
-            second
-       </div>
+    <div className={css.container}>
+      <div className='row' style={{'height':100+'%','width':100+'%'}}>
+        <div className={[css.sidebar,'col-1'].join(' ')}>
+          <RenderNavigationOptions/>
+        </div>  
+        <div className={['col-11',css.video_container].join(' ')}>
+                  <div className={['col-2',css.item].join(' ')}>a</div>
+                  <div className={['col-2',css.item].join(' ')}>a</div>
+                  <div className={['col-2',css.item].join(' ')}>a</div> 
+                  <div className={['col-2',css.item].join(' ')}>a</div> 
+                  <div className={['col-2',css.item].join(' ')}>a</div> 
+
+                  <div className={['col-2',css.item].join(' ')}>a</div> 
+                  <div className={['col-2',css.item].join(' ')}>a</div> 
+                  <div className={['col-2',css.item].join(' ')}>a</div> 
+        </div>
+        </div>
     </div>
   )
 }
 
 export default Main
+
+
+

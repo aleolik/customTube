@@ -11,21 +11,21 @@ export const RenderOptions  = () => {
       logout()
     }
     return(
-        <div className='options'>
-            {LinkOptions.map((option : ILink) => {
-                  return(
-                    <div key={option.id}>
-                        <Link   to={option.to}><button  className='option_links'>{option.title}</button></Link>
-                    </div>
-                  )
-                 })}
-                {buttonOptions.map((option : IButton) => {
-                  return(
-                    <div key={option.id}>
-                        <button onClick={GoogleLogout} className='option_links'>{option.title}</button>
-                    </div>
-                  )
-                 })}
-        </div>
+      <div className='options'>
+      {LinkOptions.map((option : ILink) => {
+            return(
+              <div key={option.id}>
+                  <Link   to={option.to}><button  className='option_links'>{option.title}</button></Link>
+              </div>
+            )
+           })}
+          {buttonOptions.map((option : IButton) => {
+            return(
+              <div key={option.id}>
+                  <button onClick={GoogleLogout} className='option_links'>{option.title}</button>
+              </div>
+            )
+           })}
+  </div>
     )
 }

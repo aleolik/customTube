@@ -2,18 +2,15 @@
   width : 100vw;
   height : 100vh;
 }
-
+*, *::before, *::after {
+  box-sizing: border-box;
+  font-family: 'Times New Roman', Times, serif
+}
 .__center{
   text-align: center;
   justify-content: center;
   display: flex;
   padding-top : 5% ;
-}
-
-.__avatar{
-  width: 75px;
-  height: 50px;
-  border-radius: 40px;
 }
 
 .options{
@@ -26,6 +23,7 @@
   background-color: white;
   border: darkred 3px solid;
   left: 85%;
+  margin-bottom: 5px;
 }
 
 .option_links{
@@ -34,7 +32,7 @@
   text-align: center;
   background-color: black;
   font-size: 15px;
-  width: 100px;
+  width: 120px;
   height: 40px;
   font-family: 'Times New Roman', Times, serif;
 }
@@ -133,3 +131,7 @@ i::after{
  width: 20px;
  left: 80%;
 }
+
+
+
+

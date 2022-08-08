@@ -50,5 +50,8 @@ export const videoReducer = createSlice({
             state.loading = false
             state.videos = []
         },
+        CHANGE_VIDEO(state:initialStateProps,action : PayloadAction<IVideo>){
+            state.video = action.payload
+        },
     }
 })

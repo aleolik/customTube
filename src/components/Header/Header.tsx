@@ -14,10 +14,19 @@ const Header = () => {
   const [avatarOnHover,setAvatarOnHover] = useState(false)
   const showSideBar = useAppSelector(state => state.modal.show_side_bar)
   const show_login_or_faq = useAppSelector(state =>  state.modal.show_login_or_faq)
+  // make scroll unavailable when sideBar on
+  useEffect(() => {
+    if (showSideBar){
+      document.body.style.overflow = 'hidden'
+    }
+    else{
+      document.body.style.overflow = ''
+    }
+  },[showSideBar])
   return (
-      <nav className="navbar navbar-light bg-dark">
+      <nav className="navbar navbar-light bg-dark" style={{'height':75+'px'}}>
         {showSideBar && (
-          <BurgerMenu/>
+            <BurgerMenu/>
         )}
         <LogoHeader />
         {showModal && (
@@ -33,7 +42,7 @@ const Header = () => {
             )
           :(
             <div>
-                <button style={{'right':20+'px','position':'absolute','bottom':5+'px'}}  className='btn btn-light' onClick={() => setShowModal(true)}>Sign In</button>
+                <button style={{'marginRight':30+'px'}}  className='btn btn-light' onClick={() => setShowModal(true)}>Sign In</button>
             </div>
           )
           }

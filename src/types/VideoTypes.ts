@@ -6,9 +6,11 @@ export interface IVideo{
     description : string,
     link : string,
     user : IUser
-    created? : string
+    created : string
     views : number
 }
+
+
 
 export enum VideoActions{
     add_video = 'add_video',

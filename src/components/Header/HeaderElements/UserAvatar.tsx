@@ -21,11 +21,13 @@ export const UserAvatar : FC<UserAvatarProps> = ({avatarOnFocus,avatarOnHover,se
         tabIndex={0}
         onClick={() =>setAvatarOnFocus(true)}
         onMouseLeave={onMouseLeave}
-        style={{'width':200+'px'}}>
+        style={{'marginRight':120+'px'}}
+        >
             <img
                  onMouseEnter={() => setAvatarOnHover(true)}
-                 style={{'border':avatarOnFocus && avatarOnHover ? 'aqua 2px solid' : 'white 2px solid'}}  className='__avatar'src={user?.photoUrl === null ? defaultUserAvatar : user?.photoUrl}>
-             </img>
+                 style={{'border':avatarOnFocus && avatarOnHover ? 'aqua 2px solid' : 'white 2px solid','width':80+'px','height':60+'px','borderRadius':40+'px'}} 
+                 src={user?.photoUrl === null ? defaultUserAvatar : user?.photoUrl}           
+            />
              {avatarOnFocus && avatarOnHover &&
               (
                 <RenderOptions/>
@@ -34,3 +36,4 @@ export const UserAvatar : FC<UserAvatarProps> = ({avatarOnFocus,avatarOnHover,se
     )   
 }
 
+// todo : videos creation,loading + styles

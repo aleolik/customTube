@@ -12,8 +12,8 @@ export const useBurgerMenuOptions = () => {
             },
             {
                 id : 2,
-                title : 'My videos',
-                to : '/My_channel'  
+                title : 'Trends',
+                to : '/'  
             },
         ])
     },[])
