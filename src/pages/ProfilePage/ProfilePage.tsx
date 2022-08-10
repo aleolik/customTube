@@ -1,45 +1,67 @@
 import React, { useEffect, useState,useRef } from 'react'
 import { useAppDispatch, useAppSelector } from '../../hooks/TypedHooks'
-import { LOAD_VIDEOS } from '../../reducers/asyncActions/LOAD_VIDEOS'
+import { LoadUserVideos } from '../../reducers/asyncActions/LOAD_VIDEOS'
 import { IVideo } from '../../types/VideoTypes'
 import css from './ProfilePage.module.css'
-import bg from '../../media/bg.jpeg'
 import defaultUserAvatar from '../../media/defaultUserAvatar.png'
 import { useParams } from 'react-router-dom'
 import VideoForm from '../../components/VideoForm/VideoForm'
+import { IUser, userState } from '../../types/userTypes'
+import {useGetUserData} from '../../hooks/useGetUserData'
+import NotFoundPage from '../NotFoundPage/NotFoundPage'
+import { useLoading } from '../../hooks/useLoading'
 const ProfilePage = () => {
   const dispatch = useAppDispatch()
-  const username = useParams()
-  // create video
+  const {username} = useParams<string>()
+
+  const getUsersPage = useGetUserData(username)
+  const [usersPage,setUsersPage] = useState<IUser | null | undefined>(null)
+
   const user = useAppSelector(state => state.user.user)
+
   // load videos
   const {error,loading,videos} = useAppSelector(state => state.video)
+  // load usersPage
+  const useLoad = useLoading()
+
   useEffect(() => {
-   dispatch(LOAD_VIDEOS())
-  },[])
+    if (username){
+      dispatch(LoadUserVideos(username))
+      const data = getUsersPage.then((res) => {
+        setUsersPage(res?.user)
+      })
+    }
+  },[username])
+
   return (
     <div className={css.center}>
-        <h4 style={{'marginTop':20+'px','border':'black 5px solid'}}>{user?.username}</h4>
-        {user?.photoUrl === null
-        ? (
-          <img src={defaultUserAvatar} style={{'width':100+'px','height':60+'px','borderRadius' : 60+'px','marginTop':10+'px','border':'2px solid gray'}}></img>
-        )
-        : (
-          <img src={user?.photoUrl} style={{'width':100+'px','height':60+'px','borderRadius' : 60+'px','marginTop':10+'px','border':'2px solid gray'}} ></img>
+      {usersPage !== null && usersPage!== undefined ? (
+            <div>
+                <div style={{'display':'flex'}}>
+                  <h4 style={{'marginTop':20+'px','border':'black 5px solid'}}>{usersPage?.username}</h4>
+                </div>
+                {usersPage?.photoUrl === null
+                ? (
+                  <img alt='avatar' src={defaultUserAvatar} style={{'width':100+'px','height':60+'px','borderRadius' : 60+'px','marginTop':10+'px','border':'2px solid gray'}}></img>
+                )
+                  : (
+                    <img  alt='avatar' src={usersPage?.photoUrl} style={{'width':100+'px','height':60+'px','borderRadius' : 60+'px','marginTop':10+'px','border':'2px solid gray'}} ></img>
+                )}
+                {user?.username === username && (
+          <VideoForm/>
         )}
-        <VideoForm/>
          {loading
          ? (<div>Загрузка...</div>)
          : (
           <div>
             {videos.length
             ? (
-              <div className='videos'>
+              <div className={css.videos}>
                 {videos.map((video,index) => {
                   return(
-                    <div className='video' key={video.id}>
+                    <div className={css.video} key={video.id}>
                       <h3>
-                          {video.name} - {video.created} - {video.description}
+                          {video.name}
                        </h3>
                     </div>
                   )
@@ -51,8 +73,14 @@ const ProfilePage = () => {
             )}
           </div>
          )}
+          </div>
+    )
+    : (
+      <NotFoundPage/>
+    )}
     </div>
   )
 }
 
 export default ProfilePage
+

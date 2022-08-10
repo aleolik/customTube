@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import {useCurrentDate} from '../../helpers/useCurrentDate'
 import { useAppDispatch, useAppSelector } from '../../hooks/TypedHooks'
-import { IVideo } from '../../types/VideoTypes'
 import css from './VideoForm.module.css'
 import {CREATE_VIDEO} from '../../reducers/asyncActions/CREATE_VIDEO'
 import { videoReducer } from '../../reducers/VideoReducer'
@@ -10,9 +9,10 @@ import {ref, uploadBytes} from 'firebase/storage'
 const VideoForm = () => {
   const [name,setName] = useState<string>('')
   const [description,setDescription] = useState<string>('')
-  const [link,setLink] = useState<string>('')
   const [drag,setDrag] = useState<boolean>(false)
   const [showForm,setShowForm] = useState(false)
+  const [file,setFile] = useState<File | null>(null)
+  const video = useAppSelector(state => state.video.video)
   const user = useAppSelector(state => state.user.user)
   const date = useCurrentDate()
   const dispatch = useAppDispatch()
@@ -28,28 +28,25 @@ const VideoForm = () => {
   const dropHandler  = (e : React.DragEvent<HTMLDivElement>) => {
     e.preventDefault()
     let file = e.dataTransfer.files[0]
-    setLink(file.name)
-    const imageRef = ref(storage,`${user?.username}/${file.name}`)
-    uploadBytes(imageRef,file)
+    setFile(file)
     setDrag(false)
   }
 
-  const sumbitHadnler = (e : React.MouseEvent<HTMLButtonElement>) => {
+  const sumbitHadnler = async(e : React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()  
-    if (user !== null && link !== null){
-      dispatch(CHANGE_VIDEO(
-        {
-          id : 1,
+    if (file && user && name){
+      const imageRef = ref(storage,`${user?.username}/${date}/${file.name}`)   
+      dispatch(CREATE_VIDEO(  {
           name : name,
-          link : link,
+          link : `${user?.username}/${date}/${file.name}`,
           description : description,
           views : 0,
           created : date,
           user : user
-        }
-      ))
+        }))
+        uploadBytes(imageRef,file)
+      }
     }
-  }
   return (
     <div>
           {showForm

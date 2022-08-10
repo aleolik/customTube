@@ -5,5 +5,17 @@
     flex-direction: column  ;
     top : 8%;
     left : 0;
-    position: absolute;
+
 }
+.videos{
+    display: flex;
+    flex-direction: row;
+    flex-basis: 20%;
+    flex-wrap: wrap;
+  }
+  .video{
+    border:  5px solid black;
+    background-color: aqua;
+    width: 20vh;
+    height: 20%;
+  }

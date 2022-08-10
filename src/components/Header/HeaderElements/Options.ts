@@ -4,9 +4,11 @@
 import { useState } from "react"
 import { IButton,ILink,IOption } from "../../../types/optionTypes"
 import { useLogout } from "../../../hooks/GoogleHooks/useGoogleLogout"
+import { useAppSelector } from "../../../hooks/TypedHooks"
 
 export const useOptions = () => {
     const logout = useLogout()
+    const username = useAppSelector(state => state.user.user?.username)
     const LogoutOption : IButton = {
         id : 13200.500120,
         title : 'Logout',
@@ -15,7 +17,7 @@ export const useOptions = () => {
     const MyProfileOption : ILink = {
         id : 1320012.50420,
         title : 'Profile',
-        to : '/My_channel',
+        to : `/user/${username}`,
     }
 
     const buttonOptions :IButton[] = [

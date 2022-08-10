@@ -2,9 +2,9 @@ import { IUser } from "./userTypes";
 
 export interface IVideo{
     name : string,
-    id : number,
+    id? : string,
     description : string,
-    link : string,
+    link : string, // path to file in storage
     user : IUser
     created : string
     views : number
