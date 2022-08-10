@@ -32,7 +32,7 @@ export const LoadUserVideos = (username:String) => {
         }
         catch(e){
             let message = 'Unknown Error'
-            if (e instanceof Error) message = e.message
+            if (e instanceof Error) message = e.message+1
             dispatch(loadError(message))
         }
     }

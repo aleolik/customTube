@@ -42,7 +42,7 @@ const ProfilePage = () => {
       {fetchError && (
         <div>{fetchError}</div>
       )}
-      {fetchLoading && !fetchError && !error
+      {(fetchLoading || loading) && !fetchError && !error
       ? (
         <div>Загрузка</div>
       )
@@ -63,9 +63,6 @@ const ProfilePage = () => {
                     {user?.username === username && (
               <VideoForm/>
             )}
-            {loading
-            ? (<div>Загрузка...</div>)
-            : (
               <div>
                 {videos.length
                 ? (
@@ -82,11 +79,10 @@ const ProfilePage = () => {
                   </div>
                 )
                 : (
-                  <div>Ошибка</div>
+                  <h3>Нет видео</h3>
                 )}
               </div>
-            )}
-              </div>
+            </div>
         )
         : (
           <NotFoundPage/>
