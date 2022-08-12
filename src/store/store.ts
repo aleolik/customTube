@@ -1,4 +1,5 @@
 import {combineReducers, configureStore, getDefaultMiddleware} from '@reduxjs/toolkit'
+import { DeviceReducer } from '../reducers/DeviceReducer'
 import { modalReducer } from '../reducers/ModalReducer'
 import { UserReducer } from '../reducers/User'
 import { videoReducer } from '../reducers/VideoReducer'
@@ -10,7 +11,8 @@ const customizedMiddleware = getDefaultMiddleware({
 const RootReducer = combineReducers({
     user : UserReducer.reducer,
     modal : modalReducer.reducer,
-    video : videoReducer.reducer
+    video : videoReducer.reducer,
+    device : DeviceReducer.reducer
 })
 
 export const SetupStore = () => {

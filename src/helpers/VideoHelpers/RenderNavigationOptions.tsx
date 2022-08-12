@@ -22,7 +22,7 @@ export const RenderNavigationOptions = () => {
     <div>
       {items.map((item) => {
         return(
-          <div key={item.id}>
+          <div key={item.id} className='row'>
             {location.pathname === '/' && !sideBar
             ? (<button onClick={() => handleNavigate(item.to)} className='btn btn-light' style={{'marginTop':10+'px'}}>{item.title}</button>)
             : (<Link onClick={handleClose} className={css.link} to={item.to}>{item.title}</Link>)}

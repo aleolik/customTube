@@ -11,17 +11,24 @@ const BurgerMenu = () => {
   const dispatch = useAppDispatch()
   const items = useBurgerMenuOptions()
   const showSideBar = useAppSelector(state => state.modal.show_side_bar)
+  const device = useAppSelector(state => state.device.device)
   const handleClose = () => {
     dispatch(CloseSideBar())
   }
   const rootClases = [css.menu]
    if (showSideBar){
         rootClases.push(css.active)
-   }
+  }
+
+  const menu__content_widths = {
+    'tablet':20,
+    'desktop':10,
+    'mobile':40
+  }
   return (
     <div className={rootClases.join(' ')}>
         <div onClick={handleClose} className={css.blur}>
-            <div onClick={(e : React.MouseEvent<HTMLDivElement>) => e.stopPropagation()} className={css.menu__content}>
+            <div onClick={(e : React.MouseEvent<HTMLDivElement>) => e.stopPropagation()} style={{width:menu__content_widths[device]+'%'}} className={css.menu__content}>
                 <ul>
                     <RenderNavigationOptions/>
                 </ul>

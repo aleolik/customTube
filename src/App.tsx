@@ -6,6 +6,7 @@ import Main from './pages/MainPage/Main';
 import ProfilePage from './pages/ProfilePage/ProfilePage';
 import ProtectedRoute from './components/ProtectedRoute';
 import NotFoundPage from './pages/NotFoundPage/NotFoundPage';
+import VideoPage from './pages/VideoPage/VideoPage';
 function App() {
   return (
     <div className="app">
@@ -13,6 +14,8 @@ function App() {
         <Route path='/' element={<Layout/>}>
           <Route index element={<Main/>}></Route>
            <Route path='user/:username' element={<ProfilePage/>}></Route>
+           <Route path=':videoname/:username' element={<VideoPage/>}></Route>
+           <Route path='*' element={<NotFoundPage/>}></Route>
         </Route>
       </Routes>
     </div>

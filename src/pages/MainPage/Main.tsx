@@ -13,12 +13,12 @@ const Main = () => {
     dispatch(LoadUserVideos())
   },[])
   return (
-    <div className='container' style={{'margin':0,'padding':0}}>
-      <div className='row'>
-        <div className={['col-1',css.sidebar].join(' ')}>
+    <div className='container-fluid' >
+      <div className='row' style={{'backgroundColor':'none'}}>
+        <div className={['col-md-1 col-sm-4 col-lg-1',css.sidebar].join(' ')}>
           <RenderNavigationOptions/>
         </div>  
-        <div className='col-11'>
+        <div className='col-md-11 col-sm-8 col-lg-11'>
             <div style={{'marginTop':20+'px','marginLeft':60+'px'}}>
             {loading
             ? (
