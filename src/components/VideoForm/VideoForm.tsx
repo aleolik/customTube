@@ -6,15 +6,28 @@ import {CREATE_VIDEO} from '../../reducers/asyncActions/CREATE_VIDEO'
 import { videoReducer } from '../../reducers/VideoReducer'
 import {storage} from '../../index'
 import {ref, uploadBytes} from 'firebase/storage'
+import filesPng from '../../media/files.png'
+import uploadPng from '../../media/upload.png'
+import { IPhoto } from '../../types/VideoTypes'
 const VideoForm = () => {
+
+  // form values
   const [name,setName] = useState<string>('')
   const [description,setDescription] = useState<string>('')
-  const [drag,setDrag] = useState<boolean>(false)
-  const [showForm,setShowForm] = useState(false)
   const [file,setFile] = useState<File | null>(null)
-  const video = useAppSelector(state => state.video.video)
   const user = useAppSelector(state => state.user.user)
   const date = useCurrentDate()
+  const [photo,setPhoto] = useState<IPhoto>({
+    photoUrl: '',
+    photoFile : null,
+  })
+
+  // file and photoUrl are links to img and video in the firebase storagr
+
+  // handlers states
+  const [showForm,setShowForm] = useState(false)
+  const [drag,setDrag] = useState<boolean>(false)
+
   const dispatch = useAppDispatch()
   const CHANGE_VIDEO = videoReducer.actions.CHANGE_VIDEO
   const dragStartHandler = (e : React.DragEvent<HTMLDivElement>) => {
@@ -28,23 +41,27 @@ const VideoForm = () => {
   const dropHandler  = (e : React.DragEvent<HTMLDivElement>) => {
     e.preventDefault()
     let file = e.dataTransfer.files[0]
-    setFile(file)
+    setPhoto({
+      photoUrl : file.name,
+      photoFile : file
+    })
     setDrag(false)
   }
-
   const sumbitHadnler = async(e : React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()  
-    if (file && user && name){
-      const imageRef = ref(storage,`${user?.username}/${date}/${file.name}`)   
+    if (photo.photoFile && user && name){
+      const imageRef = ref(storage,`${user?.email}/${user.username}/${photo.photoUrl}`)   
       dispatch(CREATE_VIDEO(  {
           name : name,
-          link : `${user?.username}/${date}/${file.name}`,
+          link : 'not done yet',
           description : description,
           views : 0,
           created : date,
-          user : user
+          user : user,
+          photoUrl : photo.photoUrl
         }))
-        uploadBytes(imageRef,file)
+        // uploads images and videos to firestorage
+        uploadBytes(imageRef,photo.photoFile)
       }
     }
   return (
@@ -63,20 +80,36 @@ const VideoForm = () => {
               <input className={css.desc_input}onChange={(e : React.ChangeEvent<HTMLInputElement>) => setDescription(e.target.value)}  placeholder='description' type='text'>
               </input>
               </div>
-            <div
-            onDragOver={(e:React.DragEvent<HTMLDivElement>) => dragStartHandler(e)}
-            onDragStart={(e:React.DragEvent<HTMLDivElement>) => dragStartHandler(e)}
-            onDragLeave={(e:React.DragEvent<HTMLDivElement>) => dragLeave(e)}
-            onDrop={(e:React.DragEvent<HTMLDivElement>) => dropHandler(e)}
-            className={css.file}>
+            {!photo.photoUrl && !photo.photoFile
+            ? (
+              <div
+              onDragOver={(e:React.DragEvent<HTMLDivElement>) => dragStartHandler(e)}
+              onDragStart={(e:React.DragEvent<HTMLDivElement>) => dragStartHandler(e)}
+              onDragLeave={(e:React.DragEvent<HTMLDivElement>) => dragLeave(e)}
+              onDrop={(e:React.DragEvent<HTMLDivElement>) => dropHandler(e)}
+              className={css.file}>
                 {drag === false
                 ? (
-                <h4>Перетащите файл для загрузки</h4>
+                  <div>
+                    <img style={{'width':100,'height':100}} src={filesPng} alt='files'></img>
+                    <h1>upload png,jpg,jpeg only</h1>
+                  </div>
                 )
                 : (
-                <h4>Отпустите файл для загрузки</h4>
+                  <div>
+                    <img style={{'width':100,'height':100}} src={uploadPng} alt='files'></img>
+                    <h1>leave to load</h1>
+                  </div>
                 )}
-            </div>
+             </div>
+            )
+            : (
+              <div className={css.file}>
+                {photo.photoFile && (
+                  <img style={{'width':400+'px','height':200+'px'}} src={URL.createObjectURL(photo.photoFile)} alt='preview'></img>
+                )}
+              </div>
+            )}
             <button className='btn-selfmade-blue' onClick={sumbitHadnler} style={{'width':100+'%',color:'white'}}><span>Создать видео</span><i></i></button>
             <hr></hr> 
         </form>

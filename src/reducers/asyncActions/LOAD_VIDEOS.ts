@@ -10,7 +10,8 @@ import { database } from "../../config";
 import { AppDispatch } from "../../store/store";
 import { IVideo } from "../../types/VideoTypes";
 import { videoReducer } from "../VideoReducer";
-export const LoadUserVideos = (username:String) => {
+
+export const LoadUserVideos = (username:String='') => {
     return async (dispatch:AppDispatch) => {
         let collectionRef = collection(database,'videos')
         if (username){
@@ -32,7 +33,7 @@ export const LoadUserVideos = (username:String) => {
         }
         catch(e){
             let message = 'Unknown Error'
-            if (e instanceof Error) message = e.message+1
+            if (e instanceof Error) message = e.message
             dispatch(loadError(message))
         }
     }

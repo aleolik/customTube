@@ -24,7 +24,7 @@ export const RenderNavigationOptions = () => {
         return(
           <div key={item.id}>
             {location.pathname === '/' && !sideBar
-            ? (<button onClick={() => handleNavigate(item.to)} className='btn btn-light' style={{'width':100+'%','marginTop':10+'px'}}>{item.title}</button>)
+            ? (<button onClick={() => handleNavigate(item.to)} className='btn btn-light' style={{'marginTop':10+'px'}}>{item.title}</button>)
             : (<Link onClick={handleClose} className={css.link} to={item.to}>{item.title}</Link>)}
           </div>
         )

@@ -7,10 +7,15 @@ export interface IVideo{
     link : string, // path to file in storage
     user : IUser
     created : string
-    views : number
+    views : number,
+    photoUrl : string
 }
 
 
+export interface IPhoto{
+    photoUrl : string,
+    photoFile : File | null,
+}
 
 export enum VideoActions{
     add_video = 'add_video',

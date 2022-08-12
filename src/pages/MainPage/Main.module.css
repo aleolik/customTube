@@ -1,15 +1,6 @@
-.container{
-    width: 101.62%;
-    height: 100%;
-    position: absolute;
-    margin: 0px auto;
-}
+
 .sidebar{
     background-color: #292b2c;
-    height: 100%;
-    position: absolute;
-    justify-content: center;
-    display: flex;
     font-size: 20px;
 }
 .video_container{

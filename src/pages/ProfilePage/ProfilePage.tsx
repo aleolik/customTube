@@ -30,7 +30,6 @@ const ProfilePage = () => {
     if (username){
       dispatch(LoadUserVideos(username))
       fetchData()
-      
     }
   },[username])
 
@@ -64,10 +63,10 @@ const ProfilePage = () => {
               <VideoForm/>
             )}
               <div>
-                {videos.length
+                {/* {videos.length
                 ? (
                   <div className={css.videos}>
-                    {videos.map((video,index) => {
+                    {videos.map((video) => {
                       return(
                         <div className={css.video} key={video.id}>
                           <h3>
@@ -80,7 +79,7 @@ const ProfilePage = () => {
                 )
                 : (
                   <h3>Нет видео</h3>
-                )}
+                )} */}
               </div>
             </div>
         )

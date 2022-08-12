@@ -9,7 +9,7 @@ export const CREATE_VIDEO = (video:IVideo) => {
     return async (dispatch:AppDispatch) => {
         const {load_video_creation,load_video_creation_success,load_video_creation_error} = videoReducer.actions
         if (video !== null){
-            const {name,views,created,description,user,link} = video
+            const {name,views,created,description,user,link,photoUrl} = video
                 try{
                     dispatch(load_video_creation())
                     const video : IVideo = {
@@ -18,7 +18,8 @@ export const CREATE_VIDEO = (video:IVideo) => {
                         name : name,
                         link : link,
                         description : description,
-                        user : user
+                        user : user,
+                        photoUrl : photoUrl
                     }
                     // добавить проверку на уникальность
                     addDoc(collection(database,'videos'),{

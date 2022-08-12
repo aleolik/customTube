@@ -20,6 +20,7 @@
     justify-content: center;
     text-align: center;
     align-items: center;
+    display: flex;
 }
 .form_btn{
     background-color: black;

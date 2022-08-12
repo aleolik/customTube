@@ -1,58 +1,53 @@
-import React, { useEffect, useId, useState, } from 'react'
-import {collection,addDoc} from 'firebase/firestore'
-import {database} from '../../config'
+import {useEffect} from 'react'
 import css from './Main.module.css'
-import {IVideo} from '../../types/VideoTypes'
-import { useAppSelector } from '../../hooks/TypedHooks'
-import { useBurgerMenuOptions } from '../../helpers/useBurgerMenuOptions'
+import { useAppDispatch, useAppSelector } from '../../hooks/TypedHooks'
 import { RenderNavigationOptions } from '../../helpers/VideoHelpers/RenderNavigationOptions'
-import { Link } from 'react-router-dom'
+import { LoadUserVideos } from '../../reducers/asyncActions/LOAD_VIDEOS'
+import { Card } from '../../components/Card'
 const Main = () => {
-  const collectionRef = collection(database,'videos')
-  const [video,setVideo] = useState<IVideo>()
-  const items = useBurgerMenuOptions()
-  const user = useAppSelector(state => state.user.user?.photoUrl)
-  /* useEffect(() => {
-    if (user !== null){
-      const today = new Date();
-      const dd = String(today.getDate()).padStart(2, '0');
-      const mm = String(today.getMonth() + 1).padStart(2, '0')
-      const yyyy = today.getFullYear();
-      setVideo({
-        id : 5,
-        description : 'video',
-        name : 'video',
-        link : '/video.mp3',
-        user : user,
-        created : mm + '/' + dd + '/' + yyyy,
-        views : 0
-      })
-    }
-  },[])
-  const addVideo = () => {
-    addDoc(collectionRef,{
-        video : video
-    })
+  const {error,loading,videos} = useAppSelector(state => state.video)
+  const dispatch = useAppDispatch()
 
-  } */
+  
+  useEffect(() => {
+    dispatch(LoadUserVideos())
+  },[])
   return (
-    <div className={css.container}>
-      <div className='row' style={{'height':100+'%','width':100+'%'}}>
-        <div className={[css.sidebar,'col-1'].join(' ')}>
+    <div className='container' style={{'margin':0,'padding':0}}>
+      <div className='row'>
+        <div className={['col-1',css.sidebar].join(' ')}>
           <RenderNavigationOptions/>
         </div>  
-        <div className={['col-11',css.video_container].join(' ')}>
-                  <div className={['col-2',css.item].join(' ')}>a</div>
-                  <div className={['col-2',css.item].join(' ')}>a</div>
-                  <div className={['col-2',css.item].join(' ')}>a</div> 
-                  <div className={['col-2',css.item].join(' ')}>a</div> 
-                  <div className={['col-2',css.item].join(' ')}>a</div> 
+        <div className='col-11'>
+            <div style={{'marginTop':20+'px','marginLeft':60+'px'}}>
+            {loading
+            ? (
+              <h1>Загрузка</h1>
+            )
+            : (
+              <div>
+                  {videos.length
+                  ? (
+                    <div className='row'>
+                        {videos.map((video) => {
+                          return(
+                            <>
+                              <Card video={video}/>
+                            </>
+                          )
+                        })}
+                    </div>
+                  )
+                  :(
+                    <h1>Error : {error}</h1>
+                  )}
+              </div>
+            )}
+            </div>
 
-                  <div className={['col-2',css.item].join(' ')}>a</div> 
-                  <div className={['col-2',css.item].join(' ')}>a</div> 
-                  <div className={['col-2',css.item].join(' ')}>a</div> 
+    
         </div>
-        </div>
+      </div>
     </div>
   )
 }

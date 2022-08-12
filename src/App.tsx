@@ -12,10 +12,7 @@ function App() {
       <Routes>
         <Route path='/' element={<Layout/>}>
           <Route index element={<Main/>}></Route>
-          <Route element={<NotFoundPage/>} path='*'></Route>
-          <Route element={<ProtectedRoute/>}>
-            <Route path='user/:username' element={<ProfilePage/>}></Route>
-          </Route>
+           <Route path='user/:username' element={<ProfilePage/>}></Route>
         </Route>
       </Routes>
     </div>
