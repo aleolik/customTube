@@ -16,7 +16,6 @@ const Header = () => {
   const [avatarOnHover,setAvatarOnHover] = useState(false)
   const showSideBar = useAppSelector(state => state.modal.show_side_bar)
   const show_login_or_faq = useAppSelector(state =>  state.modal.show_login_or_faq)
-
   // set current device(helps with ui stuff)
   const {setDevice} = DeviceReducer.actions
   const getDevice = useDevice()
@@ -34,6 +33,7 @@ const Header = () => {
       document.body.style.overflow = ''
     }
   },[showSideBar])
+
   return (
       <nav className="navbar navbar-light bg-dark" style={{'height':75+'px'}}>
         {showSideBar && (

@@ -1,6 +1,4 @@
 
-import { useEffect } from 'react'
-import { Link } from 'react-router-dom'
 import { useBurgerMenuOptions } from '../../helpers/useBurgerMenuOptions'
 import { RenderNavigationOptions } from '../../helpers/VideoHelpers/RenderNavigationOptions'
 import { useAppDispatch, useAppSelector } from '../../hooks/TypedHooks'

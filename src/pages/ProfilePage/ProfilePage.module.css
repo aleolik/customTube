@@ -19,3 +19,12 @@
     width: 20vh;
     height: 20%;
   }
+
+.image{
+  display: flex;
+  border-radius: 40px;
+  border: 2px solid gray;
+  margin-top: 10px;
+  width: 100px;
+  height: 60px;
+}

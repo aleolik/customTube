@@ -8,27 +8,44 @@ import {storage} from '../../index'
 import {ref, uploadBytes} from 'firebase/storage'
 import filesPng from '../../media/files.png'
 import uploadPng from '../../media/upload.png'
-import { IPhoto } from '../../types/VideoTypes'
+import { IMakeVideo, IPhoto, IVideo } from '../../types/VideoTypes'
 const VideoForm = () => {
 
   // form values
   const [name,setName] = useState<string>('')
   const [description,setDescription] = useState<string>('')
-  const [file,setFile] = useState<File | null>(null)
   const user = useAppSelector(state => state.user.user)
   const date = useCurrentDate()
+
+
+  // file and photoUrl are links to img and video in the firebase storage
   const [photo,setPhoto] = useState<IPhoto>({
     photoUrl: '',
     photoFile : null,
   })
-
-  // file and photoUrl are links to img and video in the firebase storagr
+  
+  // to make video same as photo
+  const [video,setVideo] = useState<IMakeVideo>({
+    file : null,
+    url : ''
+  })
 
   // handlers states
   const [showForm,setShowForm] = useState(false)
   const [drag,setDrag] = useState<boolean>(false)
 
   const dispatch = useAppDispatch()
+
+  const videoFileHandler = (e : React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault()
+    if (e.target.files !== null){
+      let video_file = e.target.files[0]
+      setVideo({
+        file : video_file,
+        url : video_file.name
+      })
+    }
+  }
   const CHANGE_VIDEO = videoReducer.actions.CHANGE_VIDEO
   const dragStartHandler = (e : React.DragEvent<HTMLDivElement>) => {
     e.preventDefault()
@@ -47,10 +64,27 @@ const VideoForm = () => {
     })
     setDrag(false)
   }
+
+  const uploadDataToFireStorage = async(videoRef : any,imageRef : any) => {
+    if (photo.photoFile && video.file){
+      try{
+        await uploadBytes(imageRef,photo.photoFile)
+        await uploadBytes(videoRef,video.file)
+        // add react toast
+      }
+      catch(e){
+
+      }
+      finally{
+
+      }
+    }
+  }
   const sumbitHadnler = async(e : React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()  
-    if (photo.photoFile && user && name){
-      const imageRef = ref(storage,`${user?.email}/${user.username}/${photo.photoUrl}`)   
+    if (photo.photoFile && video.file && user && name){
+      const imageRef = ref(storage,`${user?.email}/${user.username}/${photo.photoUrl}`)
+      const videoRef = ref(storage,`${user?.email}/${user.username}/${video.url}`) 
       dispatch(CREATE_VIDEO(  {
           name : name,
           link : 'not done yet',
@@ -61,24 +95,32 @@ const VideoForm = () => {
           photoUrl : photo.photoUrl
         }))
         // uploads images and videos to firestorage
-        uploadBytes(imageRef,photo.photoFile)
+        uploadDataToFireStorage(videoRef,imageRef)
       }
+      console.log('sent')
     }
   return (
-    <div>
+    <div style={{'marginTop':10+'px'}}> 
           {showForm
             ? (
-              <button className={css.form_btn}  onClick={() => setShowForm(!showForm)}>Close Form</button>
+              <div className="d-grid col-6 mx-auto">
+              <button type='button'  className='btn btn-primary' onClick={() => setShowForm(false)}>Close Form</button>
+              </div>
             )
             : (
-              <button className={css.form_btn} onClick={() => setShowForm(!showForm)}>Add Video</button>
+              <div className="d-grid col-6 mx-auto">
+                <button type='button' className='btn btn-primary' onClick={() => setShowForm(true)}>Add Video</button>
+              </div>
             )
           }
         <form className={showForm ? css.form :css.form__off}>
-              <input className={css.input} onChange={(e : React.ChangeEvent<HTMLInputElement>) => setName(e.target.value)} placeholder='name' type='text'></input>
-              <div>
-              <input className={css.desc_input}onChange={(e : React.ChangeEvent<HTMLInputElement>) => setDescription(e.target.value)}  placeholder='description' type='text'>
-              </input>
+              <div className="input-group input-group-sm mb-3">
+                <span className="input-group-text" id="inputGroup-sizing-sm">name</span>
+                <input style={{'border':'5px solid red'}} onChange={(e : React.ChangeEvent<HTMLInputElement>) => setName(e.target.value)} type="text" className="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"/>
+              </div>
+              <div className="input-group">
+                <span className="input-group-text">With textarea</span>
+                <textarea  onChange={(e : React.ChangeEvent<HTMLTextAreaElement>) => setDescription(e.target.value)}  className="form-control" aria-label="With textarea"></textarea>
               </div>
             {!photo.photoUrl && !photo.photoFile
             ? (
@@ -110,6 +152,9 @@ const VideoForm = () => {
                 )}
               </div>
             )}
+            <div className="input-group mb-3">
+              <input onChange={(e) => videoFileHandler(e)} type="file" className="form-control" id="inputGroupFile01"/>
+            </div>
             <button className='btn-selfmade-blue' onClick={sumbitHadnler} style={{'width':100+'%',color:'white'}}><span>Создать видео</span><i></i></button>
             <hr></hr> 
         </form>

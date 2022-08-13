@@ -10,6 +10,8 @@ import { IUser, userState } from '../../types/userTypes'
 import {useGetUserData} from '../../hooks/useGetUserData'
 import NotFoundPage from '../NotFoundPage/NotFoundPage'
 import { useLoading } from '../../hooks/useLoading'
+import RenderVideos from '../../helpers/VideoHelpers/RenderVideos'
+import RenderAlert from '../../helpers/RenderAlert'
 const ProfilePage = () => {
   const dispatch = useAppDispatch()
   const {username} = useParams<string>()
@@ -34,12 +36,12 @@ const ProfilePage = () => {
   },[username])
 
   return (
-    <div className={css.center}>
+    <div className='container-fluid'>
       {error && (
-        <div>{error}</div>
+        <RenderAlert error={error}></RenderAlert>
       )}
       {fetchError && (
-        <div>{fetchError}</div>
+        <RenderAlert error={fetchError}></RenderAlert>
       )}
       {(fetchLoading || loading) && !fetchError && !error
       ? (
@@ -49,37 +51,21 @@ const ProfilePage = () => {
         <div>
             {usersPage !== null && usersPage!== undefined ? (
                 <div>
-                    <div style={{'display':'flex'}}>
+                    <div className={css.center}>
                       <h4 style={{'marginTop':20+'px','border':'black 5px solid'}}>{usersPage?.username}</h4>
-                    </div>
-                    {usersPage?.photoUrl === null
-                    ? (
-                      <img alt='avatar' src={defaultUserAvatar} style={{'width':100+'px','height':60+'px','borderRadius' : 60+'px','marginTop':10+'px','border':'2px solid gray'}}></img>
-                    )
-                      : (
-                        <img  alt='avatar' src={usersPage?.photoUrl} style={{'width':100+'px','height':60+'px','borderRadius' : 60+'px','marginTop':10+'px','border':'2px solid gray'}} ></img>
-                    )}
-                    {user?.username === username && (
-              <VideoForm/>
-            )}
-              <div>
-                {/* {videos.length
-                ? (
-                  <div className={css.videos}>
-                    {videos.map((video) => {
-                      return(
-                        <div className={css.video} key={video.id}>
-                          <h3>
-                              {video.name}
-                          </h3>
-                        </div>
+                      {usersPage?.photoUrl === null
+                      ? (
+                        <img alt='avatar' src={defaultUserAvatar} className={css.image}></img>
                       )
-                    })}
-                  </div>
-                )
-                : (
-                  <h3>Нет видео</h3>
-                )} */}
+                        : (
+                          <img alt='avatar' src={usersPage?.photoUrl}  className={css.image} ></img>
+                      )}
+                    </div>
+                    {user?.username === username && (
+                      <VideoForm/>
+                    )}
+              <div>
+                <RenderVideos videos={videos}/>
               </div>
             </div>
         )

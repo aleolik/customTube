@@ -1,6 +1,7 @@
 import { ref, getDownloadURL, } from 'firebase/storage'
 import React, { FC, useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { useDevice } from '../helpers/useDevice'
 import { storage } from '../index'
 import { IVideo } from '../types/VideoTypes'
 
@@ -11,7 +12,7 @@ export const Card : FC<CardProps> = ({video}) => {
   const imageRef = ref(storage,`${video.user.email}/${video.user.username}/${video.photoUrl}`)
   const navigate  = useNavigate()
   const [photo,setPhoto] = useState('')
-
+  const [imageFocus,setImageFocus] = useState<boolean>(false)
   useEffect(() => {
     const getPhoto = async() => {
        const url = await getDownloadURL(ref(imageRef))
@@ -28,9 +29,33 @@ export const Card : FC<CardProps> = ({video}) => {
     e.stopPropagation()
     navigate(`user/${video.user.username}`)
   }
+
+  const onMouseEnter = () => {
+    setImageFocus(true)
+  }
+  const onMouseLeave = () => {
+    setImageFocus(false)
+  }
+
+
+  /* // улучшение ui адаптива на разных устройствах
+  const device = useDevice()
+
+  const location = useLocation()
+
+  const marginLeftPx = {
+    'desktop' : 0,
+    'tablet' : 5,
+    'mobile' : location.pathname === '/' ? 0 : 10
+  }
+  const marginRightPx = {
+    'desktop' : 0,
+    'tablet' : 0,
+    'mobile' : location.pathname === '/' ? 40 : 0
+  } */
   return (
-  <div className="card" style={{"width":"18rem",'cursor':'pointer','margin':5}} onClick={cardNavigate}>
-    <img style={{'width':270,'height':230}} className="card-img-top" src={photo} alt=".../"/>
+  <div className="card mx-auto" style={{'width':'18rem'}} onClick={cardNavigate}>
+    <img style={{'width':285,'height':230}} className="card-img-top" src={photo} alt=".../"/>
     <div className="card-body">
       <h1 className="card-title">{video.name}</h1>
       <hr></hr>
@@ -39,9 +64,12 @@ export const Card : FC<CardProps> = ({video}) => {
     <ul className="list-group list-group-flush">
       <li className="list-group-item">{video.created}</li>
     </ul>
-    <div className="card-body" onClick={avatarNavigate}>
+    <div className="card-body"
+    onClick={avatarNavigate}
+    onMouseEnter={onMouseEnter}
+    onMouseLeave={onMouseLeave}>
         {video.user.photoUrl && (
-            <img style={{'width':60,'height':45}} src={video.user.photoUrl} alt=''></img>
+            <img style={{'width':60,'height':45,'borderRadius':30+'px','border':imageFocus ? '2px solid aqua' : '2px solid gray'}} src={video.user.photoUrl} alt=''></img>
         )}
         <h4>{video.user.username}</h4>
     </div>
