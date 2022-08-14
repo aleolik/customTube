@@ -10,7 +10,9 @@ import filesPng from '../../media/files.png'
 import uploadPng from '../../media/upload.png'
 import { IMakeVideo, IPhoto, IVideo } from '../../types/VideoTypes'
 const VideoForm = () => {
-
+  const desc_max_length = 460
+  // TODO : ability to delete files(video and photo)
+  // form controllers(checkers for unique name,max description length,max name length)
   // form values
   const [name,setName] = useState<string>('')
   const [description,setDescription] = useState<string>('')
@@ -23,7 +25,6 @@ const VideoForm = () => {
     photoUrl: '',
     photoFile : null,
   })
-  
   // to make video same as photo
   const [video,setVideo] = useState<IMakeVideo>({
     file : null,
@@ -64,6 +65,7 @@ const VideoForm = () => {
     })
     setDrag(false)
   }
+
 
   const uploadDataToFireStorage = async(videoRef : any,imageRef : any) => {
     if (photo.photoFile && video.file){

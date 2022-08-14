@@ -4,6 +4,8 @@ import { useAppDispatch, useAppSelector } from '../../hooks/TypedHooks'
 import { RenderNavigationOptions } from '../../helpers/VideoHelpers/RenderNavigationOptions'
 import { LoadUserVideos } from '../../reducers/asyncActions/LOAD_VIDEOS'
 import { Card } from '../../components/Card'
+import RenderVideos from '../../helpers/VideoHelpers/RenderVideos'
+import { Loader } from '../../components/Loader/Loader'
 const Main = () => {
   const {error,loading,videos} = useAppSelector(state => state.video)
   const dispatch = useAppDispatch()
@@ -19,23 +21,19 @@ const Main = () => {
           <RenderNavigationOptions/>
         </div>  
         <div className='col-md-11 col-sm-8 col-lg-11'>
-            <div style={{'marginTop':20+'px','marginLeft':60+'px'}}>
+            <div>
             {loading
             ? (
-              <h1>Загрузка</h1>
+              <div className='d-flex justify-content-center align-items-center'>
+                <Loader/>
+              </div>
             )
             : (
               <div>
                   {videos.length
                   ? (
-                    <div className='row'>
-                        {videos.map((video) => {
-                          return(
-                            <>
-                              <Card video={video}/>
-                            </>
-                          )
-                        })}
+                    <div>
+                      <RenderVideos videos={videos}/>
                     </div>
                   )
                   :(

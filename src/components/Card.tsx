@@ -36,23 +36,6 @@ export const Card : FC<CardProps> = ({video}) => {
   const onMouseLeave = () => {
     setImageFocus(false)
   }
-
-
-  /* // улучшение ui адаптива на разных устройствах
-  const device = useDevice()
-
-  const location = useLocation()
-
-  const marginLeftPx = {
-    'desktop' : 0,
-    'tablet' : 5,
-    'mobile' : location.pathname === '/' ? 0 : 10
-  }
-  const marginRightPx = {
-    'desktop' : 0,
-    'tablet' : 0,
-    'mobile' : location.pathname === '/' ? 40 : 0
-  } */
   return (
   <div className="card mx-auto" style={{'width':'18rem'}} onClick={cardNavigate}>
     <img style={{'width':285,'height':230}} className="card-img-top" src={photo} alt=".../"/>
