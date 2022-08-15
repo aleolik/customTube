@@ -16,15 +16,12 @@
     padding-top: 50px;
 }
 .file{
-    border: dashed 5px black;
+    border: dashed 3px black;
     justify-content: center;
     text-align: center;
     align-items: center;
     display: flex;
+    background-color: rgba(0,0,0,0.1);
+    
 }
-.form_btn{
-    background-color: black;
-    color: white;
-    width: 200px;
-    margin-top: 10px;
-}
+

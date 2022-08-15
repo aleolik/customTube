@@ -8,9 +8,14 @@ const NotFoundPage = () => {
     navigate('/')
   }
   return (
-    <div className={css.img_center  }>
-        <button onClick={HandleNavigate} className='btn-selfmade-blue'  style={{'width':50+'%',color:'white'}}><span>Вернуться на главную</span><i></i></button>
-        <img  className={css.img} src={notFoundImage} alt='not found image'></img>
+    <div className='align-middle d-flex justify-content-center'>
+        <div className='row'>
+          <div className='col-12'>
+            <button onClick={HandleNavigate} className='btn-selfmade-blue'  style={{'width':100+'%',color:'white'}}><span>Вернуться на главную</span><i></i></button>
+            <img className='rounded mx-auto d-block img-fluid' src={notFoundImage} alt='not found image'></img>
+          </div>
+        </div>
+     
     </div>
   )
 }

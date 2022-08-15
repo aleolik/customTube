@@ -1,7 +1,7 @@
 import { ref, getDownloadURL, } from 'firebase/storage'
 import React, { FC, useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { useDevice } from '../helpers/useDevice'
+import { RenderTimeAgo } from '../helpers/VideoHelpers/RenderTimeAgo'
 import { storage } from '../index'
 import { IVideo } from '../types/VideoTypes'
 
@@ -40,13 +40,9 @@ export const Card : FC<CardProps> = ({video}) => {
   <div className="card mx-auto" style={{'width':'18rem'}} onClick={cardNavigate}>
     <img style={{'width':285,'height':230}} className="card-img-top" src={photo} alt=".../"/>
     <div className="card-body">
-      <h1 className="card-title">{video.name}</h1>
-      <hr></hr>
-      <p className="card-text">{video.description}</p>
+      <h5 className="card-title">{video.name}</h5>
     </div>
-    <ul className="list-group list-group-flush">
-      <li className="list-group-item">{video.created}</li>
-    </ul>
+    <RenderTimeAgo video={video}/>
     <div className="card-body"
     onClick={avatarNavigate}
     onMouseEnter={onMouseEnter}
@@ -54,7 +50,7 @@ export const Card : FC<CardProps> = ({video}) => {
         {video.user.photoUrl && (
             <img style={{'width':60,'height':45,'borderRadius':30+'px','border':imageFocus ? '2px solid aqua' : '2px solid gray'}} src={video.user.photoUrl} alt=''></img>
         )}
-        <h4>{video.user.username}</h4>
+        <h6>{video.user.username}</h6>
     </div>
   </div>
   )

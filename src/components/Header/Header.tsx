@@ -26,13 +26,13 @@ const Header = () => {
   },[])
   // make scroll unavailable when sideBar on
   useEffect(() => {
-    if (showSideBar){
+    if (showSideBar || showModal){
       document.body.style.overflow = 'hidden'
     }
     else{
       document.body.style.overflow = ''
     }
-  },[showSideBar])
+  },[showSideBar,showModal])
 
   return (
       <nav className="navbar navbar-light bg-dark" style={{'height':75+'px'}}>

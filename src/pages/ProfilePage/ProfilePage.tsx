@@ -1,7 +1,6 @@
-import React, { useEffect, useState,useRef } from 'react'
+import { useEffect, useState } from 'react'
 import { useAppDispatch, useAppSelector } from '../../hooks/TypedHooks'
 import { LoadUserVideos } from '../../reducers/asyncActions/LOAD_VIDEOS'
-import { IVideo } from '../../types/VideoTypes'
 import css from './ProfilePage.module.css'
 import defaultUserAvatar from '../../media/defaultUserAvatar.png'
 import { useParams } from 'react-router-dom'
@@ -12,6 +11,7 @@ import NotFoundPage from '../NotFoundPage/NotFoundPage'
 import { useLoading } from '../../hooks/useLoading'
 import RenderVideos from '../../helpers/VideoHelpers/RenderVideos'
 import RenderAlert from '../../helpers/RenderAlert'
+import { Loader } from '../../components/Loader/Loader'
 const ProfilePage = () => {
   const dispatch = useAppDispatch()
   const {username} = useParams<string>()
@@ -35,6 +35,7 @@ const ProfilePage = () => {
     }
   },[username])
 
+
   return (
     <div className='container-fluid'>
       {error && (
@@ -45,7 +46,7 @@ const ProfilePage = () => {
       )}
       {(fetchLoading || loading) && !fetchError && !error
       ? (
-        <div>Загрузка</div>
+        <div><Loader/></div>
       )
       : (
         <div>
@@ -55,15 +56,16 @@ const ProfilePage = () => {
                       <h4 style={{'marginTop':20+'px','border':'black 5px solid'}}>{usersPage?.username}</h4>
                       {usersPage?.photoUrl === null
                       ? (
-                        <img alt='avatar' src={defaultUserAvatar} className={css.image}></img>
+                        <img alt='avatar'  src={defaultUserAvatar} style={{'width':90,'height':60}} className={css.image}></img>
                       )
                         : (
-                          <img alt='avatar' src={usersPage?.photoUrl}  className={css.image} ></img>
+                          <img alt='avatar' src={usersPage?.photoUrl}  style={{'width':90,'height':60}}  className={css.image} ></img>
                       )}
                     </div>
                     {user?.username === username && (
-                      <VideoForm/>
+                      <VideoForm videos={videos}/>
                     )}
+              <hr></hr>
               <div>
                 <RenderVideos videos={videos}/>
               </div>

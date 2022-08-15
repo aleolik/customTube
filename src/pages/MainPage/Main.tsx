@@ -6,6 +6,7 @@ import { LoadUserVideos } from '../../reducers/asyncActions/LOAD_VIDEOS'
 import { Card } from '../../components/Card'
 import RenderVideos from '../../helpers/VideoHelpers/RenderVideos'
 import { Loader } from '../../components/Loader/Loader'
+import RenderAlert from '../../helpers/RenderAlert'
 const Main = () => {
   const {error,loading,videos} = useAppSelector(state => state.video)
   const dispatch = useAppDispatch()
@@ -37,7 +38,7 @@ const Main = () => {
                     </div>
                   )
                   :(
-                    <h1>Error : {error}</h1>
+                   <RenderAlert error={error}/>
                   )}
               </div>
             )}

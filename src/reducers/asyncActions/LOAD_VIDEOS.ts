@@ -5,17 +5,17 @@
 */
 
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { collection, getDocs,query, where,CollectionReference} from "firebase/firestore";
+import { collection, getDocs,query,limit,orderBy,where,CollectionReference} from "firebase/firestore";
 import { database } from "../../config";
 import { AppDispatch } from "../../store/store";
 import { IVideo } from "../../types/VideoTypes";
 import { videoReducer } from "../VideoReducer";
 
-export const LoadUserVideos = (username:String='') => {
+export const LoadUserVideos = (username:String='',video_limit=25) => {
     return async (dispatch:AppDispatch) => {
-        let collectionRef = collection(database,'videos')
+        let collectionRef = query(collection(database,'videos'),limit(video_limit))
         if (username){
-            collectionRef = query(collection(database,'videos'),where('video.user.username','==',username)) as CollectionReference  
+            collectionRef = query(collection(database,'videos'),where('video.user.username','==',username),limit(video_limit)) as CollectionReference  
         }
         const {load,loadSuccess,loadError} = videoReducer.actions
         try{    

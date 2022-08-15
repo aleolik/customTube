@@ -5,8 +5,8 @@ export interface IVideo{
     id? : string,
     description : string,
     link : string, // path to file in storage
-    user : IUser
-    created : string
+    user : IUser,
+    created : number,
     views : number,
     photoUrl : string
 }
