@@ -13,8 +13,13 @@ export const useBurgerMenuOptions = () => {
             {
                 id : 2,
                 title : 'Trends',
-                to : '/'  
+                to : '/trends'  
             },
+            {
+                id : 3,
+                title : 'History',
+                to : '/history'
+            }
         ])
     },[])
     return(

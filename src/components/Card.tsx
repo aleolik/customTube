@@ -2,6 +2,7 @@ import { ref, getDownloadURL, } from 'firebase/storage'
 import React, { FC, useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { RenderTimeAgo } from '../helpers/VideoHelpers/RenderTimeAgo'
+import { useAppSelector } from '../hooks/TypedHooks'
 import { storage } from '../index'
 import { IVideo } from '../types/VideoTypes'
 
@@ -13,6 +14,7 @@ export const Card : FC<CardProps> = ({video}) => {
   const navigate  = useNavigate()
   const [photo,setPhoto] = useState('')
   const [imageFocus,setImageFocus] = useState<boolean>(false)
+  const loading = useAppSelector(state => state.video.loading)
   useEffect(() => {
     const getPhoto = async() => {
        const url = await getDownloadURL(ref(imageRef))

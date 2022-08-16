@@ -7,6 +7,7 @@ import { Card } from '../../components/Card'
 import RenderVideos from '../../helpers/VideoHelpers/RenderVideos'
 import { Loader } from '../../components/Loader/Loader'
 import RenderAlert from '../../helpers/RenderAlert'
+import RenderLoadingScreenMainPage from '../../helpers/VideoHelpers/RenderLoadingScreenMainPage'
 const Main = () => {
   const {error,loading,videos} = useAppSelector(state => state.video)
   const dispatch = useAppDispatch()
@@ -25,8 +26,8 @@ const Main = () => {
             <div>
             {loading
             ? (
-              <div className='d-flex justify-content-center align-items-center'>
-                <Loader/>
+              <div>
+                <RenderLoadingScreenMainPage/>
               </div>
             )
             : (

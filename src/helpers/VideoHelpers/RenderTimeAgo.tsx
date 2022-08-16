@@ -5,30 +5,35 @@ interface RenderTimeAgoProps{
 }
 export const RenderTimeAgo : FC<RenderTimeAgoProps> = ({video}) => {
     const now = Date.now()
+
+    const seconds = Math.floor((now - video.created)/1000)
+    const mins = Math.floor((now - video.created)/(1000*60))
+    const hours = Math.floor((now - video.created)/(1000*3600))
+    const days = Math.floor((now - video.created)/(1000*3600*24))
     return(
         <ul className="list-group list-group-flush">
-      {(now - video.created)/1000 > 60
+      {seconds > 60
       ? (
         <div>
-            {(now - video.created)/1000 > 3600
+            {mins > 60
             ? (
               <div>
-                {(now-video.created)/1000 > 3600 * 60
+                {hours >= 24
                 ? (
-                  <li className="list-group-item">{Math.floor((now - video.created)/(1000*360*24))} дней назад</li>
+                  <li className="list-group-item">{days} {days === 1 ? 'day' : 'days'} ago</li>
                 )
                 : (
-                  <li className="list-group-item">{Math.floor((now - video.created)/(1000*360))} часов назад</li>
+                  <li className="list-group-item">{hours} {hours === 1  ? 'hour' : 'hours'} ago</li>
                 )}
               </div>
             )
             : (
-              <li className="list-group-item">{Math.floor((now - video.created)/(1000*60))}минут(а) назад</li>
+              <li className="list-group-item">{mins} {mins === 1 ? 'min' : 'mins'} ago</li>
             )}
         </div>
       )
       : (
-        <li className="list-group-item">{Math.floor((now - video.created)/1000)} секунд(а) назад</li>
+        <li className="list-group-item">{seconds} {seconds === 1 ? 'second' : 'seconds'} ago</li>
       )}
     </ul>
     )

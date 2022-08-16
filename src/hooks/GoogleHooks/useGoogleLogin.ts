@@ -24,7 +24,8 @@ export const useGoogle = () => {
                     username : username,
                     email : email,
                     access_token : access_token,
-                    photoUrl : photoUrl             
+                    photoUrl : photoUrl,
+                    watched : []       
                 }
                 dispatch(login(user))
                 const docRef = doc(database,'users',`${result.user.displayName}`)

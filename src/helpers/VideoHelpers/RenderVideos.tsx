@@ -10,9 +10,8 @@ const RenderVideos : FC<RenderVideosProps> = ({videos}) => {
     <div className='row'>
         {videos.map((video) => {
             return(
-             <div  className='col-lg-3 col-md-6 col-sm-12' key={video.id}>
+             <div  className='col-lg-3 col-md-6 col-sm-6' key={video.id}>
                 <Card video={video}/>
-                <hr></hr>
              </div>
             )
         })}

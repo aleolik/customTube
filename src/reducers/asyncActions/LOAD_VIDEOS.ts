@@ -13,9 +13,9 @@ import { videoReducer } from "../VideoReducer";
 
 export const LoadUserVideos = (username:String='',video_limit=25) => {
     return async (dispatch:AppDispatch) => {
-        let collectionRef = query(collection(database,'videos'),limit(video_limit))
+        let collectionRef = query(collection(database,'videos'),limit(video_limit),orderBy('video.created'))
         if (username){
-            collectionRef = query(collection(database,'videos'),where('video.user.username','==',username),limit(video_limit)) as CollectionReference  
+            collectionRef = query(collection(database,'videos'),where('video.user.username','==',username),limit(video_limit),orderBy('video.created')) as CollectionReference  
         }
         const {load,loadSuccess,loadError} = videoReducer.actions
         try{    
@@ -26,11 +26,10 @@ export const LoadUserVideos = (username:String='',video_limit=25) => {
                 res.forEach((doc) => {
                     let video : IVideo = doc.data().video
                     video.id = doc.id
-                    array.push(video)
+                    array.unshift(video)
                 })
             }
             dispatch(loadSuccess(array))
-
         }
         catch(e){
             let message = 'Unknown Error'
