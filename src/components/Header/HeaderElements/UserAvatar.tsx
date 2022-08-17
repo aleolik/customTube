@@ -1,34 +1,41 @@
 import {FC} from 'react'
+import { useDevice } from '../../../helpers/useDevice'
 import { useAppSelector } from '../../../hooks/TypedHooks'
 import defaultUserAvatar from '../../../media/defaultUserAvatar.png'
 import { RenderOptions } from './RenderOptions'
 interface UserAvatarProps{
     avatarOnFocus : boolean,
-    avatarOnHover : boolean,
     setAvatarOnFocus : (state:boolean) => void,
-    setAvatarOnHover : (state:boolean) => void,
-
 }
 
-export const UserAvatar : FC<UserAvatarProps> = ({avatarOnFocus,avatarOnHover,setAvatarOnFocus,setAvatarOnHover}) => {
+export const UserAvatar : FC<UserAvatarProps> = ({avatarOnFocus,setAvatarOnFocus}) => {
     const user = useAppSelector(state => state.user.user)
+    const device = useDevice()
     const onMouseLeave = () => {
-        setAvatarOnFocus(false)
-        setAvatarOnHover(false)
+       if (device === 'desktop'){
+            setAvatarOnFocus(false)
+       }
+    }
+    const onClcik = () => {
+        setAvatarOnFocus(!avatarOnFocus)
+    }
+    const marginRight = {
+        'tablet' : 200,
+        'mobile' : 150,
+        'desktop' : 200
     }
     return(
         <div
         tabIndex={0}
-        onClick={() =>setAvatarOnFocus(true)}
+        onClick={onClcik}
         onMouseLeave={onMouseLeave}
-        style={{'marginRight':120+'px'}}
+        style={{'marginRight':marginRight[device]+'px'}}
         >
             <img
-                 onMouseEnter={() => setAvatarOnHover(true)}
-                 style={{'border':avatarOnFocus && avatarOnHover ? 'aqua 2px solid' : 'white 2px solid','width':80+'px','height':60+'px','borderRadius':40+'px'}} 
+                 style={{'border':avatarOnFocus ? 'aqua 2px solid' : 'white 2px solid','width':80+'px','height':60+'px','borderRadius':40+'px'}} 
                  src={user?.photoUrl === null ? defaultUserAvatar : user?.photoUrl}           
             />
-             {avatarOnFocus && avatarOnHover &&
+             {avatarOnFocus &&
               (
                 <RenderOptions/>
               )}

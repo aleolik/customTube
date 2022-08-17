@@ -13,7 +13,6 @@ const Header = () => {
   const user = useAppSelector(state => state.user.user)
   const [showModal,setShowModal] = useState(false)
   const [avatarOnFocus,setAvatarOnFocus] = useState(false)
-  const [avatarOnHover,setAvatarOnHover] = useState(false)
   const showSideBar = useAppSelector(state => state.modal.show_side_bar)
   const show_login_or_faq = useAppSelector(state =>  state.modal.show_login_or_faq)
   // set current device(helps with ui stuff)
@@ -49,7 +48,7 @@ const Header = () => {
         )}
          {user
           ?(
-              <UserAvatar avatarOnFocus={avatarOnFocus} avatarOnHover={avatarOnHover} setAvatarOnFocus={setAvatarOnFocus} setAvatarOnHover={setAvatarOnHover}/>
+              <UserAvatar avatarOnFocus={avatarOnFocus} setAvatarOnFocus={setAvatarOnFocus}/>
             )
           :(
             <div>

@@ -29,7 +29,8 @@ export const LoadUserVideos = (username:String='',video_limit=25) => {
                     array.unshift(video)
                 })
             }
-            dispatch(loadSuccess(array))
+         dispatch(loadSuccess(array))
+
         }
         catch(e){
             let message = 'Unknown Error'
