@@ -14,13 +14,13 @@ export const useOptions = () => {
         id : 13200.500120,
         title : 'Logout',
         onClick : logout,
-        icon : AiOutlineLogout
+        icon : 'logout'
     }
     const MyProfileOption : ILink = {
         id : 1320012.50420,
         title : 'Profile',
         to : `/user/${username}`,
-        icon : AiOutlineUser
+        icon : 'person'
     }
 
     const buttonOptions :IButton[] = [

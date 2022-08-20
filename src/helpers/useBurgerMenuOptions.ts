@@ -9,13 +9,13 @@ export const useBurgerMenuOptions = () => {
                 id : 1,
                 title : 'Main',
                 to : '/',
-                icon : AiFillHome
+                icon : 'web'
             },
             {
                 id : 3,
                 title : 'History',
                 to : '/history',
-                icon : AiOutlineLogout
+                icon : 'history'
             }
         ])
     },[])

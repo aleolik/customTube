@@ -5,13 +5,15 @@ export interface ILink {
   title : string,
   id : number,
   to : string,
-  icon : IconType
+  // icons with material io icons
+  icon : string
 }
 export interface IButton{
   title : string,
   id : number,
   onClick :  () => void
-  icon : IconType
+  // icons with material io icons
+  icon : string
 }
 
 export type IOption = {

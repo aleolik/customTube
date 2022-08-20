@@ -32,8 +32,8 @@ export const RenderNavigationOptions = () => {
           <div key={item.id} className='row' style={{'position':'relative'}}>
             {!sideBar
             // add icons to the buttons later
-            ? (<button onClick={() => handleNavigate(item.to)} className='btn btn-light' style={{'marginTop':10+'px','borderRadius':20,'width':btnSize}}>{item.title}</button>)
-            : (<Link onClick={handleClose} className={css.link} to={item.to}>{item.title}</Link>)}
+            ? (<button onClick={() => handleNavigate(item.to)} className='btn btn-light' style={{'marginTop':10+'px','borderRadius':20,'width':btnSize}}>{item.title}<span style={{'verticalAlign':-5,'fontSize':22}} className="material-icons">{item.icon}</span></button>)
+            : (<Link onClick={handleClose} className={css.link} to={item.to}>{item.title}<span className="material-icons" style={{'verticalAlign':-5,'fontSize':22}}>{item.icon}</span></Link>)}
           </div>
         )
       })}
