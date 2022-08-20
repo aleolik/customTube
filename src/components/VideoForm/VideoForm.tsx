@@ -3,7 +3,6 @@ import {useCurrentDate} from '../../helpers/useCurrentDate'
 import { useAppDispatch, useAppSelector } from '../../hooks/TypedHooks'
 import css from './VideoForm.module.css'
 import {CREATE_VIDEO} from '../../reducers/asyncActions/CREATE_VIDEO'
-import { videoReducer } from '../../reducers/VideoReducer'
 import {storage} from '../../index'
 import {ref, uploadBytes} from 'firebase/storage'
 import filesPng from '../../media/files.png'
@@ -25,7 +24,6 @@ const VideoForm : FC<VideoFormProps> = ({videos}) => {
   const [description,setDescription] = useState<string>('')
   const user = useAppSelector(state => state.user.user)
   const date = useCurrentDate()
-  const CHANGE_VIDEO = videoReducer.actions.CHANGE_VIDEO
 
   // file and photoUrl are links to img and video in the firebase storage
   const [photo,setPhoto] = useState<IPhoto>({

@@ -6,14 +6,16 @@ interface ModalWndowProps{
     protectedRoute? : boolean
     children : any
 }
-const ModalWindow : FC<ModalWndowProps> = ({showModal,setShowModal,children}) => {
+const ModalWindow : FC<ModalWndowProps> = ({showModal,setShowModal,children,protectedRoute=false}) => {
   const rootClasses = [css.modal]
   if (showModal){
     rootClasses.push(css.active)
   }
 
   const onClick = () => {
-   setShowModal(false)
+    if (!protectedRoute){
+      setShowModal(false)
+    }
   }
   return (
       <div className={rootClasses.join(' ')} onClick={onClick}>

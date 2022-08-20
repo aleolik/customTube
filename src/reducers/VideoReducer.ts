@@ -35,23 +35,20 @@ export const videoReducer = createSlice({
             state.loading = false
             state.videos = []
         },
-        load_video_creation(state : initialStateProps){
+        LOAD_VIDEO(state : initialStateProps){
             state.loading = true
             state.video = null
             state.error = ''
         },
-        load_video_creation_success(state:initialStateProps,action : PayloadAction<IVideo>){
+        LOAD_VIDEO_SUCCES(state:initialStateProps,action : PayloadAction<IVideo>){
             state.video = action.payload
             state.loading = false
             state.error = ''
         },
-        load_video_creation_error(state:initialStateProps,action : PayloadAction<string>){
+        LOAD_VIDEO_ERROR(state:initialStateProps,action : PayloadAction<string>){
             state.error = action.payload
             state.loading = false
-            state.videos = []
-        },
-        CHANGE_VIDEO(state:initialStateProps,action : PayloadAction<IVideo>){
-            state.video = action.payload
+            state.video = null
         },
     }
 })

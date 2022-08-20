@@ -7,11 +7,11 @@ import { videoReducer } from "../VideoReducer"
 
 export const CREATE_VIDEO = (video:IVideo) => {
     return async (dispatch:AppDispatch) => {
-        const {load_video_creation,load_video_creation_success,load_video_creation_error} = videoReducer.actions
+        const {LOAD_VIDEO,LOAD_VIDEO_SUCCES,LOAD_VIDEO_ERROR} = videoReducer.actions
         if (video !== null){
             const {name,views,created,description,user,link,photoUrl} = video
                 try{
-                    dispatch(load_video_creation())
+                    dispatch(LOAD_VIDEO())
                     const video : IVideo = {
                         views : views,
                         created : created,
@@ -21,21 +21,20 @@ export const CREATE_VIDEO = (video:IVideo) => {
                         user : user,
                         photoUrl : photoUrl
                     }
-                    // добавить проверку на уникальность
                     addDoc(collection(database,'videos'),{
                         video : video
                     }).then((res) => {
-                        dispatch(load_video_creation_success(video))
+                        dispatch(LOAD_VIDEO_SUCCES(video))
                     })
                 }
                 catch(e){
                     let message = 'Unknown error'
                     if (e instanceof Error) message = e.message
-                    dispatch(load_video_creation_error(message))
+                    dispatch(LOAD_VIDEO_ERROR(message))
                 }
             }
             else{
-                dispatch(load_video_creation_error('wrong data...'))
+                dispatch(LOAD_VIDEO_ERROR('wrong data...'))
             }
         }
 }

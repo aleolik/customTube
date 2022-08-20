@@ -9,6 +9,8 @@ import { UserAvatar } from './HeaderElements/UserAvatar'
 import BurgerMenu from '../BurgerMenu/BurgerMenu'
 import { DeviceReducer } from '../../reducers/DeviceReducer'
 import { useDevice } from '../../helpers/useDevice'
+import { useGetWatchedForUser } from '../../hooks/useAddVideoToWatched'
+import { useLocation } from 'react-router-dom'
 const Header = () => {
   const user = useAppSelector(state => state.user.user)
   const [showModal,setShowModal] = useState(false)
@@ -18,11 +20,16 @@ const Header = () => {
   // set current device(helps with ui stuff)
   const {setDevice} = DeviceReducer.actions
   const getDevice = useDevice()
+  const loading = useAppSelector(state => state.video.loading)
   const dispatch = useAppDispatch()
-
+  const GET_WATCHED_LIST = useGetWatchedForUser()
   useEffect(() => {
-    dispatch(setDevice(getDevice))
-  },[])
+    if (user){
+      dispatch(setDevice(getDevice))
+      GET_WATCHED_LIST(user.username)
+    }
+
+  },[user?.username]) // if dependency array is empty,then doesen't work
   // make scroll unavailable when sideBar on
   useEffect(() => {
     if (showSideBar || showModal){
@@ -33,8 +40,9 @@ const Header = () => {
     }
   },[showSideBar,showModal])
 
+  // works 1 time - loads user watched list from backend
   return (
-      <nav className="navbar navbar-light bg-dark" style={{'height':75+'px'}}>
+      <nav className="navbar sticky-sm-top sticky-md-top sticky-lg-top sticky-xl-top navbar-light bg-dark" style={{'height':75+'px','zIndex':1}}>
         {showSideBar && (
             <BurgerMenu/>
         )}
@@ -46,14 +54,20 @@ const Header = () => {
             : (<FAQ/>    )}     
           </ModalWindow>
         )}
-         {user
+         {user && !loading
           ?(
               <UserAvatar avatarOnFocus={avatarOnFocus} setAvatarOnFocus={setAvatarOnFocus}/>
             )
           :(
-            <div>
-                <button style={{'marginRight':30+'px'}}  className='btn btn-light' onClick={() => setShowModal(true)}>Sign In</button>
-            </div>
+            <div>{loading
+            ? (
+              <div style={{'border':'gray 2px solid','width':80+'px','height':60+'px','borderRadius':40+'px','marginRight':30,'backgroundColor':'lightgray'}} ></div>
+            )
+            : (
+              <div>
+                  <button style={{'marginRight':30+'px'}}  className='btn btn-light' onClick={() => setShowModal(true)}>Sign In</button>
+              </div>
+            )}</div>
           )
           }
     </nav>

@@ -16,13 +16,14 @@ const Main = () => {
   useEffect(() => {
     dispatch(LoadUserVideos())
   },[])
+  // todo : make sidebar and navbar sticky
   return (
     <div className='container-fluid' >
-      <div className='row' style={{'backgroundColor':'none'}}>
-        <div className={['col-md-1 col-sm-4 col-lg-1',css.sidebar].join(' ')}>
+      <div className='row' style={{'backgroundColor':'white'}}>
+        <div className='col-md-2 col-sm-4 col-lg-1' style={{'backgroundColor':'#292b2c','display':'flex','justifyContent':'center','minHeight':100+'vh'}}>
           <RenderNavigationOptions/>
         </div>  
-        <div className='col-md-11 col-sm-8 col-lg-11'>
+        <div className='col-md-10 col-sm-8 col-lg-11'>
             <div>
             {loading
             ? (

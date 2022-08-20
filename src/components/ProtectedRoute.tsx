@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { FC, useState } from 'react'
 import { Outlet } from 'react-router-dom'
 import { useAppSelector } from '../hooks/TypedHooks'
 import FAQ from './FAQ'

@@ -12,6 +12,7 @@ import { useLoading } from '../../hooks/useLoading'
 import RenderVideos from '../../helpers/VideoHelpers/RenderVideos'
 import RenderAlert from '../../helpers/RenderAlert'
 import { Loader } from '../../components/Loader/Loader'
+
 const ProfilePage = () => {
   const dispatch = useAppDispatch()
   const {username} = useParams<string>()

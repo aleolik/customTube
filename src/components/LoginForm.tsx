@@ -5,6 +5,8 @@ import { UserReducer } from '../reducers/User'
 import FormButtons from './FormButtons'
 import {useGoogle} from '../hooks/GoogleHooks/useGoogleLogin'
 import { useNavigate } from 'react-router-dom'
+import {BiArrowBack} from 'react-icons/bi'
+
 interface LoginFormProps{
   setShowModal : (state:boolean) => void // закрывать модальное окно после входа
   protectedRoute? : boolean
@@ -19,7 +21,7 @@ const LoginForm : FC<LoginFormProps> = ({setShowModal,protectedRoute=false}) => 
   
   const navigate = useNavigate()
   const NavigateToMain = () => {
-    navigate('/')
+    navigate(-1)
   }
 
   const onClick = () => {
@@ -32,7 +34,7 @@ const LoginForm : FC<LoginFormProps> = ({setShowModal,protectedRoute=false}) => 
       <div onClick={(e) => e.stopPropagation()}>
         <FormButtons/>
         {protectedRoute && (
-            <button className='on_main' onClick={NavigateToMain}>on Main Page</button>
+            <button className='w-100 btn btn-primary mt-3' onClick={NavigateToMain}><BiArrowBack color='black' size={30} style={{'marginRight':5}}/>Move Back</button>
         )}
         <h1 style={{'textAlign':'center'}}>Sign in with:</h1>
         <hr></hr>

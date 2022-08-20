@@ -1,28 +1,22 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { useAddVideoToWatched } from '../../hooks/useAddVideoToWatched'
+import { ADD_VIDEO} from '../../hooks/useAddVideoToWatched'
+import { IVideo } from '../../types/VideoTypes'
 
 const VideoPage = () => {
 
-  const {videoname,username} = useParams()
+  let {videoname,username} = useParams()
   
-
-  useAddVideoToWatched('video1')
-
+  if (!videoname){
+    videoname = 'error'
+  }
+  if (!username){
+    username = 'error'
+  }
+  ADD_VIDEO(videoname,username)
   return (
     <div>
-      <div className="btn-group">
-      <button type="button" className="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-        Action
-      </button>
-      <ul className="dropdown-menu">
-        <li><a className="dropdown-item" href="#">Action</a></li>
-        <li><a className="dropdown-item" href="#">Another action</a></li>
-        <li><a className="dropdown-item" href="#">Something else here</a></li>
-        <li><hr className="dropdown-divider"/></li>
-        <li><a className="dropdown-item" href="#">Separated link</a></li>
-      </ul>
-    </div>
+      videopage
     </div>
     
   )

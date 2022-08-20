@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { ILink } from "../types/optionTypes"
-
+import {AiFillHome,AiOutlineLogout} from 'react-icons/ai'
 export const useBurgerMenuOptions = () => {
     const [options,setOptions] = useState<ILink[]>([])
     useEffect(() => {
@@ -8,17 +8,14 @@ export const useBurgerMenuOptions = () => {
             {
                 id : 1,
                 title : 'Main',
-                to : '/'  
-            },
-            {
-                id : 2,
-                title : 'Trends',
-                to : '/trends'  
+                to : '/',
+                icon : AiFillHome
             },
             {
                 id : 3,
                 title : 'History',
-                to : '/history'
+                to : '/history',
+                icon : AiOutlineLogout
             }
         ])
     },[])
