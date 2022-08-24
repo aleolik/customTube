@@ -18,7 +18,7 @@ export const UserReducer = createSlice({
             state.user = null
         },
         setWatchedVideos(state:userState,action:PayloadAction<IVideo[]>){
-            if (state.user){
+            if (state.user !== null){
                 state.user.watched = action.payload
             }
         },
@@ -28,6 +28,11 @@ export const UserReducer = createSlice({
             }
             else if (state.user?.watched?.length === 0){
                 state.user.watched = [action.payload]
+            }
+        },
+        CLEAR_WATCHED_LIST(state:userState){
+            if (state.user !== null){
+                state.user.watched = []
             }
         }
     }

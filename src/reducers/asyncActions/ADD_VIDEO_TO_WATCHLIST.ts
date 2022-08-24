@@ -10,6 +10,7 @@ import { videoReducer } from "../VideoReducer"
 export const ADD_VIDEO_TO_WATCHLIST = (video_name:string,username:string) => {
     const ADD_VIDEO_TO_WATCHLIST = UserReducer.actions.ADD_VIDEO_TO_WATCHLIST
     return async (dispatch:AppDispatch)  => {
+        console.log('qxwx')
         const LOAD_VIDEO_SUCCES = videoReducer.actions.LOAD_VIDEO_SUCCES
         const videoRef = collection(database,'videos')
         const q = query(videoRef,where('video.name','==',`${video_name}`))

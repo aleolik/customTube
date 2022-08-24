@@ -1,6 +1,6 @@
 
 import {provider} from '../../index'
-import { signInWithPopup,GoogleAuthProvider, getAuth} from 'firebase/auth'
+import { signInWithPopup,GoogleAuthProvider, getAuth, setPersistence} from 'firebase/auth'
 import { IUser } from '../../types/userTypes'
 import { useAppDispatch, useAppSelector } from "../TypedHooks"
 import { UserReducer } from "../../reducers/User"

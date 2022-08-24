@@ -8,6 +8,7 @@ import RenderVideos from '../../helpers/VideoHelpers/RenderVideos'
 import { Loader } from '../../components/Loader/Loader'
 import RenderAlert from '../../helpers/RenderAlert'
 import RenderLoadingScreenMainPage from '../../helpers/VideoHelpers/RenderLoadingScreenMainPage'
+import { useDevice } from '../../helpers/useDevice'
 const Main = () => {
   const {error,loading,videos} = useAppSelector(state => state.video)
   const dispatch = useAppDispatch()
@@ -17,10 +18,11 @@ const Main = () => {
     dispatch(LoadUserVideos())
   },[])
   // todo : make sidebar and navbar sticky
+  const device = useDevice()
   return (
     <div className='container-fluid' >
       <div className='row' style={{'backgroundColor':'white'}}>
-        <div className='col-md-2 col-sm-4 col-lg-1' style={{'backgroundColor':'#292b2c','display':'flex','justifyContent':'center','minHeight':100+'vh'}}>
+        <div className='col-md-2 col-sm-4 col-lg-1' style={{'backgroundColor':'#292b2c','display':'flex','justifyContent':'center','minHeight':device === 'tablet' || device === 'desktop' ? 100+'vh' : 20+'vh'}}>
           <RenderNavigationOptions/>
         </div>  
         <div className='col-md-10 col-sm-8 col-lg-11'>

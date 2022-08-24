@@ -5,6 +5,7 @@
 /.pnp
 .pnp.js
 src/config.ts
+src/TODO.txt
 
 # testing
 /coverage

@@ -11,6 +11,7 @@ import { DeviceReducer } from '../../reducers/DeviceReducer'
 import { useDevice } from '../../helpers/useDevice'
 import { useGetWatchedForUser } from '../../hooks/useAddVideoToWatched'
 import {modalReducer} from '../../reducers/ModalReducer'
+import { HistoryReducer } from '../../reducers/HistoryReducer'
 const Header = () => {
   const user = useAppSelector(state => state.user.user)
   const [showModal,setShowModal] = useState(false)
@@ -24,9 +25,24 @@ const Header = () => {
   const loading = useAppSelector(state => state.video.loading)
   const dispatch = useAppDispatch()
   const GET_WATCHED_LIST = useGetWatchedForUser()
+
+  // history settings
+  const saveHistory = localStorage?.getItem('history')
+  const SET_HISTORY = HistoryReducer.actions.CHANGE_HISTORY_STATE
+  useEffect(() => {
+    dispatch(setDevice(getDevice))
+    // if item in localStorage then
+    if (saveHistory !== undefined){
+      if (saveHistory === 'false'){
+        dispatch(SET_HISTORY(false))
+      }
+      else{
+        dispatch(SET_HISTORY(true))
+      }
+    }
+  },[])
   useEffect(() => {
     if (user){
-      dispatch(setDevice(getDevice))
       GET_WATCHED_LIST(user.username)
     }
 

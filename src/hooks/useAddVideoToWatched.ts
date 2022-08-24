@@ -1,10 +1,9 @@
-import { collection, doc,getDoc,getDocs,query,setDoc, where } from 'firebase/firestore'
-import { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import {doc,getDoc,getDocs,query,setDoc, where } from 'firebase/firestore'
+import { useEffect} from 'react'
 import { database } from '../config'
 import { ADD_VIDEO_TO_WATCHLIST } from '../reducers/asyncActions/ADD_VIDEO_TO_WATCHLIST'
+import { DELETE_VIDEO_WATCHLIST } from '../reducers/asyncActions/DELETE_VIDEO_WATCHLIST'
 import { UserReducer } from '../reducers/User'
-import { videoReducer } from '../reducers/VideoReducer'
 import { IVideo } from '../types/VideoTypes'
 import { useAppDispatch, useAppSelector } from './TypedHooks'
 
@@ -29,35 +28,56 @@ export const useGetWatchedForUser = () => {
         GET_WATCHED_LIST
     )
 }
-export const ADD_VIDEO = async(video_name:string,username:string) => {
+
+export const useADD_VIDEO = () => {
     const user = useAppSelector(state => state.user.user)
     const userRef = doc(database,'users',`${user?.username}`)
     const dispatch = useAppDispatch()
     const video = useAppSelector(state => state.video.video)
+    const saveHistory = useAppSelector(state => state.history.saveHistory)
 
     const ADD_VIDEO_TO_FIREBASE = async() => {
+        console.log('video1',video)
         if (user && video){
+            console.log('video',video)
             if (user?.watched?.length){
-                await setDoc(userRef,{
-                // add if video already in massive,then delete old duplicate and add new
-                user : {
-                         ...user,
-                         watched : [video,...user.watched]
-                        }
-                    })
-                 }
-                else{
+                if (user.watched.filter((obj) => obj.id === video.id).length > 1){
+                    await DELETE_VIDEO_WATCHLIST(user,video)
+                }
+                else{   
                     await setDoc(userRef,{
                         user : {
                             ...user,
-                            watched : [video]
+                            watched : [video,...user.watched]
                         }
                     })
                 }
             }
-        }
-    useEffect(() => {
+            else{
+                await setDoc(userRef,{
+                user : {
+                    ...user,
+                    watched : [video]
+                    }
+                  })
+                }
+            }
+    }
+
+    const ADD_VIDEO_TO_WATCHED = async(username:string,video_name:string) => {
         dispatch(ADD_VIDEO_TO_WATCHLIST(video_name,username))
-        ADD_VIDEO_TO_FIREBASE()
-    },[video_name,username])
+    }
+    const ADD_VIDEO = async(username:string,video_name:string) => {
+        if (saveHistory){
+            ADD_VIDEO_TO_WATCHED(username,video_name)
+            ADD_VIDEO_TO_FIREBASE()
+        }
+    }
+
+    return(
+        ADD_VIDEO
+    )
 }
+
+
+
