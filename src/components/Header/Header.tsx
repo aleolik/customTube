@@ -12,6 +12,8 @@ import { useDevice } from '../../helpers/useDevice'
 import { useGetWatchedForUser } from '../../hooks/useAddVideoToWatched'
 import {modalReducer} from '../../reducers/ModalReducer'
 import { HistoryReducer } from '../../reducers/HistoryReducer'
+import { UserReducer } from '../../reducers/User'
+import { IUser } from '../../types/userTypes'
 const Header = () => {
   const user = useAppSelector(state => state.user.user)
   const [showModal,setShowModal] = useState(false)
@@ -29,6 +31,8 @@ const Header = () => {
   // history settings
   const saveHistory = localStorage?.getItem('history')
   const SET_HISTORY = HistoryReducer.actions.CHANGE_HISTORY_STATE
+
+  const login = UserReducer.actions.login
   useEffect(() => {
     dispatch(setDevice(getDevice))
     // if item in localStorage then
@@ -42,11 +46,30 @@ const Header = () => {
     }
   },[])
   useEffect(() => {
+    let authUser = Object.keys(window.localStorage)
+    .filter(item => item.startsWith('firebase:authUser'))[0]
+    let json = localStorage.getItem(authUser)
+    if (json){
+      const new_user  = JSON.parse(json)
+      const setUser : IUser = {
+        username : new_user.displayName,
+        email : new_user.email,
+        photoUrl: new_user.photoURL,
+        access_token : new_user.apiKey
+      }
+      console.log(setUser)
+      dispatch(login(setUser))
+    }
     if (user){
       GET_WATCHED_LIST(user.username)
     }
+    /* if (authUser){
+      authUser = JSON.parse(authUser)
+      console.log(authUser)
+      dispatch(login(authUser))
+    } */
 
-  },[user?.username]) // if dependency array is empty,then doesen't work
+  },[user?.access_token]) // if dependency array is empty,then doesen't work
   // make scroll unavailable when sideBar on
   useEffect(() => {
     if (showSideBar || showModal){

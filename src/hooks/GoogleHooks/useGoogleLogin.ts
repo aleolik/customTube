@@ -1,6 +1,6 @@
 
 import {provider} from '../../index'
-import { signInWithPopup,GoogleAuthProvider, getAuth, setPersistence} from 'firebase/auth'
+import { signInWithPopup,GoogleAuthProvider, getAuth, setPersistence, browserLocalPersistence} from 'firebase/auth'
 import { IUser } from '../../types/userTypes'
 import { useAppDispatch, useAppSelector } from "../TypedHooks"
 import { UserReducer } from "../../reducers/User"
@@ -13,37 +13,39 @@ export const useGoogle = () => {
     const {login} = UserReducer.actions
 
     const LoginWithGoogle = async() => {
-        signInWithPopup(auth,provider).then(async(result) => {
-            const creds = GoogleAuthProvider.credentialFromResult(result)
-            const access_token = creds?.accessToken
-            const email = result.user?.email
-            const username = result.user?.displayName
-            const photoUrl = result.user.photoURL     
-            if (email && username && access_token && photoUrl){
-                const user : IUser = {
-                    username : username,
-                    email : email,
-                    access_token : access_token,
-                    photoUrl : photoUrl,
-                    watched : []       
-                }
-                dispatch(login(user))
-                const docRef = doc(database,'users',`${result.user.displayName}`)
-                const docSnap = await getDoc(docRef)
-                if (!docSnap.exists()){
-                    try{
-                        await setDoc(docRef,{
-                            user : user
-                        })
+        setPersistence(auth,browserLocalPersistence).then(() => {
+            signInWithPopup(auth,provider).then(async(result) => {
+                const creds = GoogleAuthProvider.credentialFromResult(result)
+                const access_token = creds?.accessToken
+                const email = result.user?.email
+                const username = result.user?.displayName
+                const photoUrl = result.user.photoURL     
+                if (email && username && access_token && photoUrl){
+                    const user : IUser = {
+                        username : username,
+                        email : email,
+                        access_token : access_token,
+                        photoUrl : photoUrl,
+                        watched : []       
                     }
-                    catch(e){
-                        let message = 'Unknown Message'
-                        if (e instanceof Error) message = e.message
-                        console.error(message)
+                    dispatch(login(user))
+                    const docRef = doc(database,'users',`${result.user.displayName}`)
+                    const docSnap = await getDoc(docRef)
+                    if (!docSnap.exists()){
+                        try{
+                            await setDoc(docRef,{
+                                user : user
+                            })
+                        }
+                        catch(e){
+                            let message = 'Unknown Message'
+                            if (e instanceof Error) message = e.message
+                            console.error(message)
+                        }
                     }
-                }
-            }})
-        .catch((e) => console.error(e))
+                }})
+            .catch((e) => console.error(e))
+        })
     }
     return(
         LoginWithGoogle
