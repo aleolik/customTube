@@ -28,7 +28,7 @@ export const Card : FC<CardProps> = ({video}) => {
 
   const avatarNavigate = (e : React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation()
-    navigate(`/user/${video.user.username}`)
+    navigate(`/user/${video.user.username}/${video.user.email}`)
   }
 
   const onMouseEnter = () => {

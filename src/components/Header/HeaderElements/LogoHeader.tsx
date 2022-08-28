@@ -6,7 +6,11 @@ import { useAppDispatch, useAppSelector } from '../../../hooks/TypedHooks'
 import logo from '../../../media/logo.png'
 import { modalReducer } from '../../../reducers/ModalReducer'
 import { IconContext } from 'react-icons'
+import { getAuth,Auth, onAuthStateChanged } from 'firebase/auth'
 export const LogoHeader = () => {
+
+
+
   const {CloseSideBar,OpenSideBar} = modalReducer.actions
   const showSideBar = useAppSelector(state => state.modal.show_side_bar)
   const dispatch = useAppDispatch()

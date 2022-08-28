@@ -12,29 +12,41 @@ import { useLoading } from '../../hooks/useLoading'
 import RenderVideos from '../../helpers/VideoHelpers/RenderVideos'
 import RenderAlert from '../../helpers/RenderAlert'
 import { Loader } from '../../components/Loader/Loader'
+import { getAuth } from 'firebase/auth'
+import { ErrorHandler, ErrorHandlerReturn } from '../../helpers/ErrorHandler'
 
 const ProfilePage = () => {
   const dispatch = useAppDispatch()
-  const {username} = useParams<string>()
+  const {username,email} = useParams()
 
-  const getUsersPage = useGetUserData(username)
-
-  const user = useAppSelector(state => state.user.user)
+  const auth = getAuth()
 
   // load videos
   const {error,loading,videos} = useAppSelector(state => state.video)
   // load usersPage
   const [usersPage,setUsersPage] = useState<null | undefined | IUser>(null)
+  const getUsersPage = useGetUserData(email)
+
   const [fetchData,fetchError,fetchLoading] = useLoading(async() => {
-    await getUsersPage.then((res) => setUsersPage(res?.user))
-  })
+    await getUsersPage.then((res) => {
+      if (res){
+        setUsersPage(res)
+      }
+    })})
+
 
   useEffect(() => {
-    if (username){
-      dispatch(LoadUserVideos(username))
-      fetchData()
+    try{
+      if (email && username){
+        console.log('loading')
+        dispatch(LoadUserVideos(email))
+        fetchData()
+      }
     }
-  },[username])
+    catch(e){
+      ErrorHandler(e)
+    }
+  },[username,email])
 
 
   return (
@@ -63,7 +75,7 @@ const ProfilePage = () => {
                           <img alt='avatar' src={usersPage?.photoUrl}  style={{'width':90,'height':60}}  className={css.image} ></img>
                       )}
                     </div>
-                    {user?.username === username && (
+                    {email === auth.currentUser?.email && (
                       <VideoForm videos={videos}/>
                     )}
               <hr></hr>

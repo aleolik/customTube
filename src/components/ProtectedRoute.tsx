@@ -4,13 +4,12 @@ import { useAppSelector } from '../hooks/TypedHooks'
 import FAQ from './FAQ'
 import LoginForm from './LoginForm'
 import ModalWindow from './MyModal/ModalWindow'
+import RegisterForm from './RegisterForm'
 const ProtectedRoute = () => {
 
   const user = useAppSelector(state => state.user.user)
 
-  const [showModal,setShowModal] = useState<boolean>(true)
-
-  const show_login_or_faq = useAppSelector(state => state.modal.show_login_or_faq)
+  const {showFAQ,showLogin,showRegister} = useAppSelector(state => state.modal)
   return (
     <div>
         {user !== null
@@ -18,10 +17,13 @@ const ProtectedRoute = () => {
             <Outlet/>
         )
         : (
-            <ModalWindow protectedRoute={true} showModal={showModal} setShowModal={setShowModal}>
-                 {show_login_or_faq === 'login'
-                 ? (<LoginForm protectedRoute={true}setShowModal={setShowModal}/>)
-                 : (<FAQ/>)}
+            <ModalWindow protectedRoute={true}>
+                 {showLogin
+                 && (<LoginForm protectedRoute={true}/>)}
+                 {showFAQ
+                 && (<FAQ/>)}
+                 {showRegister
+                 && (<RegisterForm protectedRoute={true}/>)}
             </ModalWindow>
         )}
     </div>

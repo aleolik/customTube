@@ -1,31 +1,55 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 // when modal open shows register or login component,depends on state
 interface IModal{
-    show_login_or_faq : string,
+    showLogin : boolean,
+    showRegister : boolean,
+    showFAQ : boolean
     show_side_bar : boolean
+    error : string
+    showModal : boolean
 }
 const initialState : IModal = {
-    show_login_or_faq : 'login',
-    show_side_bar : false
+    showLogin : true,
+    showRegister : false,
+    showFAQ : false,
+    show_side_bar : false,
+    error : '',
+    showModal : false
 }
 export const modalReducer = createSlice({
     name : 'modal-reducer',
     initialState : initialState,
     reducers : {
-        changeState(state:IModal){
-            if (state.show_login_or_faq === 'login'){
-                state.show_login_or_faq = 'faq'
-            }
-            else{
-                state.show_login_or_faq = 'login'
-            }
+        showLoginAction(state:IModal){
+            state.showLogin = true
+            state.showFAQ = false
+            state.showRegister = false
+        },
+        showRegisterAction(state:IModal){
+            state.showLogin = false
+            state.showRegister = true
+            state.showFAQ = false
+        },
+        showFAQAction(state:IModal){
+            state.showLogin = false
+            state.showRegister = false
+            state.showFAQ = true
         },
         OpenSideBar(state:IModal){
             state.show_side_bar = true
         },
         CloseSideBar(state:IModal){
             state.show_side_bar = false
+        },
+        setError(state:IModal,action:PayloadAction<string>){
+            state.error = action.payload
+        },
+        showModalWindow(state : IModal){
+            state.showModal = true
+        },
+        closeModalWindow(state : IModal){
+            state.showModal = false
         }
     }
 }) 

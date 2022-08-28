@@ -11,11 +11,11 @@ import { AppDispatch } from "../../store/store";
 import { IVideo } from "../../types/VideoTypes";
 import { videoReducer } from "../VideoReducer";
 
-export const LoadUserVideos = (username:String='',video_limit=25) => {
+export const LoadUserVideos = (email?:string | null | undefined,video_limit=25) => {
     return async (dispatch:AppDispatch) => {
         let collectionRef = query(collection(database,'videos'),limit(video_limit),orderBy('video.created'))
-        if (username){
-            collectionRef = query(collection(database,'videos'),where('video.user.username','==',username),limit(video_limit),orderBy('video.created')) as CollectionReference  
+        if (email){
+            collectionRef = query(collection(database,'videos'),where('video.user.email','==',email),limit(video_limit),orderBy('video.created')) as CollectionReference  
         }
         const {load,loadSuccess,loadError} = videoReducer.actions
         try{    

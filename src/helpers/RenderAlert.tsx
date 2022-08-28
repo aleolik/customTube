@@ -10,7 +10,7 @@ const RenderAlert : FC<RenderAlertProps> = ({error}) => {
         {error ?
         (
           <div>
-            {error}
+            <h5 style={{'textAlign':'center'}}>{error}</h5>
           </div>
         )
         : (

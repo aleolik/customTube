@@ -14,12 +14,15 @@ import {modalReducer} from '../../reducers/ModalReducer'
 import { HistoryReducer } from '../../reducers/HistoryReducer'
 import { UserReducer } from '../../reducers/User'
 import { IUser } from '../../types/userTypes'
+import { getAuth, onAuthStateChanged } from 'firebase/auth'
+import RegisterForm from '../RegisterForm'
 const Header = () => {
   const user = useAppSelector(state => state.user.user)
-  const [showModal,setShowModal] = useState(false)
+  const showModal = useAppSelector(state => state.modal.showModal)
+  const {showModalWindow,closeModalWindow} = modalReducer.actions
   const [avatarOnFocus,setAvatarOnFocus] = useState(false)
   const showSideBar = useAppSelector(state => state.modal.show_side_bar)
-  const show_login_or_faq = useAppSelector(state =>  state.modal.show_login_or_faq)
+  const {showFAQ,showLogin,showRegister} = useAppSelector(state =>  state.modal)
   const closeSideBar = modalReducer.actions.CloseSideBar
   // set current device(helps with ui stuff)
   const {setDevice} = DeviceReducer.actions
@@ -27,12 +30,36 @@ const Header = () => {
   const loading = useAppSelector(state => state.video.loading)
   const dispatch = useAppDispatch()
   const GET_WATCHED_LIST = useGetWatchedForUser()
-
   // history settings
   const saveHistory = localStorage?.getItem('history')
   const SET_HISTORY = HistoryReducer.actions.CHANGE_HISTORY_STATE
 
   const login = UserReducer.actions.login
+
+  const auth = getAuth()
+  const OpenModalWindow = () => {
+    dispatch(showModalWindow())
+  }
+  useEffect(() => {
+    onAuthStateChanged(auth,(user) => {
+
+      const username = user?.displayName
+      let photoURL = user?.photoURL
+      const email = user?.email
+      if (photoURL === undefined){
+        photoURL = null
+      }
+      if (username && email){
+        const madeUser : IUser = {
+          username : username,
+          photoUrl : photoURL,
+          email : email
+        }
+        dispatch(login(madeUser))
+        GET_WATCHED_LIST()
+      }
+    })
+  },[auth.currentUser])
   useEffect(() => {
     dispatch(setDevice(getDevice))
     // if item in localStorage then
@@ -45,31 +72,6 @@ const Header = () => {
       }
     }
   },[])
-  useEffect(() => {
-    let authUser = Object.keys(window.localStorage)
-    .filter(item => item.startsWith('firebase:authUser'))[0]
-    let json = localStorage.getItem(authUser)
-    if (json){
-      const new_user  = JSON.parse(json)
-      const setUser : IUser = {
-        username : new_user.displayName,
-        email : new_user.email,
-        photoUrl: new_user.photoURL,
-        access_token : new_user.apiKey
-      }
-      console.log(setUser)
-      dispatch(login(setUser))
-    }
-    if (user){
-      GET_WATCHED_LIST(user.username)
-    }
-    /* if (authUser){
-      authUser = JSON.parse(authUser)
-      console.log(authUser)
-      dispatch(login(authUser))
-    } */
-
-  },[user?.access_token]) // if dependency array is empty,then doesen't work
   // make scroll unavailable when sideBar on
   useEffect(() => {
     if (showSideBar || showModal){
@@ -93,10 +95,13 @@ const Header = () => {
         )}
         <LogoHeader />
         {showModal && (
-          <ModalWindow showModal={showModal} setShowModal={setShowModal}>
-            {show_login_or_faq === 'login'
-            ? (<LoginForm setShowModal={setShowModal}/>    )
-            : (<FAQ/>    )}     
+          <ModalWindow>
+            {showLogin
+            && (<LoginForm/>)} 
+            {showFAQ
+            && (<FAQ/>)} 
+             {showRegister
+            && (<RegisterForm/>)} 
           </ModalWindow>
         )}
          {user && !loading
@@ -110,7 +115,7 @@ const Header = () => {
             )
             : (
               <div>
-                  <button style={{'marginRight':30+'px'}}  className='btn btn-light' onClick={() => setShowModal(true)}>Sign In</button>
+                  <button style={{'marginRight':30+'px'}}  className='btn btn-light' onClick={OpenModalWindow}>Sign In</button>
               </div>
             )}</div>
           )

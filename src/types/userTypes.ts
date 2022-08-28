@@ -3,7 +3,6 @@ import { IVideo } from "./VideoTypes"
 export interface IUser{
     username : string
     email : string
-    access_token : string
     photoUrl : string | null
     watched? : IVideo[]
 }

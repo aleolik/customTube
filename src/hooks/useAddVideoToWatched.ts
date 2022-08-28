@@ -1,3 +1,4 @@
+import { getAuth } from 'firebase/auth'
 import {doc,getDoc,getDocs,query,setDoc, where } from 'firebase/firestore'
 import { useEffect} from 'react'
 import { database } from '../config'
@@ -9,9 +10,11 @@ import { useAppDispatch, useAppSelector } from './TypedHooks'
 
 export const useGetWatchedForUser = () => {
     const dispatch = useAppDispatch()
-    const GET_WATCHED_LIST = async(username:string) : Promise<IVideo[] | null> => {
-        if (typeof username === 'string'){
-            const userRef = doc(database,'users',`${username}`)
+    const GET_WATCHED_LIST = async() : Promise<IVideo[] | null> => {
+        const auth = getAuth()
+        const email = auth.currentUser?.email
+        if (email){
+            const userRef = doc(database,'users',`${email}`)
             const userSnap = await getDoc(userRef)
             const setWatchedVideos = UserReducer.actions.setWatchedVideos
             if (userSnap.exists()){
@@ -30,8 +33,10 @@ export const useGetWatchedForUser = () => {
 }
 
 export const useADD_VIDEO = () => {
+    const auth = getAuth()
+    const email = auth.currentUser?.email
+    const userRef = doc(database,'users',`${email}`)
     const user = useAppSelector(state => state.user.user)
-    const userRef = doc(database,'users',`${user?.username}`)
     const dispatch = useAppDispatch()
     const video = useAppSelector(state => state.video.video)
     const saveHistory = useAppSelector(state => state.history.saveHistory)

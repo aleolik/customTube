@@ -9,7 +9,7 @@ import { AiOutlineLogout,AiOutlineUser } from "react-icons/ai"
 
 export const useOptions = () => {
     const logout = useLogout()
-    const username = useAppSelector(state => state.user.user?.username)
+    const user = useAppSelector(state => state.user.user)
     const LogoutOption : IButton = {
         id : 13200.500120,
         title : 'Logout',
@@ -19,7 +19,7 @@ export const useOptions = () => {
     const MyProfileOption : ILink = {
         id : 1320012.50420,
         title : 'Profile',
-        to : `/user/${username}`,
+        to : `/user/${user?.username}/${user?.email}`,
         icon : 'person'
     }
 

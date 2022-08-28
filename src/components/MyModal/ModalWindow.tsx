@@ -1,20 +1,29 @@
 import React,{FC, useEffect} from 'react'
+import { useAppDispatch, useAppSelector } from '../../hooks/TypedHooks'
+import { modalReducer } from '../../reducers/ModalReducer'
 import css from './ModalWindow.module.css'
 interface ModalWndowProps{
-    showModal : boolean
-    setShowModal : (state:boolean) => void
     protectedRoute? : boolean
     children : any
 }
-const ModalWindow : FC<ModalWndowProps> = ({showModal,setShowModal,children,protectedRoute=false}) => {
+const ModalWindow : FC<ModalWndowProps> = ({children,protectedRoute=false}) => {
   const rootClasses = [css.modal]
+  const showModal = useAppSelector(state => state.modal.showModal)
+  const dispatch = useAppDispatch()
+  const {closeModalWindow,showModalWindow} = modalReducer.actions
   if (showModal){
     rootClasses.push(css.active)
   }
 
+  useEffect(() => {
+    if (protectedRoute){
+      dispatch(showModalWindow())
+    }
+  },[])
+
   const onClick = () => {
     if (!protectedRoute){
-      setShowModal(false)
+      dispatch(closeModalWindow())
     }
   }
   return (
