@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import FormButtons from './FormButtons'
 import InputForm from './InputForm'
-import { useAppDispatch } from '../hooks/TypedHooks'
+import { useAppDispatch, useAppSelector } from '../hooks/TypedHooks'
 import { modalReducer } from '../reducers/ModalReducer'
 
 interface RegisterFormProps{
@@ -9,11 +9,11 @@ interface RegisterFormProps{
   }
 
 const RegisterForm : FC<RegisterFormProps> = ({protectedRoute=false}) => {
-
+  const load = useAppSelector(state => state.loader.load)
   const closeModalWindow = modalReducer.actions.closeModalWindow
   const dispatch = useAppDispatch()
     const canCloseModal = () => {
-        if(!protectedRoute){
+        if(!protectedRoute && !load){
           dispatch(closeModalWindow())
         }
     }

@@ -5,7 +5,7 @@ import { RenderTimeAgo } from '../helpers/VideoHelpers/RenderTimeAgo'
 import { useAppSelector } from '../hooks/TypedHooks'
 import { storage } from '../index'
 import { IVideo } from '../types/VideoTypes'
-
+import defaultUserAvatar from '../media/defaultUserAvatar.png'
 interface CardProps{
     video : IVideo
 }
@@ -47,9 +47,14 @@ export const Card : FC<CardProps> = ({video}) => {
     <div className="card-body"
     onClick={avatarNavigate}
     onMouseEnter={onMouseEnter}
-    onMouseLeave={onMouseLeave}>
-        {video.user.photoUrl && (
-            <img style={{'width':60,'height':45,'borderRadius':30+'px','border':imageFocus ? '2px solid aqua' : '2px solid gray'}} src={video.user.photoUrl} alt=''></img>
+    onMouseLeave={onMouseLeave}
+    style={{'backgroundColor':'rgba(0,0,0,0.1)'}}
+    >  
+        {video.user.photoUrl ? (
+            <img style={{'width':60,'height':45,'borderRadius':30+'px','border':imageFocus ? '2px solid aqua' : '2px solid gray'}} src={video.user.photoUrl} alt='avatar'></img>
+        )
+        :(
+          <img style={{'width':60,'height':45,'borderRadius':30+'px','border':imageFocus ? '2px solid aqua' : '2px solid darkgray'}} src={defaultUserAvatar} alt='avatar'></img>
         )}
         <h6>{video.user.username}</h6>
     </div>

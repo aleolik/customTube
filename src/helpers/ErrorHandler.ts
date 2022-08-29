@@ -13,6 +13,5 @@ export const ErrorHandlerReturn = (e : any) => {
     if (!message && e instanceof Error){
         message = `Error : ${e.name}`
     }
-    console.log('message',message)
     return message
 }

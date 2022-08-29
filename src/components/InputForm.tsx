@@ -1,18 +1,23 @@
 import React, { ChangeEvent, useState,MouseEvent } from 'react'
 import RenderAlert from '../helpers/RenderAlert'
-import { useAppSelector } from '../hooks/TypedHooks'
+import { useAppDispatch, useAppSelector } from '../hooks/TypedHooks'
+import { useCreateUserDoc } from '../hooks/useCreateUserDoc'
 import { useLoginWithEmailAndPassword } from '../hooks/useLoginWithEmailAndPassword'
-import { useRegisterWithEmailAndPassword } from '../hooks/useRegisterWithEmailAndPassword'
-
+import { REGISTER_USER } from '../reducers/asyncActions/REGISTER_USER'
+import { Loader } from './Loader/Loader'
+import {modalReducer} from '../reducers/ModalReducer'
 // login or register form when modal open
 const InputForm = () => {
   const [email,setEmail] = useState<string>('')
   const [password,setPassword] = useState<string>('')
   const [username,setUsername] = useState<string>('')
   const {showLogin,showRegister} = useAppSelector(state => state.modal)
-  const register = useRegisterWithEmailAndPassword()
   const login = useLoginWithEmailAndPassword()
+  const load = useAppSelector(state => state.loader.load)
   const error = useAppSelector(state => state.modal.error)
+  const CREATE_DOC = useCreateUserDoc()
+  const dispatch = useAppDispatch()
+  const setError = modalReducer.actions.setError
   // handlers
   const emailHandler = (e : ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value)
@@ -28,11 +33,23 @@ const InputForm = () => {
     e.preventDefault()
     // login
     if (showLogin){
-      login(email,password)
+      if (email && password){
+        dispatch(setError(''))
+        login(email,password)
+      }
+      else{
+        dispatch(setError('Email Or Password are Empty'))
+      }
     }
     // create new user
     else{
-      register(username,email,password)
+      if (username && email && password){
+        dispatch(setError(''))
+        dispatch(REGISTER_USER(email,username,password,login,CREATE_DOC))
+      }
+      else{
+        dispatch(setError('Username Or Password or Email are Empty'))
+      }
     }
   }
   return (
@@ -54,9 +71,16 @@ const InputForm = () => {
         <span className="input-group-text" id="inputGroup-sizing-default">password</span>
             <input onChange={passwordHandler} type="text" className="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"/>
         </div>
-          <div style={{'display':'flex','justifyContent':'center'}}>
-            <button style={{'width':60+'%'}} className='btn btn-lg btn-outline-primary'>{showLogin ? 'Login' : 'Register'}</button>
-          </div>
+          {load
+          ? (
+            <div style={{'opacity':0.5}}><Loader/></div>
+          )
+          : (
+            <div style={{'display':'flex','justifyContent':'center'}}>
+              <button  style={{'width':60+'%'}} className='btn btn-lg btn-outline-dark'>{showLogin ? 'Login' : 'Register'}</button>
+            </div>
+          )}
+        
     </form>
   )
 }

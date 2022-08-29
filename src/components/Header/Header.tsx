@@ -16,6 +16,7 @@ import { UserReducer } from '../../reducers/User'
 import { IUser } from '../../types/userTypes'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import RegisterForm from '../RegisterForm'
+import { WHEN_AUTH_STATE_CHANGED } from '../../reducers/asyncActions/WHEN_AUTH_STATE_CHANGED'
 const Header = () => {
   const user = useAppSelector(state => state.user.user)
   const showModal = useAppSelector(state => state.modal.showModal)
@@ -42,7 +43,6 @@ const Header = () => {
   }
   useEffect(() => {
     onAuthStateChanged(auth,(user) => {
-
       const username = user?.displayName
       let photoURL = user?.photoURL
       const email = user?.email
@@ -55,11 +55,10 @@ const Header = () => {
           photoUrl : photoURL,
           email : email
         }
-        dispatch(login(madeUser))
-        GET_WATCHED_LIST()
+        dispatch(WHEN_AUTH_STATE_CHANGED(madeUser))
       }
     })
-  },[auth.currentUser])
+  },[])
   useEffect(() => {
     dispatch(setDevice(getDevice))
     // if item in localStorage then

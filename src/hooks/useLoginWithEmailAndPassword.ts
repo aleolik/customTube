@@ -1,43 +1,37 @@
-import { browserLocalPersistence, getAuth, setPersistence, signInWithEmailAndPassword, updateProfile } from "firebase/auth"
+import { browserLocalPersistence, getAuth,  setPersistence, signInWithEmailAndPassword, updateProfile } from "firebase/auth"
 
 import { ErrorHandler } from "../helpers/ErrorHandler"
 import { modalReducer } from "../reducers/ModalReducer"
 import { UserReducer } from "../reducers/User"
 import { useAppDispatch } from "./TypedHooks"
+import { useGetWatchedForUser } from "./useAddVideoToWatched"
 import { useGetUserData, useGetUserDataSecondVersion } from "./useGetUserData"
-
+import { reload } from "firebase/auth"
+import { WHEN_AUTH_STATE_CHANGED } from "../reducers/asyncActions/WHEN_AUTH_STATE_CHANGED"
 export const useLoginWithEmailAndPassword = () => {
     const dispatch = useAppDispatch()
     const setError = modalReducer.actions.setError
     const auth = getAuth()
-    const closeModalWindow = modalReducer.actions.closeModalWindow
     const getUserData =  useGetUserDataSecondVersion()
-    const userLogin = UserReducer.actions.login
     const Login = async(email:string,password:string) => {
       try{
-        await setPersistence(auth,browserLocalPersistence).then(() => {
-          signInWithEmailAndPassword(auth,email,password).then(() =>{
-              getUserData(email).then((res) => {
-                console.log(res,'res')
-                if (auth.currentUser){
-                  console.log('updated')
-                  updateProfile(auth.currentUser,{
-                    displayName : res?.username,
-                    photoURL : res?.photoUrl
-                  })
-                }
-              }).then(() => {
-                if (auth.currentUser && auth.currentUser.displayName){             
-                  dispatch(userLogin({
-                    email : email,
-                    photoUrl : auth?.currentUser?.photoURL,
-                    username : auth?.currentUser?.displayName     
-                  }))
-                  dispatch(closeModalWindow())
-                }
-              })
+        console.log('working...')
+        await setPersistence(auth,browserLocalPersistence)
+        await signInWithEmailAndPassword(auth,email,password)
+        const userData = await getUserData(email.toLowerCase())
+        if (auth.currentUser){
+          await updateProfile(auth.currentUser,{
+            displayName : userData?.username,
+            photoURL : userData?.photoUrl
           })
-        })
+          if (auth.currentUser.photoURL !== undefined && auth.currentUser.displayName){
+            dispatch(WHEN_AUTH_STATE_CHANGED({
+              photoUrl : auth.currentUser.photoURL,
+              email : email,
+              username : auth?.currentUser.displayName
+            }))
+          }
+        }
       }
       catch(e){
         dispatch(setError('Email or Password are uncorrect!'))
