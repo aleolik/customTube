@@ -5,11 +5,10 @@ import { AppDispatch } from "../../store/store"
 import { UserReducer } from "../User"
 import { videoReducer } from "../VideoReducer"
 
-
 // async function that sets state.video.video to videoObj,then add it to state.video.watched array
-export const ADD_VIDEO_TO_WATCHLIST = (video_name:string,username:string) => {
-    const ADD_VIDEO_TO_WATCHLIST = UserReducer.actions.ADD_VIDEO_TO_WATCHLIST
+export const SET_CURRENT_VIDEO = (video_name:string,username:string) => {
     return async (dispatch:AppDispatch)  => {
+        //adds video to firebase,gets it from firebase,sets it to user.watched state
         const LOAD_VIDEO_SUCCES = videoReducer.actions.LOAD_VIDEO_SUCCES
         const videoRef = collection(database,'videos')
         const q = query(videoRef,where('video.name','==',`${video_name}`))
@@ -19,7 +18,6 @@ export const ADD_VIDEO_TO_WATCHLIST = (video_name:string,username:string) => {
             if (video.data().video.user.username === username){
                 const videoObj = video.data().video
                 dispatch(LOAD_VIDEO_SUCCES(videoObj))
-                dispatch(ADD_VIDEO_TO_WATCHLIST(videoObj))
               }
             }
           )

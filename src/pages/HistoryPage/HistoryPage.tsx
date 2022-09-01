@@ -16,7 +16,6 @@ const HistoryPage = () => {
   const dispatch = useAppDispatch()
   const device = useDevice()
   const CHANGE_HISTORY = HistoryReducer.actions.CHANGE_HISTORY_STATE
-  const user = useAppSelector(state => state.user.user)
   const setHistory = () => {
     if (saveHistory){
       dispatch(CHANGE_HISTORY(false))
@@ -26,6 +25,9 @@ const HistoryPage = () => {
       dispatch(CHANGE_HISTORY(true))
       localStorage.setItem('history','true')
     }
+  }
+  const CLEAR_WATCHLIST = () => {
+    dispatch(CLEAR_HISTORY())
   }
   return (
     <div className='container-fluid'>
@@ -65,7 +67,7 @@ const HistoryPage = () => {
                 <label className="form-check-label" htmlFor="flexSwitchCheckChecked" style={{'fontSize':15}}>Save History (only on this device)</label>
               </div>
             </div>
-            <button disabled={watchedVideos?.length ? false : true} className='btn btn-danger' style={{'width':100+'%'}} onClick={() => dispatch(CLEAR_HISTORY(user))}>Clear History<RiDeleteBin5Fill style={{'marginLeft':5}} size={20}/></button>
+            <button disabled={watchedVideos?.length ? false : true} className='btn btn-danger' style={{'width':100+'%'}} onClick={CLEAR_WATCHLIST}>Clear History<RiDeleteBin5Fill style={{'marginLeft':5}} size={20}/></button>
           </div>
         </div>
       </div>

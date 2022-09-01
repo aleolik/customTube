@@ -17,7 +17,7 @@ initializeApp(firebaseConfig)
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
-const store = SetupStore()
+export const store = SetupStore()
 export const provider = new GoogleAuthProvider()
 export const storage = getStorage(app)
 root.render(

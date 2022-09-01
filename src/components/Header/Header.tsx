@@ -9,7 +9,6 @@ import { UserAvatar } from './HeaderElements/UserAvatar'
 import BurgerMenu from '../BurgerMenu/BurgerMenu'
 import { DeviceReducer } from '../../reducers/DeviceReducer'
 import { useDevice } from '../../helpers/useDevice'
-import { useGetWatchedForUser } from '../../hooks/useAddVideoToWatched'
 import {modalReducer} from '../../reducers/ModalReducer'
 import { HistoryReducer } from '../../reducers/HistoryReducer'
 import { UserReducer } from '../../reducers/User'
@@ -30,7 +29,6 @@ const Header = () => {
   const getDevice = useDevice()
   const loading = useAppSelector(state => state.video.loading)
   const dispatch = useAppDispatch()
-  const GET_WATCHED_LIST = useGetWatchedForUser()
   // history settings
   const saveHistory = localStorage?.getItem('history')
   const SET_HISTORY = HistoryReducer.actions.CHANGE_HISTORY_STATE

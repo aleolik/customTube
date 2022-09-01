@@ -23,10 +23,10 @@ export const UserReducer = createSlice({
             }
         },
         ADD_VIDEO_TO_WATCHLIST(state:userState,action:PayloadAction<IVideo>){
-            if (state.user?.watched?.length){
+            if (state.user && state.user.watched?.length){
                 state.user.watched = [...state.user.watched,action.payload]
             }
-            else if (state.user?.watched?.length === 0){
+            else if (state.user && !state.user.watched?.length){
                 state.user.watched = [action.payload]
             }
         },

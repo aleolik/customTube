@@ -8,6 +8,7 @@ import { IVideo } from "../../types/VideoTypes"
 import { LoaderRedcuer } from "../LoaderReducer"
 import { modalReducer } from "../ModalReducer"
 import { UserReducer } from "../User"
+import { GET_WATCHED_LIST } from "./GET_WATCHED_LIST"
 
 export const WHEN_AUTH_STATE_CHANGED = (user:IUser) => {
 
@@ -23,15 +24,8 @@ export const WHEN_AUTH_STATE_CHANGED = (user:IUser) => {
             const setWatchedVideos = UserReducer.actions.setWatchedVideos
             try{
                 dispatch(startLoading())
-                const userSnap = await getDoc(userRef)
-                if (userSnap.exists()){
-                    if (userSnap.data().user.watched){
-                        let watched : IVideo[] =  userSnap.data().user.watched
-                        watched = watched.reverse()
-                        dispatch(setWatchedVideos(watched))
-                    }
-                }
                 dispatch(login(user))
+                await dispatch(GET_WATCHED_LIST())
              
             }
             catch(e){
