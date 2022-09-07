@@ -22,10 +22,10 @@ export const useADD_VIDEO = () => {
     const video = useAppSelector(state => state.video.video)
     const saveHistory = useAppSelector(state => state.history.saveHistory)
 
-    const ADD_VIDEO = async(username:string,video_name:string) => {
+    const ADD_VIDEO = async(username:string,videoID:string) => {
         if (saveHistory){
             // setting video.video
-            await dispatch(SET_CURRENT_VIDEO(video_name,username))
+            await dispatch(SET_CURRENT_VIDEO(videoID,username))
             // get current watched list,from firebase
             dispatch(GET_WATCHED_LIST())
             // loading it to FireBase

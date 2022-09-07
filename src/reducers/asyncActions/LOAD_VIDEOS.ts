@@ -12,6 +12,8 @@ import { IVideo } from "../../types/VideoTypes";
 import { videoReducer } from "../VideoReducer";
 
 export const LoadUserVideos = (email?:string | null | undefined,video_limit=25) => {
+    // loads videos on MainPage - default
+    // loads videos on ProfilePage - if email
     return async (dispatch:AppDispatch) => {
         let collectionRef = query(collection(database,'videos'),limit(video_limit),orderBy('video.created'))
         if (email){

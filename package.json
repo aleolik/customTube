@@ -49,5 +49,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/video.js": "^7.3.46",
+    "video.js": "^7.20.2"
   }
 }

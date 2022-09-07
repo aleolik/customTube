@@ -9,6 +9,7 @@ export interface IVideo{
     created : number,
     views : number,
     photoUrl : string
+    file? : string
 }
 
 
@@ -17,10 +18,6 @@ export interface IPhoto{
     photoFile : File | null,
 }
 
-export enum VideoActions{
-    add_video = 'add_video',
-    delete_video = 'delete_video'
-}
 
 export interface IMakeVideo{
     file : File | null

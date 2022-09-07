@@ -10,9 +10,3 @@ export interface IUser{
 export interface userState{
     user : IUser | null
 }
-
-export enum UserActions{
-    logout = 'logout',
-    login = 'login',
-    register = 'register'
-}

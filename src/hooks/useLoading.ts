@@ -7,8 +7,7 @@ export const useLoading = (callback : () => any) : any[] => {
     const FetchData = async() => {
         try{
             setLoading(true)
-            await callback()
-            
+            await callback()        
         }
         catch(e){
             let message = 'Unknown error'

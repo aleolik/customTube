@@ -18,12 +18,11 @@ export const WHEN_AUTH_STATE_CHANGED = (user:IUser) => {
     const {endLoading,startLoading} = LoaderRedcuer.actions
     return async(dispatch:AppDispatch) => {
         if (email){
-            const userRef = doc(database,'users',`${email}`)
             const login = UserReducer.actions.login
             const closeModalWindow = modalReducer.actions.closeModalWindow
-            const setWatchedVideos = UserReducer.actions.setWatchedVideos
             try{
                 dispatch(startLoading())
+                user.email = user.email.toLowerCase()
                 dispatch(login(user))
                 await dispatch(GET_WATCHED_LIST())
              

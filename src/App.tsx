@@ -39,7 +39,7 @@ function App() {
         <Route path='/' element={<Layout/>}>
           <Route index element={<Main/>}></Route>
            <Route path='user/:username/:email' element={<ProfilePage/>}></Route>
-           <Route path=':videoname/:username' element={<VideoPage/>}></Route>
+           <Route path=':videoID/:username' element={<VideoPage/>}></Route>
            <Route element={<ProtectedRoute/>}>
               <Route path='/history' element={<HistoryPage/>}></Route>
            </Route>

@@ -20,6 +20,7 @@ export const REUPLOAD_VIDEO_IN_FIREBASE = async() => {
                 const updateFireBase = async() => {
                     await setDoc(videoRef,{
                         user : {
+                            ...user,
                             watched : [...watchedListToReturn,video]
                         }
                     })

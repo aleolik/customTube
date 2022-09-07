@@ -19,7 +19,7 @@ export const useOptions = () => {
     const MyProfileOption : ILink = {
         id : 1320012.50420,
         title : 'Profile',
-        to : `/user/${user?.username}/${user?.email}`,
+        to : `/user/${user?.username}/${user?.email.toLowerCase()}`,
         icon : 'person'
     }
 

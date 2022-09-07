@@ -5,6 +5,7 @@ import { RenderTimeAgo } from '../helpers/VideoHelpers/RenderTimeAgo'
 import { storage } from '../index'
 import { useNavigate } from 'react-router-dom'
 import { IVideo } from '../types/VideoTypes'
+import RenderUserAvatar from '../helpers/RenderUserAvatar'
 
 interface CardOnHistoryPageProps{
     video : IVideo
@@ -25,12 +26,12 @@ export const CardOnHistoryPage : FC<CardOnHistoryPageProps> = ({video}) => {
   },[])
 
   const cardNavigate = () => {
-    navigate(`/${video.name}/${video.user.username}`)
+    navigate(`/${video.id}/${video.user.username}`)
   }
 
   const avatarNavigate = (e : React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation()
-    navigate(`/user/${video.user.username}`)
+    navigate(`/user/${video.id}`)
   }
 
   const onMouseEnter = () => {
@@ -45,14 +46,8 @@ export const CardOnHistoryPage : FC<CardOnHistoryPageProps> = ({video}) => {
     <div className="card-body">
       <h2 className="card-title">{video.name}</h2>
     </div>
-    <div className="card-body"
-    onClick={avatarNavigate}
-    onMouseEnter={onMouseEnter}
-    onMouseLeave={onMouseLeave}>
-        {video.user.photoUrl && (
-            <img style={{'width':60,'height':45,'borderRadius':30+'px','border':imageFocus ? '2px solid aqua' : '2px solid gray'}} src={video.user.photoUrl} alt=''></img>
-        )}
-        <h3>{video.user.username}</h3>
+    <div className="card-body">
+        <RenderUserAvatar givenUser={video.user}/>
     </div>
   </div>
   )

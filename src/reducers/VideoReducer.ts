@@ -30,6 +30,11 @@ export const videoReducer = createSlice({
             state.loading = false
             state.error = ''
         },
+        SetVideoFile(state:initialStateProps,action : PayloadAction<string>){
+            if (state.video){
+                state.video.file = action.payload
+            }
+        },
         loadError(state:initialStateProps,action : PayloadAction<string>){
             state.error = action.payload
             state.loading = false

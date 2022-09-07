@@ -38,9 +38,9 @@ const ProfilePage = () => {
   useEffect(() => {
     try{
       if (email && username){
-        console.log('loading')
         dispatch(LoadUserVideos(email))
         fetchData()
+        console.log(usersPage,'-usersPage')
       }
     }
     catch(e){
@@ -79,9 +79,17 @@ const ProfilePage = () => {
                       <VideoForm videos={videos}/>
                     )}
               <hr></hr>
-              <div>
+              {videos.length
+              ? (
+                <div>
                 <RenderVideos videos={videos}/>
-              </div>
+                </div>
+              )
+              : (
+                <div>
+                  <h4 style={{'textAlign':'center','border':'5px solid darkblue'}}>User hasn't uploaded any video yet</h4>
+                </div>
+              )}
             </div>
         )
         : (

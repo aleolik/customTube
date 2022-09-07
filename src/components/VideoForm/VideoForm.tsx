@@ -9,6 +9,8 @@ import filesPng from '../../media/files.png'
 import uploadPng from '../../media/upload.png'
 import { IMakeVideo, IPhoto, IVideo } from '../../types/VideoTypes'
 import RenderAlert from '../../helpers/RenderAlert'
+import wrongPreviewFormatPng from '../../media/WrongPreviewFormat.png'
+import {GiCancel} from 'react-icons/gi'
 interface VideoFormProps{
   videos : IVideo[]
 }
@@ -39,17 +41,29 @@ const VideoForm : FC<VideoFormProps> = ({videos}) => {
   // handlers states
   const [showForm,setShowForm] = useState(false)
   const [drag,setDrag] = useState<boolean>(false)
+  const [PreviewCancelFocus,setOnPreviewCancelFocus] = useState(false)
+  // errors state
+  const [videoFileError,setVideoFileError] = useState<string>('')
+  const [PreviewFileError,setPreviewFileError] = useState<string>('')
+
 
   const dispatch = useAppDispatch()
 
   const videoFileHandler = (e : React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault()
     if (e.target.files !== null){
-      let video_file = e.target.files[0]
-      setVideo({
-        file : video_file,
-        url : video_file.name
-      })
+      let video_file = e.target.files[e.target.files.length-1]
+      if (video_file.name.endsWith('.mp4') && video_file.type === 'video/mp4'){
+        setVideoFileError('')
+        setVideo({
+          file : video_file,
+          url : video_file.name
+        })
+      }
+      else{
+        e.target.value = ''
+        setVideoFileError('Our service supports videos only with .mp4 format')
+      }
     }
   }
 
@@ -64,21 +78,38 @@ const VideoForm : FC<VideoFormProps> = ({videos}) => {
   }
   const dropHandler  = (e : React.DragEvent<HTMLDivElement>) => {
     e.preventDefault()
-    let file = e.dataTransfer.files[0]
-    setPhoto({
-      photoUrl : file.name,
-      photoFile : file
-    })
+    let file = e.dataTransfer.files[e.dataTransfer.files.length-1]
+    if (file.name.endsWith('.png') || file.name.endsWith('.jpeg') || file.name.endsWith('.jpg')){
+      setPreviewFileError('')
+      setPhoto({
+        photoUrl : file.name,
+        photoFile : file
+      })
+    }
+    else{
+      setPreviewFileError('Wrong Preview format,our service supports only : png,jpeg,jpg formats')
+    }
     setDrag(false)
   }
-
-  
+  const clearPreviewFile = () => {
+    setPhoto({
+      photoUrl: '',
+      photoFile : null,
+    })
+  }
+  const onMouseEnterCancelPreview = () => {
+    setOnPreviewCancelFocus(true)
+  }
+  const onMouseLeaveCancelPreview = () => {
+    setOnPreviewCancelFocus(false)
+  }
   const uploadDataToFireStorage = async(videoRef : any,imageRef : any) => {
+    console.log('uploading to firesstore...')
     if (photo.photoFile && video.file){
       try{
+        // TODO : can add checker that if file with the same name in the firestore in this route,so give UI Error
         await uploadBytes(imageRef,photo.photoFile)
         await uploadBytes(videoRef,video.file)
-        // add react toast
       }
       catch(e){
 
@@ -111,11 +142,11 @@ const VideoForm : FC<VideoFormProps> = ({videos}) => {
   const sumbitHadnler = async(e : React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     if (photo.photoFile && video.file && user && isNameUnique && name){
-      const imageRef = ref(storage,`${user?.email}/${user.username}/${photo.photoUrl}`)
-      const videoRef = ref(storage,`${user?.email}/${user.username}/${video.url}`) 
+      const imageRef = ref(storage,`${user?.email.toLowerCase()}/${user.username}/${photo.photoUrl}`)
+      const videoRef = ref(storage,`${user?.email.toLowerCase()}/${user.username}/${video.url}`) 
       dispatch(CREATE_VIDEO(  {
           name : name,
-          link : 'not done yet',
+          link : video.url,
           description : description,
           views : 0,
           created : date,
@@ -149,6 +180,14 @@ const VideoForm : FC<VideoFormProps> = ({videos}) => {
                     && (
                       <RenderAlert error={`You have already video with name : '${name}',so change it,please!`}/>
               )}
+               {videoFileError
+                    && (
+                    <RenderAlert error={videoFileError}/>
+              )}
+              {PreviewFileError
+                && (
+                <RenderAlert error={PreviewFileError}/>
+              )}
               <div className="input-group input-group-sm mb-3 ">
                 <span className="input-group-text" id="inputGroup-sizing-sm">name</span>
                 <input value={name}  onChange={nameHandler} type="text" className="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"/>
@@ -173,6 +212,7 @@ const VideoForm : FC<VideoFormProps> = ({videos}) => {
                 ? (
                   <div>
                     <img style={{'width':100,'height':100}} src={filesPng} alt='files'></img>
+                    <h4>(Drag and Drop)</h4>
                     <h1>upload png,jpg,jpeg only</h1>
                   </div>
                 )
@@ -185,9 +225,19 @@ const VideoForm : FC<VideoFormProps> = ({videos}) => {
              </div>
             )
             : (
-              <div className={css.file}>
+              <div>
                 {photo.photoFile && (
-                  <img style={{'height':230,'width':285}} src={URL.createObjectURL(photo.photoFile)} alt='preview'></img>
+                  <div className={css.file}>
+                    <div
+                    onClick={clearPreviewFile}
+                    onMouseEnter={onMouseEnterCancelPreview}
+                    onMouseLeave={onMouseLeaveCancelPreview}
+                    >
+                      <GiCancel style={{'color':PreviewCancelFocus ? 'red' : 'black'}} size={75}
+                      />
+                    </div>
+                    <img style={{'height':230,'width':285,'display':'block','marginLeft':'auto','marginRight':'auto'}} src={URL.createObjectURL(photo.photoFile)} alt='preview'></img>
+                  </div>
                 )}
               </div>
             )}

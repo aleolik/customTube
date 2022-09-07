@@ -14,10 +14,9 @@ export const useLoginWithEmailAndPassword = () => {
     const getUserData =  useGetUserDataSecondVersion()
     const Login = async(email:string,password:string) => {
       try{
-        console.log('working...')
         await setPersistence(auth,browserLocalPersistence)
         await signInWithEmailAndPassword(auth,email,password)
-        const userData = await getUserData(email.toLowerCase())
+        const userData = await getUserData(email.toLowerCase()) // because firestore document can only be in lowerCase
         if (auth.currentUser){
           await updateProfile(auth.currentUser,{
             displayName : userData?.username,

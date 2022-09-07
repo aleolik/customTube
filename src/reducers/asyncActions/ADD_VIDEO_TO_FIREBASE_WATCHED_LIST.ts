@@ -21,7 +21,7 @@ export const ADD_VIDEO_TO_FIREBASE_WATCHED_LIST =  async() => {
                     await setDoc(userRef,{
                         user : {
                             ...user,
-                            watched : [video,...user.watched]
+                            watched : [...user.watched,video]
                         }
                     })
                 }

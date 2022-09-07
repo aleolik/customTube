@@ -16,7 +16,10 @@ export const GET_WATCHED_LIST = () => {
             if (userSnap.exists()){
                 if (userSnap.data().user.watched){
                     let watched : IVideo[] =  userSnap.data().user.watched
-                    watched = watched.reverse()
+                    let array = []
+                    watched.map((video) => {
+                        
+                    })
                     dispatch(setWatchedVideos(watched))
                 }
             }

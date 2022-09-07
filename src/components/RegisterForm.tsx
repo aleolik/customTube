@@ -22,6 +22,7 @@ const RegisterForm : FC<RegisterFormProps> = ({protectedRoute=false}) => {
           <div onClick={(e) => e.stopPropagation()}>
             <FormButtons/>
             <h1 style={{'textAlign':'center'}}>Register:</h1>
+            <h3 style={{'textAlign':'center'}}>(doesn't need email verification)</h3>
             <InputForm/>
           </div>
         </div>
