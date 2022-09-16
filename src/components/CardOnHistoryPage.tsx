@@ -41,7 +41,7 @@ export const CardOnHistoryPage : FC<CardOnHistoryPageProps> = ({video}) => {
     setImageFocus(false)
   }
   return (
-  <div className="card mx-auto" style={{'width':'18rem'}} onClick={cardNavigate}>
+  <div className="card mx-auto" style={{'width':'18rem','cursor':'pointer'}} onClick={cardNavigate}>
     <img style={{'width':285,'height':230}} className="card-img-top img-thumbnail" src={photo} alt=".../"/>
     <div className="card-body">
       <h2 className="card-title">{video.name}</h2>

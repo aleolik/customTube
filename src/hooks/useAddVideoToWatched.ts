@@ -16,20 +16,18 @@ import { store } from '..'
 export const useADD_VIDEO = () => {
     const auth = getAuth()
     const email = auth.currentUser?.email
-    const userRef = doc(database,'users',`${email}`)
-    const user = useAppSelector(state => state.user.user)
     const dispatch = useAppDispatch()
-    const video = useAppSelector(state => state.video.video)
     const saveHistory = useAppSelector(state => state.history.saveHistory)
 
     const ADD_VIDEO = async(username:string,videoID:string) => {
+        console.log('works')
+        // if paramter save history(localStorage) on,then add new video to DB and get it again
         if (saveHistory){
-            // setting video.video
-            await dispatch(SET_CURRENT_VIDEO(videoID,username))
             // get current watched list,from firebase
             dispatch(GET_WATCHED_LIST())
             // loading it to FireBase
             await ADD_VIDEO_TO_FIREBASE_WATCHED_LIST() // just async function
+            // gets it again from firebase
             dispatch(GET_WATCHED_LIST())
         }
     }

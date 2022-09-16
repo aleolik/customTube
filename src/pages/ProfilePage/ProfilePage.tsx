@@ -40,7 +40,6 @@ const ProfilePage = () => {
       if (email && username){
         dispatch(LoadUserVideos(email))
         fetchData()
-        console.log(usersPage,'-usersPage')
       }
     }
     catch(e){

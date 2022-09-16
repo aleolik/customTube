@@ -21,7 +21,6 @@ export const useGetUserDataSecondVersion = () => {
         const docRef = doc(database, "users",`${email}`)
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()){
-            console.log('docSnapData',docSnap.data().user)
             return(
                 docSnap.data().user as IUser
 

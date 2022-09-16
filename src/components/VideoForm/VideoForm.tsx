@@ -104,7 +104,6 @@ const VideoForm : FC<VideoFormProps> = ({videos}) => {
     setOnPreviewCancelFocus(false)
   }
   const uploadDataToFireStorage = async(videoRef : any,imageRef : any) => {
-    console.log('uploading to firesstore...')
     if (photo.photoFile && video.file){
       try{
         // TODO : can add checker that if file with the same name in the firestore in this route,so give UI Error

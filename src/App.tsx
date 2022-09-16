@@ -7,10 +7,57 @@ import ProfilePage from './pages/ProfilePage/ProfilePage';
 import ProtectedRoute from './components/ProtectedRoute';
 import NotFoundPage from './pages/NotFoundPage/NotFoundPage';
 import VideoPage from './pages/VideoPage/VideoPage';
-import { useAppSelector } from './hooks/TypedHooks';
+import { useAppDispatch } from './hooks/TypedHooks';
 import HistoryPage from './pages/HistoryPage/HistoryPage';
-import { useEffect } from 'react';
-function App() {
+import { useEffect, useReducer } from 'react';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { IUser } from './types/userTypes';
+import { WHEN_AUTH_STATE_CHANGED } from './reducers/asyncActions/WHEN_AUTH_STATE_CHANGED';
+import { DeviceReducer } from './reducers/DeviceReducer';
+import { useDevice } from './helpers/useDevice';
+import { HistoryReducer } from './reducers/HistoryReducer';
+import SearchBar from './components/Header/HeaderElements/SearchBar';
+import SearchPage from './pages/SearchPage/SearchPage';
+const App = () => {
+  // routes + global useEffects
+  const auth = getAuth()
+  const dispatch = useAppDispatch()
+  // changing the auth state
+  useEffect(() => {
+    onAuthStateChanged(auth,(user) => {
+      const username = user?.displayName
+      let photoURL = user?.photoURL
+      const email = user?.email
+      if (photoURL === undefined){
+        photoURL = null
+      }
+      if (username && email){
+        const madeUser : IUser = {
+          username : username,
+          photoUrl : photoURL,
+          email : email
+        }
+        dispatch(WHEN_AUTH_STATE_CHANGED(madeUser))
+      }
+    })
+  },[])
+  const setDevice = DeviceReducer.actions.setDevice
+  const device = useDevice()
+  const saveHistory = localStorage?.getItem('history')
+  const SET_HISTORY = HistoryReducer.actions.CHANGE_HISTORY_STATE
+  //
+  useEffect(() => {
+    dispatch(setDevice(device))
+    // if item in localStorage then
+    if (saveHistory !== undefined){
+      if (saveHistory === 'false'){
+        dispatch(SET_HISTORY(false))
+      }
+      else{
+        dispatch(SET_HISTORY(true))
+      }
+    }
+  },[])
   const location = useLocation()
   const titles = [
     {
@@ -40,6 +87,7 @@ function App() {
           <Route index element={<Main/>}></Route>
            <Route path='user/:username/:email' element={<ProfilePage/>}></Route>
            <Route path=':videoID/:username' element={<VideoPage/>}></Route>
+           <Route path='search=:search' element={<SearchPage/>}></Route>
            <Route element={<ProtectedRoute/>}>
               <Route path='/history' element={<HistoryPage/>}></Route>
            </Route>
@@ -49,5 +97,4 @@ function App() {
     </div>
   );
 }
-
-export default App;
+export default App

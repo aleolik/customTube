@@ -11,9 +11,12 @@ import { AppDispatch } from "../../store/store";
 import { IVideo } from "../../types/VideoTypes";
 import { videoReducer } from "../VideoReducer";
 
-export const LoadUserVideos = (email?:string | null | undefined,video_limit=25) => {
-    // loads videos on MainPage - default
-    // loads videos on ProfilePage - if email
+export const LoadUserVideos = (email?:string | null | undefined,search? : string | null | undefined,video_limit=25) => {
+    /*
+        loads videos on MainPage - default
+        loads videos on ProfilePage - if email
+        loads videos searched by name - if search
+    */
     return async (dispatch:AppDispatch) => {
         let collectionRef = query(collection(database,'videos'),limit(video_limit),orderBy('video.created'))
         if (email){
@@ -28,11 +31,18 @@ export const LoadUserVideos = (email?:string | null | undefined,video_limit=25) 
                 res.forEach((doc) => {
                     let video : IVideo = doc.data().video
                     video.id = doc.id
-                    array.unshift(video)
+                    if (search){
+                        const videoName = video.name.toLowerCase()
+                        if (videoName.includes(search.toLowerCase())){
+                            array.unshift(video)
+                        }
+                    }
+                    else{
+                        array.unshift(video)
+                    }
                 })
             }
-         dispatch(loadSuccess(array))
-
+            dispatch(loadSuccess(array))
         }
         catch(e){
             let message = 'Unknown Error'

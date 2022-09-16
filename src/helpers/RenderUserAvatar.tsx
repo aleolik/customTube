@@ -36,7 +36,7 @@ const RenderUserAvatar : FC<RenderUserAvatarProps> = ({width=60,height=45,givenU
   return (
     <div  style={{'backgroundColor':'rgba(0,0,0,0.1)'}}>
       {user && (
-        <div>
+        <div style={{'display':'flex','justifyContent':'center','alignItems':'center'}}>
            {user?.photoUrl
             ? (<img
               style={{'width':width,'height':height,'borderRadius':30+'px','border':imageFocus ? BorderOnFocus : '2px solid gray'}}

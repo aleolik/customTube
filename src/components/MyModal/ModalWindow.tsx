@@ -1,6 +1,7 @@
 import React,{FC, useEffect} from 'react'
 import { useAppDispatch, useAppSelector } from '../../hooks/TypedHooks'
 import { modalReducer } from '../../reducers/ModalReducer'
+import { Loader } from '../Loader/Loader'
 import css from './ModalWindow.module.css'
 interface ModalWndowProps{
     protectedRoute? : boolean
@@ -26,6 +27,8 @@ const ModalWindow : FC<ModalWndowProps> = ({children,protectedRoute=false}) => {
       dispatch(closeModalWindow())
     }
   }
+
+  const load = useAppSelector(state => state.loader.load)
   return (
       <div className={rootClasses.join(' ')} onClick={onClick}>
         <div className={css.modal_content} onClick={(e : React.MouseEvent<HTMLDivElement>) => e.stopPropagation()}>

@@ -21,7 +21,7 @@ export const UserAvatar : FC<UserAvatarProps> = ({avatarOnFocus,setAvatarOnFocus
     }
     const marginRight = {
         'tablet' : 200,
-        'mobile' : 150,
+        'mobile' : 50,
         'desktop' : 200
     }
     return(

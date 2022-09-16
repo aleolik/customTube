@@ -1,5 +1,5 @@
 import { getAuth } from "firebase/auth"
-import { doc, getDoc } from "firebase/firestore"
+import { collection, doc, getDoc, getDocs, limit, orderBy, query } from "firebase/firestore"
 import { database } from "../../config"
 import { AppDispatch } from "../../store/store"
 import { IVideo } from "../../types/VideoTypes"
@@ -16,10 +16,7 @@ export const GET_WATCHED_LIST = () => {
             if (userSnap.exists()){
                 if (userSnap.data().user.watched){
                     let watched : IVideo[] =  userSnap.data().user.watched
-                    let array = []
-                    watched.map((video) => {
-                        
-                    })
+                    console.log('watched:',watched)
                     dispatch(setWatchedVideos(watched))
                 }
             }

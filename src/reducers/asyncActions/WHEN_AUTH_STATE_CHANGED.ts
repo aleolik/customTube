@@ -24,8 +24,7 @@ export const WHEN_AUTH_STATE_CHANGED = (user:IUser) => {
                 dispatch(startLoading())
                 user.email = user.email.toLowerCase()
                 dispatch(login(user))
-                await dispatch(GET_WATCHED_LIST())
-             
+                await dispatch(GET_WATCHED_LIST())         
             }
             catch(e){
                 ErrorHandler(e)
