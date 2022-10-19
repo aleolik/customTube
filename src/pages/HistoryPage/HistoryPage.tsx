@@ -10,6 +10,7 @@ import { useDevice } from '../../helpers/useDevice'
 import {RiDeleteBin5Fill} from 'react-icons/ri'
 import { Loader } from '../../components/Loader/Loader'
 import { CLEAR_HISTORY } from '../../reducers/asyncActions/CLEAR_HISTORY'
+import { RenderNoDataFound } from '../../helpers/RenerNoDataFound'
 const HistoryPage = () => {
   const watchedVideos = useAppSelector(state=>state.user.user?.watched)
   const {saveHistory,loading,error} = useAppSelector(state => state.history)
@@ -46,9 +47,7 @@ const HistoryPage = () => {
                   <div>
                     {watchedVideos === undefined || !watchedVideos.length
                     ? (
-                        <div>
-                            <img style={{'width':50+'%'}} className='img-fluid rounded mx-auto d-block' src={emptyListPhoto} alt='empty_list'></img>
-                        </div>
+                      <RenderNoDataFound/>
                     )
                     :(
                         <RenderVideosOnHistroyPage videos={watchedVideos}/>

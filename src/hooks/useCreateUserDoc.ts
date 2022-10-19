@@ -2,11 +2,14 @@
 
 import { getAuth } from "firebase/auth"
 import { doc, getDoc, setDoc } from "firebase/firestore"
+import { ref, uploadBytes } from "firebase/storage"
+import { storage } from ".."
+import { NewPhoto } from "../components/InputForm"
 import { database } from "../config"
 import { ErrorHandler } from "../helpers/ErrorHandler"
 
 export const useCreateUserDoc = () => {
-    const CREATE_DOC = async(username='',argEmail='') => {
+    const CREATE_DOC = async(username='',argEmail='',photo : NewPhoto | null=null) => {
         const auth = getAuth()
         const displayName = auth.currentUser?.displayName
         const email = auth.currentUser?.email
@@ -20,11 +23,17 @@ export const useCreateUserDoc = () => {
                     await setDoc(docRef,{
                         user : {
                             username : username,
-                            photoUrl : null,
+                            photoUrl : photo?.name,
                             email : argEmail,
                             watched : []
                         }
                     })
+                    if (photo){
+                        const photoRef = ref(storage,`${argEmail.toLowerCase()}/${username}/${photo.name}`)
+                        if (photo.name && photo.file){
+                            await uploadBytes(photoRef,photo.file)
+                        }   
+                    }
                 }
                 catch(e){
                     ErrorHandler(e)

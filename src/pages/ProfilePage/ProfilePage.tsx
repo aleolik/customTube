@@ -5,7 +5,7 @@ import css from './ProfilePage.module.css'
 import defaultUserAvatar from '../../media/defaultUserAvatar.png'
 import { useParams } from 'react-router-dom'
 import VideoForm from '../../components/VideoForm/VideoForm'
-import { IUser, userState } from '../../types/userTypes'
+import { IUser } from '../../types/userTypes'
 import {useGetUserData} from '../../hooks/useGetUserData'
 import NotFoundPage from '../NotFoundPage/NotFoundPage'
 import { useLoading } from '../../hooks/useLoading'
@@ -14,15 +14,22 @@ import RenderAlert from '../../helpers/RenderAlert'
 import { Loader } from '../../components/Loader/Loader'
 import { getAuth } from 'firebase/auth'
 import { ErrorHandler, ErrorHandlerReturn } from '../../helpers/ErrorHandler'
+import { videoReducer } from '../../reducers/VideoReducer'
+import SearchBar from '../../components/Header/HeaderElements/SearchBar'
+import { RenderNoDataFound } from '../../helpers/RenerNoDataFound'
+import RenderUserAvatar from '../../helpers/RenderUserAvatar'
+import { useScroll } from '../../hooks/useScroll'
+import { BottomLoader } from '../../components/BottomLoader/BottomLoader'
 
 const ProfilePage = () => {
   const dispatch = useAppDispatch()
   const {username,email} = useParams()
 
-  const auth = getAuth()
+  const user = useAppSelector(state => state.user.user)
 
+  const auth = getAuth()
   // load videos
-  const {error,loading,videos} = useAppSelector(state => state.video)
+  const {error,loading,videos,uploading,uploadingError,loadingDynamically} = useAppSelector(state => state.video)
   // load usersPage
   const [usersPage,setUsersPage] = useState<null | undefined | IUser>(null)
   const getUsersPage = useGetUserData(email)
@@ -33,7 +40,6 @@ const ProfilePage = () => {
         setUsersPage(res)
       }
     })})
-
 
   useEffect(() => {
     try{
@@ -47,46 +53,47 @@ const ProfilePage = () => {
     }
   },[username,email])
 
+  useScroll(email)
+
 
   return (
     <div className='container-fluid'>
       {error && (
-        <RenderAlert error={error}></RenderAlert>
+        <RenderAlert type='danger' text={error}></RenderAlert>
       )}
       {fetchError && (
-        <RenderAlert error={fetchError}></RenderAlert>
+        <RenderAlert type='danger' text={fetchError}></RenderAlert>
       )}
-      {(fetchLoading || loading) && !fetchError && !error
+      {(fetchLoading && !fetchError) || (loading && !error) || (uploading && !uploadingError)
       ? (
-        <div><Loader/></div>
+        <div>
+          <Loader/>
+          {uploading &&
+          (<RenderAlert type='info' text='uploadng video,it can take to 1min...'/>)}
+        </div>
       )
       : (
         <div>
             {usersPage !== null && usersPage!== undefined ? (
                 <div>
                     <div className={css.center}>
-                      <h4 style={{'marginTop':20+'px','border':'black 5px solid'}}>{usersPage?.username}</h4>
-                      {usersPage?.photoUrl === null
-                      ? (
-                        <img alt='avatar'  src={defaultUserAvatar} style={{'width':90,'height':60}} className={css.image}></img>
-                      )
-                        : (
-                          <img alt='avatar' src={usersPage?.photoUrl}  style={{'width':90,'height':60}}  className={css.image} ></img>
-                      )}
+                      <h4 style={{'marginTop':20+'px','border':'rgba(0,0,0,0.8) 2px solid','fontFamily':'sans-serif'}}>{usersPage?.username}</h4>
+                      <RenderUserAvatar withBackgroundColor={true} withUsername={false} givenUser={usersPage}/>
                     </div>
                     {email === auth.currentUser?.email && (
                       <VideoForm videos={videos}/>
                     )}
               <hr></hr>
+              <div style={{'display':'flex','justifyContent':'center','alignItems':'center','marginBottom':10}}>
+                    <SearchBar videos={videos} email={usersPage.email}/>
+              </div>
               {videos.length
               ? (
-                <div>
-                <RenderVideos videos={videos}/>
-                </div>
+                  <RenderVideos videos={videos}/>
               )
               : (
                 <div>
-                  <h4 style={{'textAlign':'center','border':'5px solid darkblue'}}>User hasn't uploaded any video yet</h4>
+                  <RenderNoDataFound/>
                 </div>
               )}
             </div>
@@ -96,6 +103,9 @@ const ProfilePage = () => {
         )}    
         </div>
       )}
+       {loadingDynamically && (
+          <BottomLoader/>
+        )}
     </div>
   )
 }

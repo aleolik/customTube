@@ -1,13 +1,15 @@
-import { IUser } from "./userTypes";
+import { IUser,UserWithoutPersonalInfo} from "./userTypes";
+
 
 export interface IVideo{
     name : string,
     id? : string,
     description : string,
     link : string, // path to file in storage
-    user : IUser,
+    user : UserWithoutPersonalInfo,
     created : number,
-    views : number,
+    createdNegative : number,
+    views : UserWithoutPersonalInfo[],
     photoUrl : string
     file? : string
 }

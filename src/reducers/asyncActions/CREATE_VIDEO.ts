@@ -4,6 +4,7 @@ import { useAppSelector } from "../../hooks/TypedHooks"
 import { AppDispatch } from "../../store/store"
 import { IVideo } from "../../types/VideoTypes"
 import { videoReducer } from "../VideoReducer"
+import { UploadNewVideo } from "./UploadNewVideo"
 
 export const CREATE_VIDEO = (video:IVideo) => {
     return async (dispatch:AppDispatch) => {
@@ -15,15 +16,21 @@ export const CREATE_VIDEO = (video:IVideo) => {
                     const video : IVideo = {
                         views : views,
                         created : created,
+                        createdNegative : -created,
                         name : name,
                         link : link,
                         description : description,
-                        user : user,
+                        user : {
+                            email : user.email,
+                            username : user.username,
+                            photoUrl : user.photoUrl
+                        },
                         photoUrl : photoUrl
                     }
-                    addDoc(collection(database,'videos'),{
+                    await addDoc(collection(database,'videos'),{
                         video : video
                     }).then((res) => {
+                        video.id = res.id
                         dispatch(LOAD_VIDEO_SUCCES(video))
                     })
                 }

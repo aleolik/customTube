@@ -1,6 +1,10 @@
-import {FC} from 'react'
+import { getDownloadURL, ref } from 'firebase/storage'
+import {FC, useEffect, useState} from 'react'
+import { storage } from '../../..'
+import RenderUserAvatar from '../../../helpers/RenderUserAvatar'
 import { useDevice } from '../../../helpers/useDevice'
 import { useAppSelector } from '../../../hooks/TypedHooks'
+import { useGetPhotoUrlFromFirestorage } from '../../../hooks/useGetPhotoUrlFromFirestorage'
 import defaultUserAvatar from '../../../media/defaultUserAvatar.png'
 import { RenderOptions } from './RenderOptions'
 interface UserAvatarProps{
@@ -24,6 +28,7 @@ export const UserAvatar : FC<UserAvatarProps> = ({avatarOnFocus,setAvatarOnFocus
         'mobile' : 50,
         'desktop' : 200
     }
+
     return(
         <div
         tabIndex={0}
@@ -31,10 +36,7 @@ export const UserAvatar : FC<UserAvatarProps> = ({avatarOnFocus,setAvatarOnFocus
         onMouseLeave={onMouseLeave}
         style={{'marginRight':marginRight[device]+'px'}}
         >
-            <img
-                 style={{'border':avatarOnFocus ? 'aqua 2px solid' : 'white 2px solid','width':80+'px','height':60+'px','borderRadius':40+'px'}} 
-                 src={user?.photoUrl === null ? defaultUserAvatar : user?.photoUrl}           
-            />
+        <img style={{'width':80,'height':60,'border': avatarOnFocus ? '2px solid aqua' : '2px solid gray','borderRadius':30}} src={user?.photoFile ? URL.createObjectURL(user.photoFile) : user?.photoUrl ? user.photoUrl : defaultUserAvatar} />
              {avatarOnFocus &&
               (
                 <RenderOptions/>

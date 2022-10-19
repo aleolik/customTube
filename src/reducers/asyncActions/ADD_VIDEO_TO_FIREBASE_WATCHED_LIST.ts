@@ -3,17 +3,17 @@ import { store } from "../../index"
 import { database } from "../../config"
 import { REUPLOAD_VIDEO_IN_FIREBASE } from "./REUPLOAD_VIDEO_IN_FIREBASE"
 import { IVideo } from "../../types/VideoTypes"
+import { IUser } from "../../types/userTypes"
 
-export const ADD_VIDEO_TO_FIREBASE_WATCHED_LIST =  async() => {
+export const ADD_VIDEO_TO_FIREBASE_WATCHED_LIST =  async(video:IVideo,user:IUser) => {
     // logic : reverse list,check if in already,do smth
-    const user = store.getState().user.user
-    const video = store.getState().video.video
     let AfterUpload = false
         if (user && video){
             // because firstore doese'nt support it
             const videoWithOutFileProperty : IVideo = {
                 name : video.name,
                 created : video.created,
+                createdNegative : -video.created,
                 description : video.description,
                 views : video.views,
                 id : video.id,

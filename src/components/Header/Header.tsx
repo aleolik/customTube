@@ -19,7 +19,7 @@ const Header = () => {
   const showSideBar = useAppSelector(state => state.modal.show_side_bar)
   const {showFAQ,showLogin,showRegister} = useAppSelector(state =>  state.modal)
   const closeSideBar = modalReducer.actions.CloseSideBar
-  const loading = useAppSelector(state => state.video.loading)
+  const {loading,AllLoading} = useAppSelector(state => state.video)
   const dispatch = useAppDispatch()
   const device = useDevice()
   const [searchBarOnFocus,setSearchBarOnFocus] = useState<boolean>(false)
@@ -43,9 +43,8 @@ const Header = () => {
       dispatch(closeSideBar())
     }
   }
-  // works 1 time - loads user watched list from backend
   return (
-      <nav onClick={closeSideBarIfOpen} className="navbar sticky-sm-top sticky-md-top sticky-lg-top sticky-xl-top navbar-light bg-dark" style={{'height':75+'px','zIndex':1}}>
+      <nav onClick={closeSideBarIfOpen} className="navbar sticky-sm-top sticky-md-top sticky-lg-top sticky-xl-top navbar-light bg-dark" style={{'height':75+'px','zIndex':1000}}>
         {showSideBar && (
             <BurgerMenu/>
         )}
@@ -66,14 +65,14 @@ const Header = () => {
         {device !== 'mobile'
         ? (
           <>
-            {user && !loading
+            {(AllLoading || loading) && !user
             ?(
-                <UserAvatar avatarOnFocus={avatarOnFocus} setAvatarOnFocus={setAvatarOnFocus}/>
+                <div style={{'border':'gray 2px solid','width':80+'px','height':60+'px','borderRadius':40+'px','marginRight':30,'backgroundColor':'lightgray'}} ></div>
               )
             :(
-              <div>{loading
+              <div>{user
               ? (
-                <div style={{'border':'gray 2px solid','width':80+'px','height':60+'px','borderRadius':40+'px','marginRight':30,'backgroundColor':'lightgray'}} ></div>
+                <UserAvatar avatarOnFocus={avatarOnFocus} setAvatarOnFocus={setAvatarOnFocus}/>
               )
               : (
                 <div>

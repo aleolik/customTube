@@ -1,4 +1,4 @@
-import {useEffect} from 'react'
+import {ChangeEvent, useEffect, useState} from 'react'
 import css from './Main.module.css'
 import { useAppDispatch, useAppSelector } from '../../hooks/TypedHooks'
 import { RenderNavigationOptions } from '../../helpers/VideoHelpers/RenderNavigationOptions'
@@ -9,16 +9,18 @@ import { Loader } from '../../components/Loader/Loader'
 import RenderAlert from '../../helpers/RenderAlert'
 import RenderLoadingScreenMainPage from '../../helpers/VideoHelpers/RenderLoadingScreenMainPage'
 import { useDevice } from '../../helpers/useDevice'
+import { videoReducer } from '../../reducers/VideoReducer'
+import { useScroll } from '../../hooks/useScroll'
+import { BottomLoader } from '../../components/BottomLoader/BottomLoader'
 const Main = () => {
-  const {error,loading,videos} = useAppSelector(state => state.video)
+  const {error,loading,videos,loadingDynamically} = useAppSelector(state => state.video)
+  const {AllError,AllVideos,AllLoading} = useAppSelector(state => state.video)
   const dispatch = useAppDispatch()
-
-  
+  const device = useDevice()
   useEffect(() => {
     dispatch(LoadUserVideos())
   },[])
-  // todo : make sidebar and navbar sticky
-  const device = useDevice()
+  useScroll()
   return (
     <div className='container-fluid' >
       <div className='row' style={{'backgroundColor':'white'}}>
@@ -27,7 +29,7 @@ const Main = () => {
         </div>  
         <div className='col-md-10 col-sm-8 col-lg-11'>
             <div>
-            {loading
+            {AllLoading || !videos.length
             ? (
               <div>
                 <RenderLoadingScreenMainPage/>
@@ -35,14 +37,31 @@ const Main = () => {
             )
             : (
               <div>
-                  {videos.length
-                  ? (
-                    <div>
-                      <RenderVideos videos={videos}/>
-                    </div>
-                  )
-                  :(
-                   <RenderAlert error={error}/>
+                  {loading
+                  ? (<>
+                      <Loader/>
+                    </>)
+                  : (
+                    <>
+                      {videos.length
+                      ? (
+                        <div>
+                          <RenderVideos videos={videos}/>
+                        </div>
+                      )
+                      :(
+                        <div>
+                          {
+                            error.length
+                            ? (<RenderAlert type='danger' text={error}/>)
+                            : (<Loader/>)
+                          }
+                        </div>
+                      )}
+                      {loadingDynamically && (
+                        <BottomLoader/>
+                      )}
+                      </>
                   )}
               </div>
             )}

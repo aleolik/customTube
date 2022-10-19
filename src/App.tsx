@@ -16,28 +16,41 @@ import { WHEN_AUTH_STATE_CHANGED } from './reducers/asyncActions/WHEN_AUTH_STATE
 import { DeviceReducer } from './reducers/DeviceReducer';
 import { useDevice } from './helpers/useDevice';
 import { HistoryReducer } from './reducers/HistoryReducer';
-import SearchBar from './components/Header/HeaderElements/SearchBar';
+import {LOAD_ALL_VIDEOS} from './reducers/asyncActions/LOAD_ALL_VIDEOS'
 import SearchPage from './pages/SearchPage/SearchPage';
+import { videoReducer } from './reducers/VideoReducer';
+import { useGetPhotoUrlFromFirestorage } from './hooks/useGetPhotoUrlFromFirestorage';
 const App = () => {
+
   // routes + global useEffects
   const auth = getAuth()
   const dispatch = useAppDispatch()
+  const UrlToFirestorage = useGetPhotoUrlFromFirestorage()
   // changing the auth state
   useEffect(() => {
     onAuthStateChanged(auth,(user) => {
       const username = user?.displayName
       let photoURL = user?.photoURL
       const email = user?.email
-      if (photoURL === undefined){
-        photoURL = null
-      }
       if (username && email){
-        const madeUser : IUser = {
+        if (!photoURL){
+          photoURL = null
+        }
+        UrlToFirestorage({
           username : username,
           photoUrl : photoURL,
           email : email
-        }
-        dispatch(WHEN_AUTH_STATE_CHANGED(madeUser))
+        }).then((res) => {
+          if (photoURL && (photoURL.endsWith('jpg') || photoURL.endsWith('.png') || photoURL.endsWith('jpeg'))){
+            photoURL = null
+          }
+          const madeUser : IUser = {
+            username : username,
+            photoUrl : photoURL ? photoURL : res,
+            email : email
+          }
+          dispatch(WHEN_AUTH_STATE_CHANGED(madeUser))
+        })
       }
     })
   },[])
@@ -86,7 +99,7 @@ const App = () => {
         <Route path='/' element={<Layout/>}>
           <Route index element={<Main/>}></Route>
            <Route path='user/:username/:email' element={<ProfilePage/>}></Route>
-           <Route path=':videoID/:username' element={<VideoPage/>}></Route>
+           <Route path='video=:videoID/user=:username' element={<VideoPage/>}></Route>
            <Route path='search=:search' element={<SearchPage/>}></Route>
            <Route element={<ProtectedRoute/>}>
               <Route path='/history' element={<HistoryPage/>}></Route>
@@ -98,3 +111,4 @@ const App = () => {
   );
 }
 export default App
+

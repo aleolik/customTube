@@ -6,11 +6,19 @@ import { useLoginWithEmailAndPassword } from '../hooks/useLoginWithEmailAndPassw
 import { REGISTER_USER } from '../reducers/asyncActions/REGISTER_USER'
 import { Loader } from './Loader/Loader'
 import {modalReducer} from '../reducers/ModalReducer'
+import defaultUserAvatar from '../media/defaultUserAvatar.png'
+import {HiPhotograph} from 'react-icons/hi'
 // login or register form when modal open
+export interface NewPhoto{
+  name : string,
+  file : null | File
+  error : string
+}
 const InputForm = () => {
   const [email,setEmail] = useState<string>('')
   const [password,setPassword] = useState<string>('')
   const [username,setUsername] = useState<string>('')
+  const [photo,setPhoto] = useState<NewPhoto | null>(null)
   const {showLogin,showRegister} = useAppSelector(state => state.modal)
   const login = useLoginWithEmailAndPassword()
   const load = useAppSelector(state => state.loader.load)
@@ -27,6 +35,27 @@ const InputForm = () => {
   }
   const usernameHandler = (e : ChangeEvent<HTMLInputElement>) => {
     setUsername(e.target.value)
+  }
+  const onUpload = (e : React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault()
+    if (e.target.files !== null){
+      let lastFile = e.target.files[e.target.files.length-1]
+      if ((lastFile.name.endsWith('.png') && lastFile.type === 'image/png') || (lastFile.name.endsWith('.jpg') && lastFile.type === 'image/jpg') || (lastFile.name.endsWith('.jpeg') && lastFile.type === 'image/jpeg')){
+        setPhoto({
+          name : lastFile.name,
+          file : lastFile,
+          error : ''
+        })
+      }
+      else{
+        e.target.value = ''
+        setPhoto({
+          name : '',
+          file : null,
+          error : 'Wrong Format only .png,.jpg,.jpeg are available'
+        })
+      }
+    }
   }
 
   const AuthWithEmailAndPassword = (e : MouseEvent<HTMLFormElement>) => {
@@ -45,7 +74,7 @@ const InputForm = () => {
     else{
       if (username && email && password){
         dispatch(setError(''))
-        dispatch(REGISTER_USER(email,username,password,login,CREATE_DOC))
+        dispatch(REGISTER_USER(email,username,password,login,CREATE_DOC,photo,photo?.file))
       }
       else{
         dispatch(setError('Username Or Password or Email are Empty'))
@@ -55,32 +84,45 @@ const InputForm = () => {
   return (
     <form onSubmit={AuthWithEmailAndPassword}>
         {error && (
-          <RenderAlert error={error}/>
+          <RenderAlert type='danger' text={error}/>
         )}
         {showRegister && (
             <div className="input-group mb-3">
-                <span className="input-group-text" id="inputGroup-sizing-default">username</span>
+                <span className="input-group-text" id="inputGroup-sizing-default">username ✒️</span>
                 <input onChange={usernameHandler} type="text" className="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"/>
             </div>
         )}
         <div className="input-group mb-3">
-        <span className="input-group-text" id="inputGroup-sizing-default">email</span>
+        <span className="input-group-text" id="inputGroup-sizing-default">email ✒️</span>
             <input onChange={emailHandler} type="text" className="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"/>
         </div>
         <div className="input-group mb-3">
-        <span className="input-group-text" id="inputGroup-sizing-default">password</span>
+        <span className="input-group-text" id="inputGroup-sizing-default">password 🤫</span>
             <input onChange={passwordHandler} type="text" className="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"/>
         </div>
+        {showRegister &&
+           (
+            <div>
+               {photo?.error && (
+                <RenderAlert type='danger' text={photo.error}/>
+               )}
+               <img src={photo?.file ? URL.createObjectURL(photo.file) : defaultUserAvatar} style={{'width':60,'height':45,'border':'1px solid gray','borderRadius':30+'px','marginBottom':10}} className='img-fluid mx-auto d-block'/>
+               <div style={{'display':'flex','justifyContent':'center'}}>
+               <div className="custom-file">
+                    <input onChange={onUpload} style={{'width':100+'%'}} type="file" className="btn btn-primary" id="validatedCustomFile"/>
+                  </div>
+              </div>
+            </div>
+          )}
           {load
           ? (
             <div style={{'opacity':0.5}}><Loader/></div>
           )
           : (
-            <div style={{'display':'flex','justifyContent':'center'}}>
+            <div style={{'display':'flex','justifyContent':'center','marginTop':10}}>
               <button  style={{'width':60+'%'}} className='btn btn-lg btn-outline-dark'>{showLogin ? 'Login' : 'Register'}</button>
             </div>
           )}
-        
     </form>
   )
 }

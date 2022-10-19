@@ -6,12 +6,9 @@ interface RenderVideosOnHistroyPageProps{
     videos : IVideo[]
 }
 const RenderVideosOnHistroyPage : FC<RenderVideosOnHistroyPageProps> = ({videos}) => {
-  
-
-  const reverseArray = [...videos].reverse()
-  return (
+    return (
     <div className='row'>
-        {reverseArray.map((video) => {
+        {videos.map((video) => {
             return(
              <div className='col-lg-12 col-md-12 col-sm-12' key={video.id}>
                 <CardOnHistoryPage video={video}/>

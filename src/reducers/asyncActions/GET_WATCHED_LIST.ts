@@ -16,8 +16,19 @@ export const GET_WATCHED_LIST = () => {
             if (userSnap.exists()){
                 if (userSnap.data().user.watched){
                     let watched : IVideo[] =  userSnap.data().user.watched
-                    console.log('watched:',watched)
-                    dispatch(setWatchedVideos(watched))
+                    let array : IVideo[] = []
+                    watched.map((tempVideo) => {
+                        let newVideo = {
+                            ...tempVideo,
+                            user : {
+                                username : tempVideo.user.username,
+                                photoUrl : tempVideo.user.photoUrl,
+                                email : tempVideo.user.email,
+                            }
+                        }
+                        array.unshift(newVideo)
+                    })
+                    dispatch(setWatchedVideos(array))
                 }
             }
         }

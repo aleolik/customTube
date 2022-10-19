@@ -1,16 +1,17 @@
 import React,{FC} from 'react'
 
 interface RenderAlertProps{
-    error : string
+    text : string
+    type : 'info' | 'danger' | 'success'
 }
-const RenderAlert : FC<RenderAlertProps> = ({error}) => {
+const RenderAlert : FC<RenderAlertProps> = ({text,type}) => {
   return (
-    <div className="alert alert-danger d-flex align-items-center" role="alert">
+    <div className={`alert alert-${type} d-flex align-items-center`} role="alert">
     <div style={{'color':'black'}}>
-        {error ?
+        {text.length ?
         (
           <div>
-            <h5 style={{'textAlign':'center'}}>{error}</h5>
+            <h5 style={{'textAlign':'center'}}>{text}</h5>
           </div>
         )
         : (

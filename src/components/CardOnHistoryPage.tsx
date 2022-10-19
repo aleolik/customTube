@@ -6,6 +6,8 @@ import { storage } from '../index'
 import { useNavigate } from 'react-router-dom'
 import { IVideo } from '../types/VideoTypes'
 import RenderUserAvatar from '../helpers/RenderUserAvatar'
+import { RenderCardTitle } from '../helpers/VideoHelpers/RenderCardTitle'
+import { useGetLinkToVideo } from '../hooks/useGetNavigationLinks'
 
 interface CardOnHistoryPageProps{
     video : IVideo
@@ -25,14 +27,11 @@ export const CardOnHistoryPage : FC<CardOnHistoryPageProps> = ({video}) => {
     getPhoto()
   },[])
 
+  const linkToVideo = useGetLinkToVideo(video)
   const cardNavigate = () => {
-    navigate(`/${video.id}/${video.user.username}`)
+    navigate(linkToVideo)
   }
 
-  const avatarNavigate = (e : React.MouseEvent<HTMLDivElement>) => {
-    e.stopPropagation()
-    navigate(`/user/${video.id}`)
-  }
 
   const onMouseEnter = () => {
     setImageFocus(true)
@@ -44,10 +43,10 @@ export const CardOnHistoryPage : FC<CardOnHistoryPageProps> = ({video}) => {
   <div className="card mx-auto" style={{'width':'18rem','cursor':'pointer'}} onClick={cardNavigate}>
     <img style={{'width':285,'height':230}} className="card-img-top img-thumbnail" src={photo} alt=".../"/>
     <div className="card-body">
-      <h2 className="card-title">{video.name}</h2>
+        <RenderCardTitle title={video.name}/>
     </div>
     <div className="card-body">
-        <RenderUserAvatar givenUser={video.user}/>
+        <RenderUserAvatar withBackgroundColor={true} givenUser={video.user}/>
     </div>
   </div>
   )

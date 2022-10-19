@@ -2,19 +2,22 @@ import React, { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { Loader } from '../../components/Loader/Loader'
 import RenderAlert from '../../helpers/RenderAlert'
+import { RenderNoDataFound } from '../../helpers/RenerNoDataFound'
 import RenderVideosOnHistroyPage from '../../helpers/VideoHelpers/RenderVideoOnHistroyPage'
 import { useAppDispatch, useAppSelector } from '../../hooks/TypedHooks'
-import {LoadUserVideos} from '../../reducers/asyncActions/LOAD_VIDEOS'
+import {LOAD_VIDEOS_WITH_SEARCH} from '../../reducers/asyncActions/LOAD_VIDEOS_WITH_SEARCH'
 const SearchPage = () => {
 
   const {search} = useParams()
   const dispatch = useAppDispatch()
-  const {loading,error,videos} = useAppSelector(state => state.video)
+  const {loading,error,videos,AllLoading,AllError} = useAppSelector(state => state.video)
   useEffect(() => {
-    dispatch(LoadUserVideos(null,search))
+    if (search && search.length){
+      dispatch(LOAD_VIDEOS_WITH_SEARCH(search))
+    }
   },[search])
   return (
-    <div style={{'backgroundColor':'rgba(0,0,0,0.3)','minHeight':100+'vh'}}>
+    <div>
         {loading && !error
         ? (
           <Loader/>
@@ -22,14 +25,17 @@ const SearchPage = () => {
         : (
           <>
             {error
-            ? (<></>)
+            ? (<RenderAlert type='danger' text={`Server Error`}/>)
             :(
               <>
                 {videos.length ? (
                   <RenderVideosOnHistroyPage videos={videos}/>
                 )
                : (
-                <RenderAlert error={`videos with name ${search} doese'nt exist!`}/>
+                <div>
+                  <RenderAlert type='danger' text={`No videos that includes '${search}' !`}/>
+                  <RenderNoDataFound/>
+                </div>
                )}
               </>
             )}

@@ -20,20 +20,20 @@ export const RenderTimeAgo : FC<RenderTimeAgoProps> = ({video}) => {
               <div>
                 {hours >= 24
                 ? (
-                  <li className="list-group-item">{days} {days === 1 ? 'day' : 'days'} ago</li>
+                  <li className="list-group-item">{video.views.length || 0} views | {days} {days === 1 ? 'day' : 'days'} ago</li>
                 )
                 : (
-                  <li className="list-group-item">{hours} {hours === 1  ? 'hour' : 'hours'} ago</li>
+                  <li className="list-group-item">{video.views.length || 0}  views | {hours} {hours === 1  ? 'hour' : 'hours'} ago</li>
                 )}
               </div>
             )
             : (
-              <li className="list-group-item">{mins} {mins === 1 ? 'min' : 'mins'} ago</li>
+              <li className="list-group-item">{video.views.length || 0}  views | {mins} {mins === 1 ? 'min' : 'mins'} ago</li>
             )}
         </div>
       )
       : (
-        <li className="list-group-item">{seconds} {seconds === 1 ? 'second' : 'seconds'} ago</li>
+        <li className="list-group-item">{video.views.length || 0}  views | {seconds} {seconds === 1 ? 'second' : 'seconds'} ago</li>
       )}
     </ul>
     )

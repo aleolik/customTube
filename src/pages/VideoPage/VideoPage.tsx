@@ -17,7 +17,7 @@ const VideoPage = () => {
   const videoRef = useRef<HTMLVideoElement>(null)
   const preferedVolume = localStorage.getItem('videoVolume') // saved volume on every video(default - 0.5)
   const loadVideo = useAppSelector(state => state.loader.load)
-  const dispatch = useAppDispatch() 
+  const dispatch = useAppDispatch()
   useEffect(() => {
     if (!videoID){
       videoID = 'error'
@@ -26,8 +26,17 @@ const VideoPage = () => {
       username = 'error'
     }
     dispatch(SET_CURRENT_VIDEO(videoID,username))
-    ADD_VIDEO_TO_FIREBASE_AND_STATE(username,videoID)
   },[videoID,username])
+
+  useEffect(() => {
+    if (!videoID){
+      videoID = 'error'
+    }
+    if (!username){
+      username = 'error'
+    }
+    ADD_VIDEO_TO_FIREBASE_AND_STATE(username,videoID)
+  },[video])
 
  const setVideoSettings = () => {
   if (videoRef && videoRef.current){
@@ -78,14 +87,14 @@ const VideoPage = () => {
           <div>
             {/* <VideoPlayer options={videoOptions}/> - error,source file not working with it,maybe do it later or just left a video tag*/} 
             <div>
-              <h6 className='d-flex flex-wrap' style={{'maxWidth':300,'border':'5px solid black'}}>
+              <h4 style={{'display':'inline-block','maxWidth':300}}>
                 {video?.name}
-              </h6>
+              </h4>
               <div>
                 <h4>Description : {video?.description}</h4>
               </div>
               <div>
-                <RenderUserAvatar givenUser={video.user}/>
+                <RenderUserAvatar withBackgroundColor={true} givenUser={video.user}/>
               </div>
             </div>
             <video onVolumeChange={setVolumeChange} onLoadStart={setVideoSettings} style={{'height':'auto','width':100+'%'}} ref={videoRef} controls>
