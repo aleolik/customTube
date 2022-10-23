@@ -28,7 +28,7 @@ const ProtectedRoute = () => {
                     {showLogin
                     && (<LoginForm protectedRoute={true}/>)}
                     {showFAQ
-                    && (<FAQ/>)}
+                    && (<FAQ protectedRoute={true}/>)}
                     {showRegister
                     && (<RegisterForm protectedRoute={true}/>)}
                 </ModalWindow>

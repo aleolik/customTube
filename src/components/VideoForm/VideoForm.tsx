@@ -239,7 +239,7 @@ const VideoForm : FC<VideoFormProps> = ({videos}) => {
               <input onChange={(e) => videoFileHandler(e)} type="file" className="form-control" id="inputGroupFile01"/>
             </div>
             <div className='justify-content-center d-flex'>
-              <button className='btn-selfmade-blue' onClick={sumbitHadnler} style={{color:'white'}}><span>Создать видео</span><i></i></button>
+              <button className='btn-selfmade-blue' onClick={sumbitHadnler} style={{color:'white'}}><span>Upload video</span><i></i></button>
             </div>
         </form>
       </div>

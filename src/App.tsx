@@ -20,6 +20,7 @@ import {LOAD_ALL_VIDEOS} from './reducers/asyncActions/LOAD_ALL_VIDEOS'
 import SearchPage from './pages/SearchPage/SearchPage';
 import { videoReducer } from './reducers/VideoReducer';
 import { useGetPhotoUrlFromFirestorage } from './hooks/useGetPhotoUrlFromFirestorage';
+import FAQPage from './pages/FAQPage/FAQPage';
 const App = () => {
 
   // routes + global useEffects
@@ -80,7 +81,7 @@ const App = () => {
     {
       'path':'/history',
       'title' : 'Your History'
-    }
+    },
   ]
 
   useEffect(() => {
@@ -101,6 +102,7 @@ const App = () => {
            <Route path='user/:username/:email' element={<ProfilePage/>}></Route>
            <Route path='video=:videoID/user=:username' element={<VideoPage/>}></Route>
            <Route path='search=:search' element={<SearchPage/>}></Route>
+           <Route path='/FAQ' element={<FAQPage/>}></Route>
            <Route element={<ProtectedRoute/>}>
               <Route path='/history' element={<HistoryPage/>}></Route>
            </Route>

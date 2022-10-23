@@ -10,6 +10,7 @@ import InputForm from './InputForm'
 import { modalReducer } from '../reducers/ModalReducer'
 
 
+
 interface LoginFormProps{
   protectedRoute? : boolean
 }
@@ -42,10 +43,7 @@ const LoginForm : FC<LoginFormProps> = ({protectedRoute=false}) => {
   return (
     <div onClick={canCloseModal}>
       <div onClick={(e) => e.stopPropagation()}>
-        <FormButtons/>
-        {protectedRoute && (
-            <button className='w-100 btn btn-primary mt-3' onClick={NavigateToMain}><BiArrowBack color='black' size={30} style={{'marginRight':5}}/>Move Back</button>
-        )}
+        <FormButtons protectedRoute={protectedRoute}/>
         <h1 style={{'textAlign':'center'}}>SignIn with :</h1>
           <InputForm/>
         <h1 style={{'textAlign':'center'}}>OR:</h1>

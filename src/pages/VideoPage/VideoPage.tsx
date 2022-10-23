@@ -76,35 +76,47 @@ const VideoPage = () => {
   
 
   return (
-    <div className='d-flex align-items-center justify-content-center flex-wrap'>
-      {loadVideo
-      ? (
-        <Loader/>
-      )
-      : (
-        <>
-          {video?.file ? (
-          <div>
-            {/* <VideoPlayer options={videoOptions}/> - error,source file not working with it,maybe do it later or just left a video tag*/} 
-            <div>
-              <h4 style={{'display':'inline-block','maxWidth':300}}>
-                {video?.name}
-              </h4>
-              <div>
-                <h4>Description : {video?.description}</h4>
-              </div>
-              <div>
-                <RenderUserAvatar withBackgroundColor={true} givenUser={video.user}/>
-              </div>
-            </div>
-            <video onVolumeChange={setVolumeChange} onLoadStart={setVideoSettings} style={{'height':'auto','width':100+'%'}} ref={videoRef} controls>
-              <source  type="video/mp4" src={video?.file}/>
-            </video>
-          </div>
+    <div style={{'width':100+'vw','height':100+'vh'}}>
+      <div className='d-flex align-items-center justify-content-center'>
+        {loadVideo
+        ? (
+          <Loader/>
         )
-        : (<NotFoundPage/>)}
-        </>
-      )}
+        : (
+          <>
+            {video?.file ? (
+            <div>
+              {/* <VideoPlayer options={videoOptions}/> - error,source file not working with it,maybe do it later or just left a video tag*/} 
+              <div>
+                <div>
+                  {video.name && (
+                    <>
+                    {video?.name.length >= 80
+                    ? (
+                      <h6 style={{'marginLeft':'auto','paddingRight':0.5*100+'px','textAlign':'center'}}>{video.name.slice(0,100)}...</h6>
+                    )
+                    : (<h6 style={{'textAlign':'center'}}>{video.name}</h6>)}
+                    </>
+                  )}
+                </div>
+                <div>
+                  {video.description.length >= 50
+                  ? (<h6>Description : {video.description.slice(0,100)}...</h6>)
+                  : (<h6>Description : {video.description}</h6>)}
+                </div>
+                <div>
+                  <RenderUserAvatar withBackgroundColor={true} givenUser={video.user}/>
+                </div>
+              </div>
+              <video onVolumeChange={setVolumeChange} onLoadStart={setVideoSettings} style={{'height':'auto','width':100+'%'}} ref={videoRef} controls>
+                <source  type="video/mp4" src={video?.file}/>
+              </video>
+            </div>
+          )
+          : (<NotFoundPage/>)}
+          </>
+        )}
+      </div>
     </div>
     
   )

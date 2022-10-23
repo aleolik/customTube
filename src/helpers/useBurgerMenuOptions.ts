@@ -16,6 +16,12 @@ export const useBurgerMenuOptions = () => {
                 title : 'History',
                 to : '/history',
                 icon : 'history'
+            },
+            {
+                id : 30351,
+                title : 'FAQ',
+                to : '/FAQ',
+                icon : 'quiz'
             }
         ])
     },[])

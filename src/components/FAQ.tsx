@@ -1,10 +1,12 @@
-import React from 'react'
+import React, { FC } from 'react'
 import FormButtons from './FormButtons'
-
-const FAQ = () => {
+interface FAQInterface{
+  protectedRoute? : boolean
+}
+const FAQ : FC<FAQInterface> = ({protectedRoute=false}) => {
   return (
     <div>
-        <FormButtons></FormButtons>
+        <FormButtons protectedRoute={protectedRoute}></FormButtons>
         <div className='faq_container'>
             <h2>Why?</h2>
             <h4>You will access new permissions such as :</h4>
