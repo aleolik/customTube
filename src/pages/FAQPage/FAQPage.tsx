@@ -40,6 +40,10 @@ const FAQPage = () => {
       'answer' : 'Clcik "Sign In",then select register or login  with google'
     },
     {
+      'question' : 'How can i create my own tags?',
+      'answer' : 'Currently this feature is not available'
+    },
+    {
       'question' : 'What purproses of making the platform?',
       'answer' : 'To practice and try new tecnhologies'
     },
@@ -80,7 +84,7 @@ const FAQPage = () => {
                                     {index === currentQuestion && (
                                        <div id="faqCollapse-1"  aria-labelledby="faqHeading-1" data-parent="#accordion">
                                        <div className="card-body">
-                                           <p>{item.answer} {item.linkName && <p><a style={{'textDecoration':'none','color':'blue','fontSize':30}} href={item.link}>{item.linkName}</a></p>}</p>
+                                           <p>{item.answer} {item.linkName && <p><a target={'_blank'} rel="noopener noreferrer" style={{'textDecoration':'none','color':'blue','fontSize':30}} href={item.link}>{item.linkName}</a></p>}</p>
                                        </div>
                                        {item.steps?.length && (
                                         <ul style={{'listStyleType':'none'}}>

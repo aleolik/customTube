@@ -3,6 +3,7 @@ import { DeviceReducer } from '../reducers/DeviceReducer'
 import { HistoryReducer } from '../reducers/HistoryReducer'
 import { LoaderRedcuer } from '../reducers/LoaderReducer'
 import { modalReducer } from '../reducers/ModalReducer'
+import { tagsReducer } from '../reducers/TagReducer'
 import { UserReducer } from '../reducers/User'
 import { videoReducer } from '../reducers/VideoReducer'
 
@@ -16,7 +17,8 @@ const RootReducer = combineReducers({
     video : videoReducer.reducer,
     device : DeviceReducer.reducer,
     history : HistoryReducer.reducer,
-    loader : LoaderRedcuer.reducer
+    loader : LoaderRedcuer.reducer,
+    tags : tagsReducer.reducer
 })
 
 export const SetupStore = () => {

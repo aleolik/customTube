@@ -12,6 +12,7 @@ import { useDevice } from '../../helpers/useDevice'
 import { videoReducer } from '../../reducers/VideoReducer'
 import { useScroll } from '../../hooks/useScroll'
 import { BottomLoader } from '../../components/BottomLoader/BottomLoader'
+import { RenderTagsOnMain } from '../../helpers/RenderHelpers/RenderTagsOnMain'
 const Main = () => {
   const {error,loading,videos,loadingDynamically} = useAppSelector(state => state.video)
   const {AllError,AllVideos,AllLoading} = useAppSelector(state => state.video)
@@ -28,6 +29,7 @@ const Main = () => {
           <RenderNavigationOptions/>
         </div>  
         <div className='col-md-10 col-sm-8 col-lg-11'>
+          <RenderTagsOnMain/>
             <div>
             {AllLoading || !videos.length
             ? (

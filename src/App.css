@@ -28,7 +28,7 @@
   align-items: center;
   border-radius: 30px;
 }
-
+/*  some random styles*/
 .option{
   color: white;
   text-decoration: none;
@@ -121,6 +121,20 @@ i::after{
  left: 80%;
 }
 
+/* custom hover style */
+.tagButtonHover {
+  color: #fff;
+  background: #444;
+  transition: .4s;
+  border-radius: 30px;
+  text-align: center;
+  font-size: 15px;
+}
+.tagButtonHover:hover {
+  color: rgb(5, 24, 122);
+  background-color: #fff;
+  font-size: 17px;
+}
 
 
 

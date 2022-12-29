@@ -8,7 +8,7 @@ import { IVideo } from '../../types/VideoTypes'
 export const RenderLoadingScreenMainPage  = () => {
   return (
     <div className='row'>
-        {[...Array(23)].map((x, i) =>
+        {[...Array(24)].map((x, i) =>
             <div  className='col-lg-3 col-md-6 col-sm-6' key={i}>
               <GrayCard />
             </div>

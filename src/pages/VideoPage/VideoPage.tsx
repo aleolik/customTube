@@ -102,7 +102,7 @@ const VideoPage = () => {
                 <div>
                   {video.description.length >= 50
                   ? (<h6>Description : {video.description.slice(0,100)}...</h6>)
-                  : (<h6>Description : {video.description}</h6>)}
+                  : (<h6 >Description : {video.description}</h6>)}
                 </div>
                 <div>
                   <RenderUserAvatar withBackgroundColor={true} givenUser={video.user}/>

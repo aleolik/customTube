@@ -5,7 +5,6 @@ import { useBurgerMenuOptions } from '../useBurgerMenuOptions'
 import css from '../../components/BurgerMenu/BurgerMenu.module.css'
 import { modalReducer } from '../../reducers/ModalReducer'
 import { useDevice } from '../useDevice'
-import { IconType } from 'react-icons'
 
 export const RenderNavigationOptions = () => {
   const {CloseSideBar} = modalReducer.actions
@@ -24,7 +23,10 @@ export const RenderNavigationOptions = () => {
   const device = useDevice()
 
   const positionDevice = device === 'tablet' || device === 'desktop' ? 'fixed' : 'static'
+
   const btnSize = device === 'mobile' ? 180 : 100
+
+  const {loading,loadingDynamically,AllLoading} = useAppSelector(state => state.video)
   return (
     <div style={{'position':positionDevice}}>
       {items.map((item) => {
