@@ -3,14 +3,14 @@ import { IconType } from "react-icons"
 
 export interface ILink {
   title : string,
-  id : number,
+  id : number | string,
   to : string,
   // icons with material io icons
   icon : string
 }
 export interface IButton{
   title : string,
-  id : number,
+  id : number | string,
   onClick :  () => void
   // icons with material io icons
   icon : string

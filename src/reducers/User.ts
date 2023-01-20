@@ -4,13 +4,30 @@ import { userState } from "../types/userTypes";
 import { IVideo } from "../types/VideoTypes";
 
 const initialState : userState = {
-    user : null
+    user : null,
+    loadUser : false,
+    userError : '',
 }
 
 export const UserReducer = createSlice({
     name : 'user',
     initialState : initialState,
     reducers : {
+        // loging,clear function or other.
+        startUserAction(state : userState){
+            state.loadUser = true
+        },
+        UserActionError(state:userState,action:PayloadAction<string>){
+            if (action.payload.length){
+                state.userError = action.payload
+            }
+            else{
+                state.userError = 'Unknown Error!'
+            }
+        },
+        EndUserAction(state:userState){
+            state.loadUser = false
+        },
         login(state : userState,action : PayloadAction<IUser>){
             state.user = action.payload
         },
@@ -34,6 +51,6 @@ export const UserReducer = createSlice({
             if (state.user !== null){
                 state.user.watched = []
             }
-        }
+        },
     }
 })

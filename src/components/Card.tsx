@@ -7,6 +7,7 @@ import { IVideo } from '../types/VideoTypes'
 import RenderUserAvatar from '../helpers/RenderUserAvatar'
 import { RenderCardTitle } from '../helpers/VideoHelpers/RenderCardTitle'
 import { useGetLinkToVideo } from '../hooks/useGetNavigationLinks'
+import { useAppSelector } from '../hooks/TypedHooks'
 interface CardProps{
     video : IVideo
 }
@@ -27,8 +28,9 @@ export const Card : FC<CardProps> = ({video}) => {
   const cardNavigate = () => {
     navigate(link)
   }
+  const darkMode = useAppSelector(state => state.state.darkMode)
   return (
-  <div className="card mx-auto" style={{'width':'18rem','height':'30rem','cursor':'pointer'}} onClick={cardNavigate}>
+  <div className="card mx-auto" style={{'width':'18rem','height':'30rem','cursor':'pointer','backgroundColor':darkMode ? '#292b2c' : 'white',color:darkMode ? 'white' : 'black'}} onClick={cardNavigate}>
     <img style={{'width':285,'height':230}} className="card-img-top img-thumbnail" src={photo} alt=".../"/>
     <div className="card-body">
         <RenderCardTitle title={video.name}/>

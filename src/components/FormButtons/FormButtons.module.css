@@ -1,0 +1,23 @@
+.form_btn_container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.form_btn{
+    width: 30%;
+    height: 20%;
+    margin-right: 10px;
+}
+@media (max-height:480px){
+    .form_btn{
+        height: 20px;
+    }
+}
+hr {
+    border: 0;
+    clear:both;
+    display:block;
+    width: 96%;               
+    background-color:#FFFF00;
+    height: 1px;
+  }

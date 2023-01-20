@@ -1,12 +1,9 @@
-import { getDownloadURL, ref } from 'firebase/storage'
+
 import {FC, useEffect, useState} from 'react'
-import { storage } from '../../..'
-import RenderUserAvatar from '../../../helpers/RenderUserAvatar'
 import { useDevice } from '../../../helpers/useDevice'
 import { useAppSelector } from '../../../hooks/TypedHooks'
-import { useGetPhotoUrlFromFirestorage } from '../../../hooks/useGetPhotoUrlFromFirestorage'
 import defaultUserAvatar from '../../../media/defaultUserAvatar.png'
-import { RenderOptions } from './RenderOptions'
+import { RenderOptions } from './RenderOptions/RenderOptions'
 interface UserAvatarProps{
     avatarOnFocus : boolean,
     setAvatarOnFocus : (state:boolean) => void,
@@ -23,18 +20,13 @@ export const UserAvatar : FC<UserAvatarProps> = ({avatarOnFocus,setAvatarOnFocus
     const onClcik = () => {
         setAvatarOnFocus(!avatarOnFocus)
     }
-    const marginRight = {
-        'tablet' : 200,
-        'mobile' : 50,
-        'desktop' : 200
-    }
 
     return(
         <div
         tabIndex={0}
         onClick={onClcik}
         onMouseLeave={onMouseLeave}
-        style={{'marginRight':marginRight[device]+'px'}}
+        style={{'marginRight':30+'px'}}
         >
         <img style={{'width':80,'height':60,'border': avatarOnFocus ? '2px solid aqua' : '2px solid gray','borderRadius':30}} src={user?.photoFile ? URL.createObjectURL(user.photoFile) : user?.photoUrl ? user.photoUrl : defaultUserAvatar} />
              {avatarOnFocus &&
@@ -45,4 +37,4 @@ export const UserAvatar : FC<UserAvatarProps> = ({avatarOnFocus,setAvatarOnFocus
     )   
 }
 
-// todo : videos creation,loading + styles
+

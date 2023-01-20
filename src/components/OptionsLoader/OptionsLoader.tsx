@@ -1,8 +1,8 @@
 import React from 'react'
-import './OptionsLoader.css'
+import css from './OptionsLoader.module.css'
 const OptionsLoader = () => {
   return (
-    <div className='Botloader'></div>
+    <div className={css.Botloader}></div>
   )
 }
 

@@ -10,7 +10,7 @@ export const CREATE_VIDEO = (video:IVideo) => {
     return async (dispatch:AppDispatch) => {
         const {LOAD_VIDEO,LOAD_VIDEO_SUCCES,LOAD_VIDEO_ERROR} = videoReducer.actions
         if (video !== null){
-            const {name,views,created,description,user,link,photoUrl,tags} = video
+            const {name,views,created,description,user,link,photoUrl} = video
                 try{
                     dispatch(LOAD_VIDEO())
                     const video : IVideo = {
@@ -26,7 +26,6 @@ export const CREATE_VIDEO = (video:IVideo) => {
                             photoUrl : user.photoUrl
                         },
                         photoUrl : photoUrl,
-                        tags : tags
                     }
                     await addDoc(collection(database,'videos'),{
                         video : video

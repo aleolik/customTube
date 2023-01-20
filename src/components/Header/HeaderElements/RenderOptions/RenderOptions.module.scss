@@ -1,0 +1,30 @@
+
+.OptionsContainer{
+    z-index: 999999999999;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 120vh;
+    background-color :#292b2c;
+    border-radius: 10px;
+    top:0;
+    left:0;
+    overflow: hidden;
+    position:absolute;
+  }
+.close_btn{
+    top:0;
+    right:0;
+    color: white;
+    margin-top: 50px;
+    margin-right: 20px;
+    position: absolute;
+}
+@media (min-width:400) {
+    .close_btn {
+        margin-right: 100px;
+    }
+}
+

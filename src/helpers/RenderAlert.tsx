@@ -6,12 +6,12 @@ interface RenderAlertProps{
 }
 const RenderAlert : FC<RenderAlertProps> = ({text,type}) => {
   return (
-    <div className={`alert alert-${type} d-flex align-items-center`} role="alert">
+    <div className={`alert alert-${type} d-flex`} style={{'justifyContent':'center','borderRadius':30}} role="alert">
     <div style={{'color':'black'}}>
         {text.length ?
         (
           <div>
-            <h5 style={{'textAlign':'center'}}>{text}</h5>
+            <h5   >{text}</h5>
           </div>
         )
         : (

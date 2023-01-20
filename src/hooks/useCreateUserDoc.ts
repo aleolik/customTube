@@ -23,7 +23,7 @@ export const useCreateUserDoc = () => {
                     await setDoc(docRef,{
                         user : {
                             username : username,
-                            photoUrl : photo?.name,
+                            photoUrl : photo?.name ? photo.name : null,
                             email : argEmail,
                             watched : []
                         }

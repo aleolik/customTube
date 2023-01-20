@@ -1,3 +1,4 @@
+import { useAppSelector } from "../../hooks/TypedHooks"
 import { IVideo } from "../../types/VideoTypes"
 import {FC} from 'react'
 interface RenderTimeAgoProps{
@@ -10,8 +11,10 @@ export const RenderTimeAgo : FC<RenderTimeAgoProps> = ({video}) => {
     const mins = Math.floor((now - video.created)/(1000*60))
     const hours = Math.floor((now - video.created)/(1000*3600))
     const days = Math.floor((now - video.created)/(1000*3600*24))
+    
+    const darkMode = useAppSelector(state => state.state.darkMode)
     return(
-        <ul className="list-group list-group-flush">
+    <ul className="list-group list-group-flush" style={{'backgroundColor':darkMode ? '#292b2c' : 'white'}}>
       {seconds > 60
       ? (
         <div>

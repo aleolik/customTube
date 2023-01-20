@@ -1,10 +1,5 @@
 import { IUser,UserWithoutPersonalInfo} from "./userTypes";
 
-export interface ITAG{
-    value : number,
-    label : string
-    id : string
-}
 export interface IVideo{
     name : string,
     id? : string,
@@ -16,7 +11,6 @@ export interface IVideo{
     views : UserWithoutPersonalInfo[],
     photoUrl : string
     file? : string
-    tags? : ITAG[]
 }
 
 

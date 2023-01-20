@@ -4,14 +4,19 @@ import { useAppDispatch, useAppSelector } from '../../hooks/TypedHooks'
 import { useBurgerMenuOptions } from '../useBurgerMenuOptions'
 import css from '../../components/BurgerMenu/BurgerMenu.module.css'
 import { modalReducer } from '../../reducers/ModalReducer'
-import { useDevice } from '../useDevice'
+import { ILink } from '../../types/optionTypes'
+import { isDesktop, isMobile, isTablet } from 'react-device-detect'
+export interface RenderNavigationOptionsProps{
+  givenOptions? : ILink[]
+}
+export const isTabletOrDesktop = isTablet || isDesktop
 
-export const RenderNavigationOptions = () => {
+export const RenderNavigationOptions : FC<RenderNavigationOptionsProps> = ({givenOptions}) => {
   const {CloseSideBar} = modalReducer.actions
-  const showSideBar = useAppSelector(state => state.modal.show_side_bar)
-  const items = useBurgerMenuOptions()
+  const {AllLoading,loading} = useAppSelector(state => state.video)
+  const user = useAppSelector(state => state.user.user)
+  const {burgerMenuOptions} = useBurgerMenuOptions()
   const dispatch = useAppDispatch()
-  const location = useLocation() // different styles,depends if render side bar or main page
   const sideBar = useAppSelector(state => state.modal.show_side_bar)
   const navigate = useNavigate()
   const handleClose = () => {
@@ -20,25 +25,50 @@ export const RenderNavigationOptions = () => {
   const handleNavigate = (to:string) => {
     navigate(to)
   }
-  const device = useDevice()
 
-  const positionDevice = device === 'tablet' || device === 'desktop' ? 'fixed' : 'static'
 
-  const btnSize = device === 'mobile' ? 180 : 100
-
-  const {loading,loadingDynamically,AllLoading} = useAppSelector(state => state.video)
+  const darkMode = useAppSelector(state => state.state.darkMode)
   return (
-    <div style={{'position':positionDevice}}>
-      {items.map((item) => {
-        return(
-          <div key={item.id} className='row' style={{'position':'relative'}}>
-            {!sideBar
-            // add icons to the buttons later
-            ? (<button onClick={() => handleNavigate(item.to)} className='btn btn-light' style={{'marginTop':10+'px','borderRadius':20,'width':btnSize}}>{item.title}<span style={{'verticalAlign':-5,'fontSize':22}} className="material-icons">{item.icon}</span></button>)
-            : (<Link onClick={handleClose} className={css.link} to={item.to}>{item.title}<span className="material-icons" style={{'verticalAlign':-5,'fontSize':22}}>{item.icon}</span></Link>)}
-          </div>
-        )
-      })}
+    <div style={{'position':isTabletOrDesktop ? 'fixed' : 'static'}}>
+      {givenOptions
+      ? (
+        <>
+          {givenOptions.map((option) => {
+            return(
+              <div key={option.id} className='row' style={{'position':'relative'}}>
+                  {(AllLoading || loading) && !user
+                    ? (<button disabled={true} key={option.id} style={{'marginTop':5+'px','borderRadius':20,'width':100}} className={`btn btn-light`} >loading...</button>)
+                    : (
+                    <>  
+                         {!sideBar
+                      ? (<button onClick={() => handleNavigate(option.to)} className={`${darkMode ? 'btn btn-light' : 'btn btn-primary'}`} style={{'marginTop':10+'px','borderRadius':20,'width':100+'%'}}>{option.title}<span style={{'verticalAlign':-5,'fontSize':22}} className="material-icons">{option.icon}</span></button>)
+                      : (<Link onClick={handleClose} className={`${css.link}`} to={option.to}>{option.title}<span className="material-icons" style={{'verticalAlign':-5,'fontSize':22}}>{option.icon}</span></Link>)}
+                    </>)}
+               
+              </div>
+            )
+          })}
+        </>
+      )
+      : (
+        <>
+          {burgerMenuOptions.map((option) => {
+            return(
+              <div key={option.id} className='row' style={{'position':'relative'}}>
+                {(AllLoading || loading) && !user
+                    ? (<button disabled={true} key={option.id} style={{'marginTop':5+'px','borderRadius':20,'width':100}} className="btn btn-light" >loading...</button>)
+                    : (
+                      <>
+                        {!sideBar
+                          ? (<button onClick={() => handleNavigate(option.to)} className={`${darkMode ? 'btn btn-light' : 'btn btn-primary'}`}  style={{'marginTop':10+'px','borderRadius':20,'width':100+'%'}}>{option.title}<span style={{'verticalAlign':-5,'fontSize':22}} className="material-icons">{option.icon}</span></button>)
+                          : (<Link onClick={handleClose} className={`${css.link} ${darkMode ? 'btn btn-light' : 'btn btn-primary'}`}  to={option.to}>{option.title}<span className="material-icons" style={{'verticalAlign':-5,'fontSize':22}}>{option.icon}</span></Link>)}
+                      </>
+                    )}         
+              </div>
+            )
+          })}
+        </>
+      )}
     </div>
   )
 }

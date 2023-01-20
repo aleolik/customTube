@@ -13,7 +13,14 @@
     padding: 25px;
     background-color: white;
     border-radius: 16px;
-    min-width: 500px
+    min-width: 80vw;
+    min-height: 40vh;
+}
+@media (min-width:960px){
+    .modal_content{
+        min-height: 40vh;
+        min-width: 500px;
+    }
 }
 .modal.active{
     display: flex;

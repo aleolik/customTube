@@ -7,7 +7,7 @@ import css from './BurgerMenu.module.css'
 const BurgerMenu = () => {
   const {CloseSideBar} = modalReducer.actions
   const dispatch = useAppDispatch()
-  const items = useBurgerMenuOptions()
+  const {burgerMenuOptions} = useBurgerMenuOptions()
   const showSideBar = useAppSelector(state => state.modal.show_side_bar)
   const device = useAppSelector(state => state.device.device)
   const handleClose = () => {
@@ -28,7 +28,7 @@ const BurgerMenu = () => {
         <div onClick={handleClose} className={css.blur}>
             <div onClick={(e : React.MouseEvent<HTMLDivElement>) => e.stopPropagation()} style={{width:menu__content_widths[device]+'%'}} className={css.menu__content}>
                 <ul>
-                    <RenderNavigationOptions/>
+                    <RenderNavigationOptions givenOptions={burgerMenuOptions}/>
                 </ul>
             </div>
         </div>

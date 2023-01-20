@@ -1,7 +1,7 @@
 
 import  {useEffect, useState } from 'react'
 import { useAppDispatch, useAppSelector } from '../../hooks/TypedHooks'
-import LoginForm from '../LoginForm'
+import LoginForm from '../LoginForm/LoginForm'
 import ModalWindow from '../MyModal/ModalWindow'
 import FAQ from '../FAQ'
 import { LogoHeader } from './HeaderElements/LogoHeader'
@@ -9,8 +9,9 @@ import { UserAvatar } from './HeaderElements/UserAvatar'
 import BurgerMenu from '../BurgerMenu/BurgerMenu'
 import {modalReducer} from '../../reducers/ModalReducer'
 import RegisterForm from '../RegisterForm'
-import SearchBar from './HeaderElements/SearchBar'
+import SearchBar from './HeaderElements/./SearchBar/SearchBar'
 import { useDevice } from '../../helpers/useDevice'
+import { isMobile } from 'react-device-detect'
 const Header = () => {
   const user = useAppSelector(state => state.user.user)
   const showModal = useAppSelector(state => state.modal.showModal)
@@ -21,8 +22,7 @@ const Header = () => {
   const closeSideBar = modalReducer.actions.CloseSideBar
   const {loading,AllLoading} = useAppSelector(state => state.video)
   const dispatch = useAppDispatch()
-  const device = useDevice()
-  const [searchBarOnFocus,setSearchBarOnFocus] = useState<boolean>(false)
+  const GlobalSearchBarFocused = useAppSelector(state => state.searchBar.GlobalSearchBarFocused)
   const OpenModalWindow = () => {
     dispatch(showModalWindow())
   }
@@ -30,28 +30,29 @@ const Header = () => {
 
   // make scroll unavailable when sideBar on
   useEffect(() => {
-    if (showSideBar || showModal){
+    if (showSideBar || showModal || (avatarOnFocus && isMobile)){
       document.body.style.overflow = 'hidden'
     }
     else{
       document.body.style.overflow = ''
     }
-  },[showSideBar,showModal])
+  },[showSideBar,showModal,avatarOnFocus])
 
   const closeSideBarIfOpen = () => {
     if (showSideBar){
       dispatch(closeSideBar())
     }
   }
+  const darkMode = useAppSelector(state => state.state.darkMode)
   return (
-      <nav onClick={closeSideBarIfOpen} className="navbar sticky-sm-top sticky-md-top sticky-lg-top sticky-xl-top navbar-light bg-dark" style={{'height':75+'px','zIndex':1000}}>
+      <nav onClick={closeSideBarIfOpen} className={`navbar sticky-sm-top sticky-md-top sticky-lg-top sticky-xl-top navbar-light ${darkMode ? 'bg-dark' : 'bg-light'}`} style={{'height':75+'px','zIndex':1000,'display':'flex'}}>
         {showSideBar && (
             <BurgerMenu/>
         )}
-        {searchBarOnFocus && device === 'mobile'
+        {GlobalSearchBarFocused && isMobile
         ? (<></>)
         : (<LogoHeader />)}
-        <SearchBar setSearchBarOnFocus={setSearchBarOnFocus} searchBarOnFocus={searchBarOnFocus}/>
+        <SearchBar/>
         {showModal && (
           <ModalWindow>
             {showLogin
@@ -62,8 +63,6 @@ const Header = () => {
             && (<RegisterForm/>)} 
           </ModalWindow>
         )}
-        {device !== 'mobile'
-        ? (
           <>
             {(AllLoading || loading) && !user
             ?(
@@ -72,20 +71,24 @@ const Header = () => {
             :(
               <div>{user
               ? (
-                <UserAvatar avatarOnFocus={avatarOnFocus} setAvatarOnFocus={setAvatarOnFocus}/>
+                <>
+                  {isMobile && GlobalSearchBarFocused
+                  ? (<></>)
+                  : (<UserAvatar avatarOnFocus={avatarOnFocus} setAvatarOnFocus={setAvatarOnFocus}/>)}
+                </>    
               )
               : (
                 <div>
-                    <button style={{'marginRight':30+'px'}}  className='btn btn-light' onClick={OpenModalWindow}>Sign In</button>
+                    {GlobalSearchBarFocused && isMobile
+                      ? (<></>)
+                      : ( <button style={{'marginRight':30+'px'}}  className='btn btn-light' onClick={OpenModalWindow}>Sign In</button>)
+            
+                    }
                 </div>
               )}</div>
             )
             }
           </>
-        )
-        : (
-          <></>
-        )}
     </nav>
   )
 }

@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import FormButtons from './FormButtons'
+import FormButtons from './FormButtons/FormButtons'
 interface FAQInterface{
   protectedRoute? : boolean
 }
@@ -12,7 +12,7 @@ const FAQ : FC<FAQInterface> = ({protectedRoute=false}) => {
             <h4>You will access new permissions such as :</h4>
             <h1 className='faq_text'>1 - load videos by yourself</h1>
             <h1>Have your recent watched videos</h1>
-            <h1>Many others in the future...</h1>
+            <h1>Use dark side mode</h1>
         </div>
     </div>
   )

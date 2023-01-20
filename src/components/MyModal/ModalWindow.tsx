@@ -12,15 +12,17 @@ const ModalWindow : FC<ModalWndowProps> = ({children,protectedRoute=false}) => {
   const showModal = useAppSelector(state => state.modal.showModal)
   const dispatch = useAppDispatch()
   const {closeModalWindow,showModalWindow} = modalReducer.actions
+  const {loadUser,user} = useAppSelector(state => state.user)
   if (showModal){
     rootClasses.push(css.active)
   }
 
   useEffect(() => {
-    if (protectedRoute){
+    if (loadUser) return;
+    if (protectedRoute && !user){
       dispatch(showModalWindow())
     }
-  },[])
+  },[loadUser])
 
   const onClick = () => {
     if (!protectedRoute){
@@ -28,7 +30,6 @@ const ModalWindow : FC<ModalWndowProps> = ({children,protectedRoute=false}) => {
     }
   }
 
-  const load = useAppSelector(state => state.loader.load)
   return (
       <div className={rootClasses.join(' ')} onClick={onClick}>
         <div className={css.modal_content} onClick={(e : React.MouseEvent<HTMLDivElement>) => e.stopPropagation()}>

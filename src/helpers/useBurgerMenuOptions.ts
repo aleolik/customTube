@@ -1,31 +1,52 @@
 import { useEffect, useState } from "react"
 import { ILink } from "../types/optionTypes"
-import {AiFillHome,AiOutlineLogout} from 'react-icons/ai'
+import {isMobile} from 'react-device-detect'
+import { useGetLinkToProfile } from "../hooks/useGetNavigationLinks"
+import { useAppSelector } from "../hooks/TypedHooks"
 export const useBurgerMenuOptions = () => {
-    const [options,setOptions] = useState<ILink[]>([])
+    const [burgerMenuOptions,setBurgerMenuOptions] = useState<ILink[]>([])
+    const user = useAppSelector(state => state.user.user)
+    const profileLink = useGetLinkToProfile(user)
     useEffect(() => {
-        setOptions([
-            {
-                id : 1,
-                title : 'Main',
-                to : '/',
-                icon : 'web'
-            },
-            {
-                id : 3,
-                title : 'History',
-                to : '/history',
-                icon : 'history'
-            },
-            {
-                id : 30351,
-                title : 'FAQ',
-                to : '/FAQ',
-                icon : 'quiz'
-            }
-        ])
-    },[])
-    return(
-        options
-    )
+        const navigationOptions : ILink[]  = [
+                {
+                    id : 1,
+                    title : 'Main',
+                    to : '/',
+                    icon : 'web'
+                },
+
+                {
+                    id : 30351,
+                    title : 'FAQ',
+                    to : '/FAQ',
+                    icon : 'quiz'
+                }
+        ]
+        setBurgerMenuOptions(navigationOptions)
+        if (user){
+            setBurgerMenuOptions((prev) => (
+                [
+                    {
+                        title : 'Profile',
+                        id : 130,
+                        to : profileLink,
+                        icon : 'person'
+                    },
+                    ...prev,
+                    {
+                        id : 3,
+                        title : 'History',
+                        to : '/history',
+                        icon : 'history'
+                    },
+                ]
+            ))
+        }
+    },[user])
+
+    
+    return{
+        burgerMenuOptions
+    }
 }

@@ -7,15 +7,14 @@ import {store} from '../../index'
 import { collection, getDocs,query,limit,orderBy,where,CollectionReference, startAt,endAt, startAfter, DocumentSnapshot} from "firebase/firestore";
 import { database } from "../../config";
 import { AppDispatch } from "../../store/store";
-import { ITAG, IVideo } from "../../types/VideoTypes";
+import { IVideo } from "../../types/VideoTypes";
 import { videoReducer } from "../VideoReducer";
 import { LOAD_ALL_VIDEOS } from './LOAD_ALL_VIDEOS';
 
 export const LoadUserVideos = (email? : string) => {
     /*
         loads videos on MainPage - default
-        loads videos on ProfilePage - if TagOrEmail is string
-        loads videos on MainPage sorted by tags - if TagOrEmail is ITAG
+        loads videos on ProfilePage - if email is string
     */
     return async (dispatch:AppDispatch) => {
         const SET_LAST_VISIBLE_DOC = videoReducer.actions.SET_LAST_VISIBLE_DOC

@@ -1,35 +1,31 @@
-import {ChangeEvent, useEffect, useState} from 'react'
+import {useEffect} from 'react'
 import css from './Main.module.css'
 import { useAppDispatch, useAppSelector } from '../../hooks/TypedHooks'
-import { RenderNavigationOptions } from '../../helpers/VideoHelpers/RenderNavigationOptions'
+import { RenderNavigationOptions, isTabletOrDesktop } from '../../helpers/VideoHelpers/RenderNavigationOptions'
 import { LoadUserVideos } from '../../reducers/asyncActions/LOAD_VIDEOS'
-import { Card } from '../../components/Card'
 import RenderVideos from '../../helpers/VideoHelpers/RenderVideos'
 import { Loader } from '../../components/Loader/Loader'
 import RenderAlert from '../../helpers/RenderAlert'
 import RenderLoadingScreenMainPage from '../../helpers/VideoHelpers/RenderLoadingScreenMainPage'
 import { useDevice } from '../../helpers/useDevice'
-import { videoReducer } from '../../reducers/VideoReducer'
 import { useScroll } from '../../hooks/useScroll'
 import { BottomLoader } from '../../components/BottomLoader/BottomLoader'
-import { RenderTagsOnMain } from '../../helpers/RenderHelpers/RenderTagsOnMain'
 const Main = () => {
   const {error,loading,videos,loadingDynamically} = useAppSelector(state => state.video)
   const {AllError,AllVideos,AllLoading} = useAppSelector(state => state.video)
   const dispatch = useAppDispatch()
-  const device = useDevice()
   useEffect(() => {
     dispatch(LoadUserVideos())
   },[])
+  const darkMode = useAppSelector(state => state.state.darkMode)
   useScroll()
   return (
-    <div className='container-fluid' >
-      <div className='row' style={{'backgroundColor':'white'}}>
-        <div className='col-md-2 col-sm-4 col-lg-1' style={{'backgroundColor':'#292b2c','display':'flex','justifyContent':'center','minHeight':device === 'tablet' || device === 'desktop' ? 100+'vh' : 20+'vh'}}>
+    <div className='container-fluid' style={{'backgroundColor':darkMode ? 'lightgray' : 'white'}}>
+      <div className='row'>
+        <div className={`col-md-2 col-sm-4 col-lg-1 ${darkMode ? 'bg-dark' : 'bg-light'}`} style={{'display':'flex','justifyContent':'center','minHeight':isTabletOrDesktop ? 100+'vh' : 20+'vh'}}>
           <RenderNavigationOptions/>
         </div>  
         <div className='col-md-10 col-sm-8 col-lg-11'>
-          <RenderTagsOnMain/>
             <div>
             {AllLoading || !videos.length
             ? (

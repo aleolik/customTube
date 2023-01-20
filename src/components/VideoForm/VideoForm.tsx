@@ -7,13 +7,13 @@ import {storage} from '../../index'
 import {getDownloadURL, ref, uploadBytes} from 'firebase/storage'
 import filesPng from '../../media/files.png'
 import uploadPng from '../../media/upload.png'
-import { IMakeVideo, IPhoto, ITAG, IVideo } from '../../types/VideoTypes'
+import { IMakeVideo, IPhoto, IVideo } from '../../types/VideoTypes'
 import RenderAlert from '../../helpers/RenderAlert'
 import {GiCancel} from 'react-icons/gi'
 import { CheckNameIsUnique } from '../../reducers/asyncActions/CheckNameIsUnique'
 import { videoReducer } from '../../reducers/VideoReducer'
 import { UploadNewVideo } from '../../reducers/asyncActions/UploadNewVideo'
-import { SelectForm } from '../SelectForm'
+
 interface VideoFormProps{
   videos : IVideo[]
 }
@@ -32,7 +32,6 @@ const VideoForm : FC<VideoFormProps> = ({videos}) => {
   const [fullData,setFullData] = useState<boolean>(false)
   const user = useAppSelector(state => state.user.user)
   const date = useCurrentDate()
-  const [chosenTags,setChosenTags] = useState<ITAG[]>([])
 
   // file and photoUrl are links to img and video in the firebase storage
   const [photo,setPhoto] = useState<IPhoto>({
@@ -144,8 +143,7 @@ const VideoForm : FC<VideoFormProps> = ({videos}) => {
               created : date,
               user : user,
               photoUrl : photo.photoUrl,
-              createdNegative : -date,
-              tags : chosenTags
+              createdNegative : -date
              })).then(() => {
               // uploads images and videos to firestorage
               uploadDataToFireStorage(videoRef,imageRef)
@@ -243,7 +241,6 @@ const VideoForm : FC<VideoFormProps> = ({videos}) => {
             <div className="input-group mb-3">
               <input placeholder='choose' onChange={(e) => videoFileHandler(e)} type="file" className="form-control" id="inputGroupFile01"/>
             </div>
-            <SelectForm setChosenTags={setChosenTags} />
             <div className='justify-content-center d-flex'>
               <button className='btn-selfmade-blue' onClick={sumbitHadnler} style={{color:'white'}}><span>Upload video</span><i></i></button>
             </div>

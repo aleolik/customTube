@@ -1,8 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { CollectionReference, DocumentData, QueryDocumentSnapshot } from "firebase/firestore"
 import { IVideo } from "../types/VideoTypes"
-import {IUser} from '../types/userTypes'
-
 interface initialStateProps{
     // to load videos
     AllVideos : number | null // to know how many videos on the server(TotalCount for paginating)
@@ -18,6 +16,8 @@ interface initialStateProps{
     // to do smth with 1 video
     video : IVideo | null
     lastVisible? : null | QueryDocumentSnapshot<DocumentData>
+    // for async actions
+    videoOnCreateLoad : boolean,
 }
 const initialState : initialStateProps = {
     AllVideos : null,
@@ -30,7 +30,8 @@ const initialState : initialStateProps = {
     uploading : false,
     uploadingError : '',
     video : null,
-    lastVisible : null
+    lastVisible : null,
+    videoOnCreateLoad : false,
 }
 
 export const videoReducer = createSlice({
@@ -163,5 +164,12 @@ export const videoReducer = createSlice({
             state.loading = false
             state.video = null
         },
+        // for async video actions(load to DB,etc)
+        START_VIDEO_ASYNC_ACTION(state:initialStateProps){
+            state.videoOnCreateLoad = true
+        },
+        END_VIDEO_ASYNC_ACTION(state:initialStateProps){
+            state.videoOnCreateLoad = false
+        }
     }
 })

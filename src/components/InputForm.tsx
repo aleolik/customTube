@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState,MouseEvent } from 'react'
+import React, { ChangeEvent, useState,MouseEvent, useEffect } from 'react'
 import RenderAlert from '../helpers/RenderAlert'
 import { useAppDispatch, useAppSelector } from '../hooks/TypedHooks'
 import { useCreateUserDoc } from '../hooks/useCreateUserDoc'
@@ -19,9 +19,9 @@ const InputForm = () => {
   const [password,setPassword] = useState<string>('')
   const [username,setUsername] = useState<string>('')
   const [photo,setPhoto] = useState<NewPhoto | null>(null)
-  const {showLogin,showRegister} = useAppSelector(state => state.modal)
+  const {showLogin,showRegister,showFAQ} = useAppSelector(state => state.modal)
   const login = useLoginWithEmailAndPassword()
-  const load = useAppSelector(state => state.loader.load)
+  const {loadUser,userError} = useAppSelector(state => state.user)
   const error = useAppSelector(state => state.modal.error)
   const CREATE_DOC = useCreateUserDoc()
   const dispatch = useAppDispatch()
@@ -58,6 +58,10 @@ const InputForm = () => {
     }
   }
 
+  useEffect(() => {
+    // reset error,when user changes state
+    dispatch(setError(''))
+  },[showLogin,showFAQ,showRegister])
   const AuthWithEmailAndPassword = (e : MouseEvent<HTMLFormElement>) => {
     e.preventDefault()
     // login
@@ -114,13 +118,13 @@ const InputForm = () => {
               </div>
             </div>
           )}
-          {load
+          {loadUser
           ? (
             <div style={{'opacity':0.5}}><Loader/></div>
           )
           : (
             <div style={{'display':'flex','justifyContent':'center','marginTop':10}}>
-              <button  style={{'width':60+'%'}} className='btn btn-lg btn-outline-dark'>{showLogin ? 'Login' : 'Register'}</button>
+              <button className='btn-selfmade-blue' style={{'width':60+'%',color:'white'}}><span>{showLogin ? 'Login' : 'Register'}</span><i></i></button>
             </div>
           )}
     </form>

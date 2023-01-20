@@ -16,6 +16,7 @@ const RenderUserAvatar : FC<RenderUserAvatarProps> = ({width=60,height=45,givenU
   const navigate  = useNavigate()
   const [imageFocus,setImageFocus] = useState(false)
   const BorderOnFocus = '2px solid aqua'
+  const darkMode = useAppSelector(state => state.state.darkMode)
   if (givenUser && givenUser.username.toLowerCase() !== user?.username.toLowerCase()){
     user = givenUser
   }
@@ -35,11 +36,13 @@ const RenderUserAvatar : FC<RenderUserAvatarProps> = ({width=60,height=45,givenU
 
   return (
     <div>
-      <div  style={{'backgroundColor' : withBackgroundColor ? 'rgba(0,0,0,0.85)' : 'none','borderRadius':30}}>
+      {user
+      && (
+        <div  style={{'backgroundColor' : withBackgroundColor ? darkMode ? '#292b2c' : 'white' : 'none','borderRadius':30}}>
         {user && (
           <div style={{'display':'flex','justifyContent':'center','alignItems':'center'}}>
               <img
-                  style={{'width':width,'height':height,'borderRadius':30+'px','border':withBackgroundColor && imageFocus ? BorderOnFocus : '4px solid rgba(0,0,0.05)'}}
+                  style={{'width':width,'height':height,'borderRadius':30+'px','border':withBackgroundColor && imageFocus ? BorderOnFocus : darkMode ? '3px solid darkgray' : '3px solid rgba(0,0,0.05)'}}
                   src={user?.photoFile ? URL.createObjectURL(user.photoFile) : user?.photoUrl ? user.photoUrl : defaultUserAvatar}
                   alt='avatar'
                   onClick={avatarNavigate}
@@ -52,6 +55,7 @@ const RenderUserAvatar : FC<RenderUserAvatarProps> = ({width=60,height=45,givenU
                 <h6 style={{'color':'white','fontFamily':'sans','textAlign':'center'}}>{user.username}</h6>
         )}
       </div>
+      )}
     </div>
   )
 }

@@ -1,4 +1,4 @@
-import noDataFoundImage from '../media/NoData.jpg'
+import noDataFoundImage from '../media/NoData.png'
 export const RenderNoDataFound = () => {
     return(
         <img

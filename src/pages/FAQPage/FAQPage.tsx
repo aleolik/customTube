@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
 import './FAQPage.css'
 import howToMakeVideo from '../../media/imagesHelpers/howToMakeVideo.png'
+import { useAppSelector } from '../../hooks/TypedHooks'
+import { RenderNavigationOptions, isTabletOrDesktop } from '../../helpers/VideoHelpers/RenderNavigationOptions'
+import { isDesktop } from 'react-device-detect'
 export interface listItemInterface{
   question : string
   answer : string
@@ -11,6 +14,7 @@ export interface listItemInterface{
 }
 const FAQPage = () => {
   const [currentQuestion,setCurrentQuestion] = useState<number>(-1)
+  const darkMode = useAppSelector(state => state.state.darkMode)
   const getAnswer = (index : number) => {
     if (currentQuestion === index){
       setCurrentQuestion(-1)
@@ -40,10 +44,6 @@ const FAQPage = () => {
       'answer' : 'Clcik "Sign In",then select register or login  with google'
     },
     {
-      'question' : 'How can i create my own tags?',
-      'answer' : 'Currently this feature is not available'
-    },
-    {
       'question' : 'What purproses of making the platform?',
       'answer' : 'To practice and try new tecnhologies'
     },
@@ -61,14 +61,20 @@ const FAQPage = () => {
     }
   ]
   return (
-    <section className="faq-section">
-      <div className="container">
+    <div className="container-fluid" style={{'backgroundColor':darkMode ? 'lightgray' : 'white'}}>
+      <div className='row'>
+      {isDesktop && (
+          <div className={`col-md-2 col-sm-2 col-lg-2 ${darkMode ? 'bg-dark' : 'bg-light'}`} style={{'display':'flex','justifyContent':'center','minHeight':100+'vh'}}>
+              <RenderNavigationOptions/>
+          </div>  
+      )}
+       <div className='col-md-10 col-sm-12 col-lg-10'>
         <div className="row">
           <div className="col-md-6 offset-md-3">
               <div className="faq-title text-center pb-3">
                 <h2>FAQ</h2>
               </div>
-          </div>
+                </div>
                     <div className="col-md-6 offset-md-3">
                         <div className="faq" id="accordion">
                             {list.map((item,index) => {
@@ -106,8 +112,9 @@ const FAQPage = () => {
                         </div>
                     </div>
                   </div>
-                </div>
-    </section>
+        </div>
+       </div>
+    </div>
   )
 }
 

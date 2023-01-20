@@ -1,12 +1,11 @@
 import { getDownloadURL, ref } from "firebase/storage"
 import { storage, store } from "../.."
 import { AppDispatch } from "../../store/store"
-import { LoaderRedcuer } from "../LoaderReducer"
 import { videoReducer } from "../VideoReducer"
 
 export const SET_SOURCE_FILE = () => {
     const SET_VIDEO_FILE = videoReducer.actions.SetVideoFile
-    const stopLoad = LoaderRedcuer.actions.endLoading // ends load,starts in SET_CURRENT_VIDEO FILE
+    const END_VIDEO_ASYNC_ACTION = videoReducer.actions.END_VIDEO_ASYNC_ACTION
     return async(dispatch:AppDispatch) => {
         const video = store.getState().video.video
         if (video){
@@ -14,7 +13,7 @@ export const SET_SOURCE_FILE = () => {
             const url = await getDownloadURL(ref(videoRef))
             if (url){
                 dispatch(SET_VIDEO_FILE(url))
-                dispatch(stopLoad())
+                dispatch(END_VIDEO_ASYNC_ACTION())
             }
         }
     }

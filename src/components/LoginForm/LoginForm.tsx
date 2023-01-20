@@ -1,14 +1,14 @@
 import { ChangeEvent, FC, useState,MouseEvent} from 'react'
 import { getAuth, signInWithEmailAndPassword} from 'firebase/auth'
-import { useAppDispatch, useAppSelector } from '../hooks/TypedHooks'
-import { UserReducer } from '../reducers/User'
-import FormButtons from './FormButtons'
-import {useGoogleLogin} from '../hooks/GoogleHooks/useGoogleLogin'
+import { useAppDispatch, useAppSelector } from '../../hooks/TypedHooks'
+import { UserReducer } from '../../reducers/User'
+import FormButtons from '../FormButtons/FormButtons'
+import {useGoogleLogin} from '../../hooks/GoogleHooks/useGoogleLogin'
 import { Navigate, useNavigate } from 'react-router-dom'
 import {BiArrowBack} from 'react-icons/bi'
-import InputForm from './InputForm'
-import { modalReducer } from '../reducers/ModalReducer'
-
+import InputForm from '../InputForm'
+import { modalReducer } from '../../reducers/ModalReducer'
+import css from './LoginForm.module.scss'
 
 
 interface LoginFormProps{
@@ -44,11 +44,18 @@ const LoginForm : FC<LoginFormProps> = ({protectedRoute=false}) => {
     <div onClick={canCloseModal}>
       <div onClick={(e) => e.stopPropagation()}>
         <FormButtons protectedRoute={protectedRoute}/>
-        <h1 style={{'textAlign':'center'}}>SignIn with :</h1>
+        <h1 style={{'textAlign':'center'}}>Sign In with :</h1>
           <InputForm/>
         <h1 style={{'textAlign':'center'}}>OR:</h1>
         <hr></hr>
-        <button className='btn-selfmade-blue' onClick={logWithGoogle} style={{'width':100+'%',color:'white'}}><span>Google</span><i></i></button>
+        <div className={css.flexDiv}>
+            <div onClick={logWithGoogle} className={css.google_btn}>
+              <div className={css.google_icon_wrapper}>
+                <img className={css.google_icon} src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"/>
+              </div>
+              <p className={css.btn_text}><b>Sign in with google</b></p>
+            </div>
+        </div>
       </div>
     </div>
   )

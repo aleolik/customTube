@@ -6,6 +6,7 @@ import { useAppDispatch,useAppSelector } from '../../hooks/TypedHooks'
 import { useADD_VIDEO } from '../../hooks/useAddVideoToWatched'
 import { SET_CURRENT_VIDEO } from '../../reducers/asyncActions/SET_CURRENT_VIDEO'
 import NotFoundPage from '../NotFoundPage/NotFoundPage'
+import css from './VideoPage.module.scss'
 
 
 
@@ -16,7 +17,7 @@ const VideoPage = () => {
   const video = useAppSelector(state => state.video.video) 
   const videoRef = useRef<HTMLVideoElement>(null)
   const preferedVolume = localStorage.getItem('videoVolume') // saved volume on every video(default - 0.5)
-  const loadVideo = useAppSelector(state => state.loader.load)
+  const videoOnCreateLoad = useAppSelector(state => state.video.videoOnCreateLoad)
   const dispatch = useAppDispatch()
   useEffect(() => {
     if (!videoID){
@@ -78,7 +79,7 @@ const VideoPage = () => {
   return (
     <div style={{'width':100+'vw','height':100+'vh'}}>
       <div className='d-flex align-items-center justify-content-center'>
-        {loadVideo
+        {videoOnCreateLoad
         ? (
           <Loader/>
         )
@@ -88,21 +89,11 @@ const VideoPage = () => {
             <div>
               {/* <VideoPlayer options={videoOptions}/> - error,source file not working with it,maybe do it later or just left a video tag*/} 
               <div>
-                <div>
-                  {video.name && (
-                    <>
-                    {video?.name.length >= 80
-                    ? (
-                      <h6 style={{'marginLeft':'auto','paddingRight':0.5*100+'px','textAlign':'center'}}>{video.name.slice(0,100)}...</h6>
-                    )
-                    : (<h6 style={{'textAlign':'center'}}>{video.name}</h6>)}
-                    </>
-                  )}
+                <div className={css.nameContainer}>
+                    <h6>name : {video.name}</h6>
                 </div>
-                <div>
-                  {video.description.length >= 50
-                  ? (<h6>Description : {video.description.slice(0,100)}...</h6>)
-                  : (<h6 >Description : {video.description}</h6>)}
+                <div className={css.descriptionContainer}>
+                      <h6>description : {video.description}</h6>
                 </div>
                 <div>
                   <RenderUserAvatar withBackgroundColor={true} givenUser={video.user}/>

@@ -17,4 +17,6 @@ export interface UserWithoutPersonalInfo{
 }
 export interface userState{
     user : IUser | null
+    loadUser : boolean,
+    userError : string,
 }
