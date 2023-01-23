@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { Outlet } from 'react-router-dom'
 import { useAppSelector } from '../hooks/TypedHooks'
 import FAQ from './FAQ'
@@ -10,13 +10,10 @@ const ProtectedRoute = () => {
 
   const {user,loadUser,userError} = useAppSelector(state => state.user)
   const {showFAQ,showLogin,showRegister} = useAppSelector(state => state.modal)
+
+
   return (
     <div>
-        {loadUser || (!user && !userError)
-        ? (
-          <Loader/>
-        )
-        : (
           <>
             {user === null
             ? (
@@ -33,7 +30,6 @@ const ProtectedRoute = () => {
                 <Outlet/>
             )}
           </>
-        )}
     </div>
   )
 }

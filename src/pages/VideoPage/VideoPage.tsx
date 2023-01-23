@@ -1,4 +1,4 @@
-import {useEffect, useRef} from 'react'
+import {useEffect, useRef, useState} from 'react'
 import { useParams } from 'react-router-dom'
 import { Loader } from '../../components/Loader/Loader'
 import RenderUserAvatar from '../../helpers/RenderUserAvatar'
@@ -9,13 +9,14 @@ import NotFoundPage from '../NotFoundPage/NotFoundPage'
 import css from './VideoPage.module.scss'
 
 
-
 const VideoPage = () => {
 
   let {videoID,username} = useParams()
+  const [showDescription,setShowDescription] = useState<boolean>(false)
   const ADD_VIDEO_TO_FIREBASE_AND_STATE =  useADD_VIDEO()
   const video = useAppSelector(state => state.video.video) 
   const videoRef = useRef<HTMLVideoElement>(null)
+  const darkMode = useAppSelector(state => state.state.darkMode)
   const preferedVolume = localStorage.getItem('videoVolume') // saved volume on every video(default - 0.5)
   const videoOnCreateLoad = useAppSelector(state => state.video.videoOnCreateLoad)
   const dispatch = useAppDispatch()
@@ -59,25 +60,11 @@ const VideoPage = () => {
   }
  }
 
-  // options for videoPlayer(currently disabled)
-  /* const [videoOptions,setVideoOptions] = useState({
-    autoplay: true,
-    controls: true,
-    responsive: true,
-    fluid: true,
-    sources: [
-      {
-        src: `${sourceFile}`,
-        type: "video/mp4"
-      }
-    ]
-  }) */
-
   
   
 
   return (
-    <div style={{'width':100+'vw','height':100+'vh'}}>
+    <div style={{'minWidth':100+'vw','minHeight':100+'vh','backgroundColor':darkMode ? 'lightgray' : 'white'}}>
       <div className='d-flex align-items-center justify-content-center'>
         {videoOnCreateLoad
         ? (
@@ -87,25 +74,32 @@ const VideoPage = () => {
           <>
             {video?.file ? (
             <div>
-              {/* <VideoPlayer options={videoOptions}/> - error,source file not working with it,maybe do it later or just left a video tag*/} 
-              <div>
-                <div className={css.nameContainer}>
-                    <h6>name : {video.name}</h6>
-                </div>
-                <div className={css.descriptionContainer}>
-                      <h6>description : {video.description}</h6>
-                </div>
-                <div>
-                  <RenderUserAvatar withBackgroundColor={true} givenUser={video.user}/>
-                </div>
-              </div>
               <video onVolumeChange={setVolumeChange} onLoadStart={setVideoSettings} style={{'height':'auto','width':100+'%'}} ref={videoRef} controls>
                 <source  type="video/mp4" src={video?.file}/>
               </video>
+              <div>
+                  <RenderUserAvatar withBackgroundColor={false} givenUser={video.user}/>
+                </div>
+              <div style={{'display':'flex','justifyContent':'center','border':'1px solid black','width':100+'vw','minHeight':15+'vh','alignItems':'center','flexDirection':'column'}}>  
+                <div style={{'maxWidth':window.innerWidth}} className={css.nameContainer}>
+                    <h6>name : {video.name}</h6>
+                </div>
+                {showDescription
+                ? (
+                  <div>
+                        <div style={{'maxWidth':window.innerWidth}} className={css.descriptionContainer}>description : {video.description}</div>
+                        <button style={{'width':150+'px','height':50+'px'}} className='btn btn-dark' onClick={() => setShowDescription(false)}>Cover Description...</button>
+                  </div>
+                )
+                : (
+                  <button style={{'width':150+'px','height':50+'px'}} className='btn btn-dark' onClick={() => setShowDescription(true)}>Show More...</button>
+                )}
+              </div>
             </div>
           )
           : (<NotFoundPage/>)}
           </>
+          
         )}
       </div>
     </div>

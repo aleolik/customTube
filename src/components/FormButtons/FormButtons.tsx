@@ -12,7 +12,7 @@ interface FormButtonsInterface{
 }
 const FormButtons : FC<FormButtonsInterface> = ({protectedRoute=false}) => {
   const {showFAQ,showLogin,showRegister} = useAppSelector(state => state.modal)
-  const user = useAppSelector(state => state.user.user)
+  const {user,loadUser} = useAppSelector(state => state.user)
   const dispatch = useAppDispatch()
   const {showFAQAction,showLoginAction,showRegisterAction,closeModalWindow} = modalReducer.actions
   const navigate = useNavigate()
@@ -24,7 +24,7 @@ const FormButtons : FC<FormButtonsInterface> = ({protectedRoute=false}) => {
   return (
     <div>
         <div>
-          {protectedRoute && (
+          {protectedRoute && !loadUser  && (
             <div>
                  <RenderAlert text='Status 401 : Not enough credentials' type='danger'/>
                 <button className='w-100 btn btn-primary mt-3' style={{'marginBottom':1.5+'vh','borderRadius':30}} onClick={NavigateToMain}><BiArrowBack color='black' size={30} style={{'marginRight':5,}}/>Move Back</button>

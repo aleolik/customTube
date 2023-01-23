@@ -10,8 +10,9 @@ interface RenderUserAvatarProps{
   givenUser? : IUser // by default renders currentUser.photoURL,but if given renders givenUser.photoURL
   withBackgroundColor? : boolean,
   withUsername? : boolean // renders by default with username,set to false if you want to render without
+  color? : 'black' | 'white'
 }
-const RenderUserAvatar : FC<RenderUserAvatarProps> = ({width=60,height=45,givenUser=null,withUsername=true,withBackgroundColor=false}) => {
+const RenderUserAvatar : FC<RenderUserAvatarProps> = ({width=60,height=45,givenUser=null,withUsername=true,withBackgroundColor=false,color='black'}) => {
   let user : IUser | null = useAppSelector(state => state.user.user);
   const navigate  = useNavigate()
   const [imageFocus,setImageFocus] = useState(false)
@@ -52,7 +53,7 @@ const RenderUserAvatar : FC<RenderUserAvatarProps> = ({width=60,height=45,givenU
           </div>
         )}
         {withUsername && user?.username && (
-                <h6 style={{'color':'white','fontFamily':'sans','textAlign':'center'}}>{user.username}</h6>
+                <h6 style={{'color':color,'fontFamily':'sans','textAlign':'center'}}>{user.username}</h6>
         )}
       </div>
       )}

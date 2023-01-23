@@ -40,22 +40,4 @@ export const useScroll = (email?:string | null | undefined,search?:string | unde
 
 
 
-// remake it with observer API later
-export const useInfinityScroll = () => {
-  // scroll with observer API
-  const videos = useAppSelector(state => state.video.videos)
-  const totalVideos = useAppSelector(state => state.video.AllVideos)
-  const dispatch = useAppDispatch()
-  const infinitieObserver = new IntersectionObserver((entries,observer) => {
-    entries.map((entry,index) => {
-      if (index-1 === totalVideos && entry.isIntersecting){
-        observer.unobserve(entry.target)
-        dispatch(LoadUserVideos())
-      }
-    })
-    },{
-      
-    }
-  )
-}
 
