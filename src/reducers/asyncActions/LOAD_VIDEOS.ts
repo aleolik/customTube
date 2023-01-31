@@ -10,6 +10,7 @@ import { AppDispatch } from "../../store/store";
 import { IVideo } from "../../types/VideoTypes";
 import { videoReducer } from "../VideoReducer";
 import { LOAD_ALL_VIDEOS } from './LOAD_ALL_VIDEOS';
+import { isTabletOrDesktop } from '../../helpers/VideoHelpers/RenderNavigationOptions';
 
 export const LoadUserVideos = (email? : string) => {
     /*
@@ -25,15 +26,7 @@ export const LoadUserVideos = (email? : string) => {
             dispatch(LOAD_ALL_VIDEOS(email))
         }
         const device = store.getState().device.device
-        let video_limit = 0
-        const video_limit_options = {
-            'tablet':24,
-            'desktop':24,
-            'mobile':5
-        }
-        if (device){
-            video_limit = video_limit_options[device]
-        }
+        const video_limit = isTabletOrDesktop ? 24 : 5
         let collectionRef = query(collection(database,'videos'),orderBy('video.createdNegative'),limit(video_limit))
         if (email){
             collectionRef = query(collection(database,'videos'),where('video.user.email','==',email),limit(video_limit),orderBy('video.createdNegative')) as CollectionReference  

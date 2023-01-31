@@ -18,6 +18,7 @@ const initialOptions: videojs.PlayerOptions = {
   }
 };
 
+// About : api integration error,something is wrong,player is currently disabled
 const VideoPlayer: React.FC<IVideoPlayerProps> = ({ options }) => {
   const videoNode = React.useRef<HTMLVideoElement>(null);
   const player = React.useRef<videojs.Player>();

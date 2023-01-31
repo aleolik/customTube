@@ -9,11 +9,8 @@ import {Provider} from 'react-redux'
 import { SetupStore } from './store/store';
 import {GoogleAuthProvider} from 'firebase/auth'
 import {BrowserRouter} from 'react-router-dom'
-import { initializeApp } from 'firebase/app';
-import { firebaseConfig } from './config';
 import {getStorage  } from 'firebase/storage'
 import {app} from './config'
-initializeApp(firebaseConfig)
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );

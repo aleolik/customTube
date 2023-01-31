@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState,MouseEvent, useEffect } from 'react'
+import React, { ChangeEvent, useState,MouseEvent, useEffect, useRef } from 'react'
 import RenderAlert from '../helpers/RenderAlert'
 import { useAppDispatch, useAppSelector } from '../hooks/TypedHooks'
 import { useCreateUserDoc } from '../hooks/useCreateUserDoc'
@@ -8,6 +8,7 @@ import { Loader } from './Loader/Loader'
 import {modalReducer} from '../reducers/ModalReducer'
 import defaultUserAvatar from '../media/defaultUserAvatar.png'
 import {HiPhotograph} from 'react-icons/hi'
+// if password hcanges - repeat password check
 // login or register form when modal open
 export interface NewPhoto{
   name : string,
@@ -15,8 +16,11 @@ export interface NewPhoto{
   error : string
 }
 const InputForm = () => {
+  const passwordRepetRef = useRef<HTMLInputElement>(null)
+  const passwordRef = useRef<HTMLInputElement>(null)
   const [email,setEmail] = useState<string>('')
   const [password,setPassword] = useState<string>('')
+  const [repeatPassword,setRepeatPassword] = useState<string>('')
   const [username,setUsername] = useState<string>('')
   const [photo,setPhoto] = useState<NewPhoto | null>(null)
   const {showLogin,showRegister,showFAQ} = useAppSelector(state => state.modal)
@@ -32,6 +36,31 @@ const InputForm = () => {
   }
   const passwordHandler = (e : ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value)
+    if (e.target.value.length <= 6){
+        e.target.style.border = '2px solid red'
+    }
+    else{
+      if (passwordRef.current){
+        e.target.style.border = '2px solid green'
+      }
+    }
+    if(passwordRepetRef.current){
+        if (repeatPassword !== e.target.value){
+          passwordRepetRef.current.style.border = '2px solid red'
+        }
+        if (repeatPassword === e.target.value){
+          passwordRepetRef.current.style.border = '2px solid green'
+        }
+    }
+  }
+  const passwordRepeatHandler = (e : ChangeEvent<HTMLInputElement>) => {
+    setRepeatPassword(e.target.value)
+    if (!passwordRepetRef.current) return
+    if (e.target.value && e.target.value !== password){
+       passwordRepetRef.current.style.border = '2px solid red'
+       return;
+    }
+    passwordRepetRef.current.style.border = '2px solid green'
   }
   const usernameHandler = (e : ChangeEvent<HTMLInputElement>) => {
     setUsername(e.target.value)
@@ -77,6 +106,10 @@ const InputForm = () => {
     // create new user
     else{
       if (username && email && password){
+        if (password !== repeatPassword){
+          dispatch(setError('repeat password does not match the password'))
+          return;
+        }
         dispatch(setError(''))
         dispatch(REGISTER_USER(email,username,password,login,CREATE_DOC,photo,photo?.file))
       }
@@ -102,11 +135,15 @@ const InputForm = () => {
         </div>
         <div className="input-group mb-3">
         <span className="input-group-text" id="inputGroup-sizing-default">password 🤫</span>
-            <input onChange={passwordHandler} type="text" className="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"/>
+            <input ref={passwordRef} onChange={passwordHandler} type="password" className="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"/>
         </div>
         {showRegister &&
            (
             <div>
+              <div className="input-group mb-3">
+                <span className="input-group-text" id="inputGroup-sizing-default">Repeat password</span>
+                <input ref={passwordRepetRef} onChange={passwordRepeatHandler} type="password" className="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"/>
+              </div>   
                {photo?.error && (
                 <RenderAlert type='danger' text={photo.error}/>
                )}
