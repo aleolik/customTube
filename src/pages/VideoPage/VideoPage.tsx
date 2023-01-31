@@ -72,7 +72,16 @@ const VideoPage = () => {
             <div>
               <div style={{'justifyContent':'center','display':'flex','alignItems':'center'}}>
                 <video onVolumeChange={setVolumeChange} onLoadStart={setVideoSettings} style={{'height':'auto','width':60+'%'}} ref={videoRef} controls>
-                  <source  type="video/mp4" src={video?.file}/>
+
+                  {video?.file && video.file.toLowerCase().endsWith('.mp4')}{
+                    <source  type="video/mp4" src={video?.file}/>
+                  }
+                  {video?.file && video.file.toLowerCase().endsWith('.webm')}{
+                    <source  type="video/webm" src={video?.file}/>
+                  }
+                  {video?.file && video.file.toLowerCase().endsWith('.ogg')}{
+                    <source  type="video/ogg" src={video?.file}/>
+                  }
                 </video>
               </div>
               <RenderUserAvatar withBackgroundColor={false} givenUser={video.user}/>

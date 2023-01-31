@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, useEffect, useState } from 'react'
+import React, { ChangeEvent, FC, useEffect, useRef, useState } from 'react'
 import {useCurrentDate} from '../../helpers/useCurrentDate'
 import { useAppDispatch, useAppSelector } from '../../hooks/TypedHooks'
 import css from './VideoForm.module.css'
@@ -15,9 +15,9 @@ import { videoReducer } from '../../reducers/VideoReducer'
 import { UploadNewVideo } from '../../reducers/asyncActions/UploadNewVideo'
 
 interface VideoFormProps{
-  videos : IVideo[]
+ 
 }
-const VideoForm : FC<VideoFormProps> = ({videos}) => {
+const VideoForm : FC<VideoFormProps> = () => {
   const videoToCreate = useAppSelector(state => state.video.video)
   // form validator
   const desc_max_length = 460
@@ -27,6 +27,7 @@ const VideoForm : FC<VideoFormProps> = ({videos}) => {
 
   // form variables
   const [name,setName] = useState<string>('')
+  const filePreviewInputRef = useRef<HTMLInputElement>(null)
   const [prevName,setPrevName] = useState<string>('')
   const [description,setDescription] = useState<string>('')
   const [fullData,setFullData] = useState<boolean>(false)
@@ -58,7 +59,7 @@ const VideoForm : FC<VideoFormProps> = ({videos}) => {
     e.preventDefault()
     if (e.target.files !== null){
       let video_file = e.target.files[e.target.files.length-1]
-      if (video_file.name.endsWith('.mp4') && video_file.type === 'video/mp4'){
+      if (video_file.type.toLowerCase() === 'video/mp4' || video_file.type.toLowerCase() === 'video/webm' || video_file.type.toLowerCase() === 'video/ogg'){
         setVideoFileError('')
         setVideo({
           file : video_file,
@@ -67,7 +68,7 @@ const VideoForm : FC<VideoFormProps> = ({videos}) => {
       }
       else{
         e.target.value = ''
-        setVideoFileError('🧐 Our service supports videos only with .mp4 format 🧐')
+        setVideoFileError('🧐 Our service supports videos only with mp4,ogg,webm format 🧐')
       }
     }
   }
@@ -95,12 +96,36 @@ const VideoForm : FC<VideoFormProps> = ({videos}) => {
       setPreviewFileError('🧐 Wrong Preview format,our service supports only : png,jpeg,jpg formats 🧐')
     }
     setDrag(false)
+  } 
+  const videoPreviewHandler = (e : React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault()
+    if (e.target.files !== null){
+      let photoPreviewFile = e.target.files[e.target.files.length-1]
+      console.log(photoPreviewFile)
+      if (photoPreviewFile.name.toLowerCase().endsWith('.png') || photoPreviewFile.name.toLowerCase().endsWith('.jpeg') || photoPreviewFile.name.toLowerCase().endsWith('.jpg')){
+        setPreviewFileError('')
+        setPhoto({
+            photoUrl : photoPreviewFile.name,
+            photoFile : photoPreviewFile
+        })
+      }
+      else{
+        e.target.value = ''
+        setPhoto({
+          photoFile : null,
+          photoUrl : '',
+        })
+        setPreviewFileError('🧐 Wrong Preview format,our service supports only : png,jpeg,jpg formats 🧐')
+      }
+    }
   }
   const clearPreviewFile = () => {
     setPhoto({
       photoUrl: '',
       photoFile : null,
     })
+    if (!filePreviewInputRef.current) return;
+    filePreviewInputRef.current.value = ''
   }
   const onMouseEnterCancelPreview = () => {
     setOnPreviewCancelFocus(true)
@@ -237,7 +262,10 @@ const VideoForm : FC<VideoFormProps> = ({videos}) => {
                 )}
               </div>
             )}
-            <h4 style={{'textAlign':'center'}}>select video(.mp4 file)</h4>
+            <div className="input-group mb-3">
+              <input placeholder='choose' ref={filePreviewInputRef} onChange={(e) => videoPreviewHandler(e)} type="file" className="form-control" id="inputGroupFile02"/>
+            </div>
+            <h4 style={{'textAlign':'center'}}>select video(ogg,mp4,webm)</h4>
             <div className="input-group mb-3">
               <input placeholder='choose' onChange={(e) => videoFileHandler(e)} type="file" className="form-control" id="inputGroupFile01"/>
             </div>

@@ -81,7 +81,7 @@ const ProfilePage = () => {
                       <RenderUserAvatar withBackgroundColor={true} withUsername={false} givenUser={usersPage}/>
                     </div>
                     {email === auth.currentUser?.email && (
-                      <VideoForm videos={videos}/>
+                      <VideoForm />
                     )}
               <hr></hr>
               <div style={{'display':'flex','justifyContent':'center','alignItems':'center','marginBottom':10}}>
