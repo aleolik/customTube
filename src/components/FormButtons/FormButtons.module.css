@@ -5,12 +5,12 @@
 }
 .form_btn{
     width: 30%;
-    height: 20%;
+    height: 6.5vh;
     margin-right: 10px;
 }
-@media (max-height:480px){
+@media (min-height:960px){
     .form_btn{
-        height: 20px;
+        height: 3.5vh
     }
 }
 hr {

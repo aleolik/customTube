@@ -7,6 +7,7 @@ import logo from '../../../media/logo.png'
 import { modalReducer } from '../../../reducers/ModalReducer'
 import { IconContext } from 'react-icons'
 import { getAuth,Auth, onAuthStateChanged } from 'firebase/auth'
+import { isMobile } from 'react-device-detect'
 export const LogoHeader = () => {
 
 
@@ -33,10 +34,11 @@ export const LogoHeader = () => {
           <CgMenuGridO onClick={handleOpen}/>
         </IconContext.Provider>
         )}
+        {!isMobile && (
         <Link className="navbar-brand" to="/" style={{'color':'white','paddingLeft':10+'px'}}>
-        <img  src={logo} style={{'marginTop':+3+'px','marginLeft':10+'px'}}  width="45" height="30" className="d-inline-block align-top" alt="brand"/>
-        
-        </Link>
+            <img  src={logo} style={{'marginTop':+3+'px','marginLeft':10+'px'}}  width="45" height="30" className="d-inline-block align-top" alt="brand"/>      
+          </Link>
+        )}
     </div>
   )
 }
