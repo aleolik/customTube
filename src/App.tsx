@@ -115,7 +115,7 @@ const videoLink = useGetLinkToVideo(video)
 if (video){
   titles.push({
     'path' : `${videoLink}`,
-    'title' : `${video.name.slice(0,19)}`
+    'title' : `${video.name.slice(0,19)+'...'}`
   })
 }
   useEffect(() => {
@@ -133,7 +133,7 @@ if (video){
       console.log(location.pathname)
     }
     if (!foundPath) setTitle(defaultPlatfromName)
-  },[location.pathname,video])
+  },[location,video])
   return (
     <div className="app" style={{'backgroundColor':darkMode ? 'lightgray' : 'white'}}>
       <Helmet>

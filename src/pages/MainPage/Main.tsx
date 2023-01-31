@@ -10,11 +10,13 @@ import RenderLoadingScreenMainPage from '../../helpers/VideoHelpers/RenderLoadin
 import { useDevice } from '../../helpers/useDevice'
 import { useScroll } from '../../hooks/useScroll'
 import { BottomLoader } from '../../components/BottomLoader/BottomLoader'
+import { defaultPlatfromName } from '../../App'
 const Main = () => {
   const {error,loading,videos,loadingDynamically} = useAppSelector(state => state.video)
   const {AllError,AllVideos,AllLoading} = useAppSelector(state => state.video)
   const dispatch = useAppDispatch()
   useEffect(() => {
+    document.title = defaultPlatfromName
     dispatch(LoadUserVideos())
   },[])
   const darkMode = useAppSelector(state => state.state.darkMode)

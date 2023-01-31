@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks/TypedHooks'
 import { LoadUserVideos } from '../../reducers/asyncActions/LOAD_VIDEOS'
 import css from './ProfilePage.module.css'
 import defaultUserAvatar from '../../media/defaultUserAvatar.png'
-import { useParams } from 'react-router-dom'
+import { useLocation, useParams } from 'react-router-dom'
 import VideoForm from '../../components/VideoForm/VideoForm'
 import { IUser } from '../../types/userTypes'
 import {useGetUserData} from '../../hooks/useGetUserData'
@@ -24,7 +24,7 @@ import { BottomLoader } from '../../components/BottomLoader/BottomLoader'
 const ProfilePage = () => {
   const dispatch = useAppDispatch()
   const {username,email} = useParams()
-
+  const location = useLocation()
   const user = useAppSelector(state => state.user.user)
 
   const auth = getAuth()
@@ -44,6 +44,7 @@ const ProfilePage = () => {
   useEffect(() => {
     try{
       if (email && username){
+        document.title = `${username}'s Profile`
         dispatch(LoadUserVideos(email))
         fetchData()
       }
