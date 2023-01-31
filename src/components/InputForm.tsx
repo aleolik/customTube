@@ -36,13 +36,16 @@ const InputForm = () => {
   }
   const passwordHandler = (e : ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value)
-    if (e.target.value.length <= 6){
-        e.target.style.border = '2px solid red'
+    if (e.target.value.length){
+        if (e.target.value.length <=6 ) {
+          e.target.style.border = '2px solid red'
+        }
+        else{
+          e.target.style.border = '2px solid green'
+        }
     }
     else{
-      if (passwordRef.current){
-        e.target.style.border = '2px solid green'
-      }
+      e.target.style.border = '2px solid  gray'
     }
     if(passwordRepetRef.current){
         if (repeatPassword !== e.target.value){
@@ -56,7 +59,11 @@ const InputForm = () => {
   const passwordRepeatHandler = (e : ChangeEvent<HTMLInputElement>) => {
     setRepeatPassword(e.target.value)
     if (!passwordRepetRef.current) return
-    if (e.target.value && e.target.value !== password){
+    if (!e.target.value.length){
+      passwordRepetRef.current.style.border = '2px solid gray'
+      return;
+    }
+    if (e.target.value !== password){
        passwordRepetRef.current.style.border = '2px solid red'
        return;
     }
