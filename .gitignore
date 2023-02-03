@@ -6,7 +6,9 @@
 .pnp.js
 src/config.ts
 src/TODO.txt
-
+/.firebase
+/.firebaserc
+/firebase.json
 # testing
 /coverage
 
