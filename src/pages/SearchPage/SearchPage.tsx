@@ -18,7 +18,7 @@ const SearchPage = () => {
   },[search])
   return (
     <div>
-        {loading && !error
+        {loading
         ? (
           <Loader/>
         )

@@ -18,7 +18,7 @@
   background-color: rgba(0,0,0,0.3)
 }
 .menu__content{
-  width: 10%;
+  width: min(150px,40vw);
   height: 100%;
   background-color: #121314;
   display: flex;

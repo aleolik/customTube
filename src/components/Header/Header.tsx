@@ -10,7 +10,6 @@ import BurgerMenu from '../BurgerMenu/BurgerMenu'
 import {modalReducer} from '../../reducers/ModalReducer'
 import RegisterForm from '../RegisterForm'
 import SearchBar from './HeaderElements/./SearchBar/SearchBar'
-import { useDevice } from '../../helpers/useDevice'
 import { isMobile } from 'react-device-detect'
 import { useDarkModeChange } from '../../hooks/useDarkModeChange'
 import {MdDarkMode} from 'react-icons/md'
@@ -87,7 +86,7 @@ const Header = () => {
                       : (
                       <div>
                         <button style={{'marginRight':15}} className={`${darkMode ? 'btn btn-light' : 'btn btn-primary'}`}><MdDarkMode color={`${darkMode ? 'black' : 'white'}`} onClick={CHAGE_COLOR_MODE} size={25}/></button>
-                        <button style={{'marginRight':30+'px'}}  className='btn btn-light' onClick={OpenModalWindow}>Sign In </button>
+                        <button style={{'marginRight':30+'px'}}  className={`${darkMode ? 'btn btn-light' : 'btn btn-primary'}`} onClick={OpenModalWindow}>Sign In </button>
                         
                       </div>)
             

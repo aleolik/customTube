@@ -4,8 +4,8 @@
     align-items: center;
 }
 .form_btn{
-    width: 30%;
-    height: 6.5vh;
+    width: min(120px,30%);
+    height: min(55px,10vh);
     margin-right: 10px;
 }
 @media (min-height:960px){

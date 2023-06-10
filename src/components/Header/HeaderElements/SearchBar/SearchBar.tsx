@@ -24,6 +24,7 @@ const SearchBar : FC<SearchBarProps> = (props) => {
 
   // style things
   const user =  useAppSelector(state => state.user.user)
+  const {darkMode} = useAppSelector(state => state.state)
   const {UserSearchBarFocused,GlobalSearchBarFocused} = useAppSelector(state => state.searchBar)
   const {SetGlobalSearchBarFocusOff,SetGlobalSearchBarFocusOn,SetUserSearchBarFocusedOff,SetUserSearchBarFocusedOn} = searchBarSlice.actions
   const dispatch = useAppDispatch()
@@ -80,7 +81,7 @@ const SearchBar : FC<SearchBarProps> = (props) => {
           ? (<button onClick={clearSearchValue} className="btn btn-outline-danger me-1"><AiOutlineArrowLeft/></button>)
           : (<></>)}
           <input onBlur={searchBarOnInputBlur} onFocus={searchBarOnInputFocus} value={searchValue} onChange={searchValueHandler} style={{'width':searchWidth[device]+'vw'}} className="form-control me-1" type="Search for video..." placeholder="Search...🔍" aria-label="Search"/>
-          <button className="btn btn-outline-primary" type="submit"><BsSearch/></button>
+          <button className={darkMode ? 'btn btn-outline-light' : 'btn btn-primary'} type="submit"><BsSearch/></button>
       </form>
     </div>
   )

@@ -24,7 +24,7 @@ const Main = () => {
   return (
     <div className='container-fluid' style={{'backgroundColor':darkMode ? 'lightgray' : 'white'}}>
       <div className='row'>
-        <div className={`col-md-2 col-sm-4 col-lg-1 ${darkMode ? 'bg-dark' : 'bg-light'}`} style={{'display':'flex','justifyContent':'center','minHeight':isTabletOrDesktop ? 100+'vh' : 20+'vh'}}>
+        <div className={`col-md-3 col-sm-4 col-lg-1 ${darkMode ? 'bg-dark' : 'bg-light'}`} style={{'display':'flex','justifyContent':'center','minHeight':isTabletOrDesktop ? 100+'vh' : 20+'vh'}}>
           <RenderNavigationOptions/>
         </div>  
         <div className='col-md-10 col-sm-8 col-lg-11'>

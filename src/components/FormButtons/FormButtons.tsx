@@ -13,6 +13,7 @@ interface FormButtonsInterface{
 const FormButtons : FC<FormButtonsInterface> = ({protectedRoute=false}) => {
   const {showFAQ,showLogin,showRegister} = useAppSelector(state => state.modal)
   const {user,loadUser} = useAppSelector(state => state.user)
+  const {darkMode} = useAppSelector(state => state.state)
   const dispatch = useAppDispatch()
   const {showFAQAction,showLoginAction,showRegisterAction,closeModalWindow} = modalReducer.actions
   const navigate = useNavigate()
@@ -32,9 +33,9 @@ const FormButtons : FC<FormButtonsInterface> = ({protectedRoute=false}) => {
           )}
         </div>
         <div className={css.form_btn_container}>
-          <button onClick={() => dispatch(showLoginAction())} className={[css.form_btn,'btn btn-primary'].join(' ')} >Sign In<FiLogIn  size={20} style={{'marginLeft':5}}/></button>
-          <button  onClick={() => dispatch(showRegisterAction())}  className={[css.form_btn,'btn btn-primary'].join(' ')}>Sign Up<AiOutlineArrowDown  size={20} style={{'marginLeft':5}}/></button>
-          <button onClick={() => dispatch(showFAQAction())} className={[css.form_btn,'btn btn-primary  '].join(' ')} >About Us<AiFillInfoCircle size={20} style={{'marginLeft':5}}/></button>
+          <button onClick={() => dispatch(showLoginAction())} className={[css.form_btn,darkMode ? 'btn btn-light' : 'btn btn-primary'].join(' ')} >Sign In<FiLogIn  size={20} style={{'marginLeft':5}}/></button>
+          <button  onClick={() => dispatch(showRegisterAction())}  className={[css.form_btn,darkMode ? 'btn btn-light' : 'btn btn-primary'].join(' ')}>Sign Up<AiOutlineArrowDown  size={20} style={{'marginLeft':5}}/></button>
+          <button onClick={() => dispatch(showFAQAction())} className={[css.form_btn,darkMode ? 'btn btn-light' : 'btn btn-primary  '].join(' ')} >About Us<AiFillInfoCircle size={20} style={{'marginLeft':5}}/></button>
         </div>
         <hr></hr>
     </div>
