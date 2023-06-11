@@ -6,17 +6,20 @@ import { isMobile } from "react-device-detect"
 import css from './RenderOptions.module.scss'
 import RenderUserAvatar from "../../../../helpers/RenderUserAvatar"
 import {AiOutlineClose} from 'react-icons/ai'
+import { useState } from "react"
 
 export const RenderOptions  = () => {
     const {LinkOptions,buttonOptions} = useOptions()
     const {AllLoading,loading} = useAppSelector(state => state.video)
     const username = useAppSelector(state => state.user.user?.username)
     const darkMode = useAppSelector(state => state.state.darkMode)
+
+    const [closeOnEnter,setCloseOnEnter] = useState<boolean>(false)
     return(
       <div className={`${css.OptionsContainer} 'bg-dark'`}> 
       <h1 style={{'color':'white',fontSize:50}}>DarkTub</h1>
       <RenderUserAvatar withUsername={false}/>
-      <AiOutlineClose className={css.close_btn} color='white' size={40}/>
+      <AiOutlineClose onMouseEnter={() => setCloseOnEnter(true)} onMouseLeave={() => setCloseOnEnter(false)} className={css.close_btn} cursor={closeOnEnter ? 'pointer' : 'default'} color={closeOnEnter ? 'red' : 'white'} size={40}/>
       <div style={{'marginTop':10,'color':'white','marginBottom':10,'textAlign':'center','textOverflow':'ellipsis','overflow':'hidden'}}>
          Welcome,{username}
          <hr/>

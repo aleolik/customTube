@@ -158,7 +158,7 @@ const VideoForm : FC<VideoFormProps> = () => {
       const imageRef = ref(storage,`${user?.email.toLowerCase()}/${user.username}/${photo.photoUrl}`)
       const videoRef = ref(storage,`${user?.email.toLowerCase()}/${user.username}/${video.url}`)
       const isUnique = await CheckNameIsUnique(name,user.email)
-      if (isUnique){
+      if (true){
             setNameUnique(true)
             dispatch(CREATE_VIDEO({
               name : name,

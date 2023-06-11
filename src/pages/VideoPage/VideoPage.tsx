@@ -6,7 +6,7 @@ import { useAppDispatch,useAppSelector } from '../../hooks/TypedHooks'
 import { useADD_VIDEO } from '../../hooks/useAddVideoToWatched'
 import { SET_CURRENT_VIDEO } from '../../reducers/asyncActions/SET_CURRENT_VIDEO'
 import NotFoundPage from '../NotFoundPage/NotFoundPage'
-import css from './VideoPage.module.scss'
+import scss from './VideoPage.module.scss'
 
 
 // TODO : styles + video types + photo selector
@@ -85,8 +85,8 @@ const VideoPage = () => {
                 </video>
               </div>
               <RenderUserAvatar withBackgroundColor={false} givenUser={video.user}/>
-              <div style={{'display':'flex','justifyContent':'center','border':'1px solid black',maxWidth:window.innerWidth,'minHeight':15+'vh','alignItems':'center','flexDirection':'column'}}>  
-                <div style={{'maxWidth':window.innerWidth+'px','display':'flex','flexWrap':'wrap','flexDirection':'row','wordWrap':'break-word'}} className={css.nameContainer}>
+              <div className={scss.mainContainer}>  
+                <div className={scss.nameContainer}>
                     <h6>name : {video.name}</h6>
                 </div>
                 {video.description.length
@@ -94,13 +94,13 @@ const VideoPage = () => {
                   <>
                     {showDescription
                         ? (
-                          <div style={{'width':window.innerWidth,'maxWidth':window.innerWidth,'display':'block'}} >
-                              <p style={{'textAlign':'justify','letterSpacing':1+'px','textIndent':50,'whiteSpace':'nowrap'}}>description : {video.description}</p>
-                              <button style={{'width':150+'px','height':50+'px'}} className='btn btn-dark' onClick={() => setShowDescription(false)}>Cover...</button>
+                          <div className={scss.descriptionContainer}>
+                              <p>description : {video.description}</p>
+                              <button style={{'width':150+'px','height':50+'px'}} className='btn btn-info' onClick={() => setShowDescription(false)}>Show less</button>
                           </div>
                         )
                         : (
-                          <button style={{'width':150+'px','height':50+'px'}} className='btn btn-dark' onClick={() => setShowDescription(true)}>Show More...</button>
+                          <button style={{'width':150+'px','height':50+'px','border':'1px solid black'}} className='btn btn-info' onClick={() => setShowDescription(true)}>Show More</button>
                       )}
                   </>
                 )

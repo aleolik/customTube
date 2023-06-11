@@ -1,7 +1,9 @@
-import './Loader.css'
+import { useAppSelector } from '../../hooks/TypedHooks'
+import './Loader.scss'
 
 export const Loader = () => {
+    const darkMode = useAppSelector(state => state.state.darkMode)
     return(
-        <div className="loader"></div>
+        <div className={darkMode ? 'loaderLight' : 'loaderDark'}></div>
     )
 }

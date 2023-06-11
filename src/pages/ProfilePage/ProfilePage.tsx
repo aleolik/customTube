@@ -24,6 +24,7 @@ import { BottomLoader } from '../../components/BottomLoader/BottomLoader'
 const ProfilePage = () => {
   const dispatch = useAppDispatch()
   const {username,email} = useParams()
+  const currentUserEmail = useAppSelector(state => state.user.user?.email)
   const location = useLocation()
   const user = useAppSelector(state => state.user.user)
 
@@ -81,7 +82,7 @@ const ProfilePage = () => {
                       <h4 style={{'marginTop':20+'px','border':'rgba(0,0,0,0.8) 2px solid','fontFamily':'sans-serif'}}>{usersPage?.username}</h4>
                       <RenderUserAvatar withBackgroundColor={true} withUsername={false} givenUser={usersPage}/>
                     </div>
-                    {email === auth.currentUser?.email && (
+                    {currentUserEmail && currentUserEmail === email && email === auth.currentUser?.email && (
                       <VideoForm />
                     )}
               <hr></hr>

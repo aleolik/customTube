@@ -11,8 +11,9 @@ interface RenderUserAvatarProps{
   withBackgroundColor? : boolean,
   withUsername? : boolean // renders by default with username,set to false if you want to render without
   color? : 'black' | 'white'
+  onClick? : () => void
 }
-const RenderUserAvatar : FC<RenderUserAvatarProps> = ({width=60,height=45,givenUser=null,withUsername=true,withBackgroundColor=false,color='black'}) => {
+const RenderUserAvatar : FC<RenderUserAvatarProps> = ({width=60,height=45,givenUser=null,withUsername=true,withBackgroundColor=false,color='black',onClick}) => {
   let user : IUser | null = useAppSelector(state => state.user.user);
   const navigate  = useNavigate()
   const [imageFocus,setImageFocus] = useState(false)
@@ -46,7 +47,7 @@ const RenderUserAvatar : FC<RenderUserAvatarProps> = ({width=60,height=45,givenU
                   style={{'width':width,'height':height,'borderRadius':30+'px','border':withBackgroundColor && imageFocus ? BorderOnFocus : darkMode ? '3px solid darkgray' : '3px solid rgba(0,0,0.05)'}}
                   src={user?.photoFile ? URL.createObjectURL(user.photoFile) : user?.photoUrl ? user.photoUrl : defaultUserAvatar}
                   alt='avatar'
-                  onClick={avatarNavigate}
+                  onClick={onClick ? onClick : avatarNavigate}
                   onMouseEnter={onMouseEnter}
                   onMouseLeave={onMouseLeave}
                 />

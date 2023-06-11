@@ -11,12 +11,18 @@ interface UserAvatarProps{
 
 export const UserAvatar : FC<UserAvatarProps> = ({avatarOnFocus,setAvatarOnFocus}) => {
     const user = useAppSelector(state => state.user.user)
+    const [onMouseEnterValue,setOnMouseEnterValue] = useState<boolean>(false)
     const device = useDevice()
     const onMouseLeave = () => {
        if (device === 'desktop'){
-            setAvatarOnFocus(false)
+            setOnMouseEnterValue(false)
        }
     }
+    const onMouseEnter = () => {
+        if (device === 'desktop'){
+            setOnMouseEnterValue(true)
+        }
+     }
     const onClcik = () => {
         setAvatarOnFocus(!avatarOnFocus)
     }
@@ -26,9 +32,10 @@ export const UserAvatar : FC<UserAvatarProps> = ({avatarOnFocus,setAvatarOnFocus
         tabIndex={0}
         onClick={onClcik}
         onMouseLeave={onMouseLeave}
+        onMouseEnter={onMouseEnter}
         style={{'marginRight':30+'px'}}
         >
-        <img style={{'width':80,'height':60,'border': avatarOnFocus ? '2px solid aqua' : '2px solid gray','borderRadius':30}} src={user?.photoFile ? URL.createObjectURL(user.photoFile) : user?.photoUrl ? user.photoUrl : defaultUserAvatar} />
+        <img style={{'width':80,'height':60,'cursor' : onMouseEnterValue ? 'pointer' : 'default','border':onMouseEnterValue ? '2px solid aqua' : '2px solid gray','borderRadius':30}} src={user?.photoFile ? URL.createObjectURL(user.photoFile) : user?.photoUrl ? user.photoUrl : defaultUserAvatar} />
              {avatarOnFocus &&
               (
                 <RenderOptions/>
